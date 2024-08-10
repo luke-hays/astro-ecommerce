@@ -1,0 +1,65 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<script>
+  import '@shoelace-style/shoelace/dist/components/input/input.js'
+  import '@shoelace-style/shoelace/dist/components/button/button.js'
+  import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
+</script>
+
+<Layout title="Ecommerce">
+  <div class="registration-form__container">
+    <form class="registration-form">
+      <h2>Registration</h2>
+
+      <sl-input class="registration-form__input" label="What is your name?"></sl-input>
+      <sl-input class="registration-form__input" type="email" label="What is your email?"></sl-input>
+      <sl-input class="registration-form__input" type="password" label="What is your password?" password-toggle></sl-input>
+      <sl-input class="registration-form__input" type="password" label="confirm password?" password-toggle></sl-input>
+      <sl-checkbox>Terms & Conditions</sl-checkbox>
+
+      <sl-button>Register Now</sl-button>
+      <div>
+        Already have an account? <a href="/">Login now</a>
+      </div>
+    </form>
+  </div>
+</Layout>
+
+<style>
+  body {
+    background-color: var(--color-primary-300);
+  }
+
+  .registration-form__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .registration-form {
+    width: 50%;
+    max-width: 48rem;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .2);
+  }
+
+  sl-input::part(form-control-label) {
+    color: var(--color-text-ink-300)
+  }
+
+  h2 {
+    margin: 0 0 1rem 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+</style>
