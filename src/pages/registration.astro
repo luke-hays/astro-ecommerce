@@ -1,27 +1,91 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+/*
+  Observation with shoelace on chrome
+  Console logs show multiple duplicate ids on elements in DOM
+  This shouldn't be reported since shadow dom encapsulates elements
+
+  Seems to be reoccuring with shoelace according to discussion on their github
+  https://github.com/shoelace-style/shoelace/discussions/1685
+*/
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData()
+    console.log(data)
+  } catch (error) {
+
+  }
+}
 ---
 
 <script>
   import '@shoelace-style/shoelace/dist/components/input/input.js'
   import '@shoelace-style/shoelace/dist/components/button/button.js'
   import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
+
+  const form = document.querySelector('form') as HTMLFormElement;
+
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      console.log(e)
+    })
+  }
+
+
 </script>
 
 <Layout title="Ecommerce">
   <div class="registration-form__container">
-    <form class="registration-form">
+    <form class="registration-form" method="POST">
       <h2>Registration</h2>
 
-      <sl-input class="registration-form__input" label="What is your name?"></sl-input>
-      <sl-input class="registration-form__input" type="email" label="What is your email?"></sl-input>
-      <sl-input class="registration-form__input" type="password" label="What is your password?" password-toggle></sl-input>
-      <sl-input class="registration-form__input" type="password" label="confirm password?" password-toggle></sl-input>
-      <sl-checkbox>Terms & Conditions</sl-checkbox>
+      <sl-input
+        id="test"
+        class="registration-form__input" 
+        label="Full Name"
+        required
+      >
+      </sl-input>
 
-      <sl-button>Register Now</sl-button>
-      <div>
-        Already have an account? <a href="/">Login now</a>
+      <sl-input 
+        class="registration-form__input" 
+        type="email" 
+        label="Email"
+        required
+      >
+      </sl-input>
+
+      <sl-input 
+        class="registration-form__input" 
+        type="password" 
+        label="Password" 
+        password-toggle
+        required
+      >
+      </sl-input>
+      
+      <sl-input 
+        class="registration-form__input" 
+        type="password" 
+        label="Confirm Password" 
+        password-toggle
+        required
+      >
+      </sl-input>
+
+      <div class="terms-condtions">
+        <label for="terms-conditions">Terms & Conditions</label>
+        <sl-checkbox name="terms-conditions" required>I am aware this is a fake site.</sl-checkbox>  
+      </div>
+
+      <sl-button type="submit">Register Now</sl-button>
+
+      <div class="sign-in-redirect">
+        Already have an account? <a href="/">Sign in now</a>
       </div>
     </form>
   </div>
@@ -60,7 +124,32 @@ import Layout from "../layouts/Layout.astro";
     margin: 0 0 1rem 0;
   }
 
-  a {
+  .terms-condtions {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
+
+  .terms-condtions {
+    color: var(--color-text-ink-300);
+  }
+
+  sl-checkbox:hover {
+    color: var(--color-text-ink-400);
+  }
+
+  .sign-in-redirect {
     text-decoration: none;
+    color: var(--color-text-ink-300);
+  }
+
+  .sign-in-redirect a {
+    text-decoration: none;
+    color: var(--color-text-ink-300);
+  }
+
+  .sign-in-redirect a:hover {
+    text-decoration: underline;
+    color: var(--color-text-ink-400);
   }
 </style>
