@@ -31,11 +31,11 @@ if (Astro.request.method === "POST") {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      console.log(e)
+      const formData = new FormData(form, e.submitter)
+
+      console.log(formData)
     })
   }
-
-
 </script>
 
 <Layout title="Ecommerce">
@@ -44,9 +44,9 @@ if (Astro.request.method === "POST") {
       <h2>Registration</h2>
 
       <sl-input
-        id="test"
         class="registration-form__input" 
         label="Full Name"
+        name="name"
         required
       >
       </sl-input>
@@ -55,6 +55,7 @@ if (Astro.request.method === "POST") {
         class="registration-form__input" 
         type="email" 
         label="Email"
+        name="email"
         required
       >
       </sl-input>
@@ -63,20 +64,14 @@ if (Astro.request.method === "POST") {
         class="registration-form__input" 
         type="password" 
         label="Password" 
+        name="password"
+        minlength="8"
         password-toggle
         required
+        id="password"
       >
       </sl-input>
       
-      <sl-input 
-        class="registration-form__input" 
-        type="password" 
-        label="Confirm Password" 
-        password-toggle
-        required
-      >
-      </sl-input>
-
       <div class="terms-condtions">
         <label for="terms-conditions">Terms & Conditions</label>
         <sl-checkbox name="terms-conditions" required>I am aware this is a fake site.</sl-checkbox>  
@@ -122,6 +117,8 @@ if (Astro.request.method === "POST") {
 
   h2 {
     margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    color: var(--color-text-ink-400)
   }
 
   .terms-condtions {

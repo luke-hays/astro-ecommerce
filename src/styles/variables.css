@@ -1,6 +1,8 @@
 :root {
   --color-primary-300: #5def5d;
 
+  --color-text-ink-200: #a5a5a5;
   --color-text-ink-300: #5f5f5f;
   --color-text-ink-400: #272727;
+  --color-text-ink-500: #141414;
 }
