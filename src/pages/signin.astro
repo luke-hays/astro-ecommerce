@@ -2,10 +2,92 @@
 import BaseLayout from "../layouts/BaseLayout.astro"
 ---
 
-<BaseLayout>
-  <div>
-    <form>
+<script>
+  import '@shoelace-style/shoelace/dist/components/input/input.js'
+  import '@shoelace-style/shoelace/dist/components/button/button.js'
+</script>
 
+<BaseLayout>
+  <div class="signin-form__container">
+    <form class="signin-form" method="POST">
+      <h2>Sign In</h2>
+
+      <sl-input
+        class="signin-form__input"
+        type="email"
+        label="Email"
+        name="email"
+        required
+      >
+      </sl-input>
+
+      <sl-input
+        class="signin-form__input"
+        type="password"
+        label="Password"
+        name="password"
+        minlength="8"
+        password-toggle
+        required
+      >
+      </sl-input>
+
+      <sl-button type="submit">Sign In</sl-button>
+
+      <div class="registration-redirect">
+        Don't have an account? <a href="/registration">Register now</a>
+      </div>
     </form>
   </div>
 </BaseLayout>
+
+<style>
+  h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    color: var(--color-text-ink-400)
+  }
+
+  sl-checkbox:hover {
+    color: var(--color-text-ink-400);
+  }
+
+  sl-input::part(form-control-label) {
+    color: var(--color-text-ink-300)
+  }
+
+  .signin-form__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .signin-form {
+    min-width: 20rem;
+    width: 50%;
+    max-width: 36rem;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .2);
+  }
+
+  .registration-redirect {
+    text-decoration: none;
+    color: var(--color-text-ink-300);
+  }
+
+  .registration-redirect a {
+    text-decoration: none;
+    color: var(--color-text-ink-300);
+  }
+
+  .registration-redirect a:hover {
+    text-decoration: underline;
+    color: var(--color-text-ink-400);
+  }
+</style>
