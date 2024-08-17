@@ -19,6 +19,7 @@
     "@astrojs/netlify": "^5.5.0",
     "@sentry/astro": "^8.22.0",
     "@shoelace-style/shoelace": "^2.15.1",
+    "@splidejs/splide": "^4.1.4",
     "astro": "^4.13.2",
     "typescript": "^5.5.4"
   },
