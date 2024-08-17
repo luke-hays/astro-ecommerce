@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../layouts/BaseLayout.astro";
 
 /*
   Observation with shoelace on chrome
@@ -39,7 +39,7 @@ if (Astro.request.method === "POST") {
 </script>
 
 <Layout>
-  <div class="registration-form__container">
+  <div slot="main" class="registration-form__container">
     <form class="registration-form" method="POST">
       <h2>Registration</h2>
 

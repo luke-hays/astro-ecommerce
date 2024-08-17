@@ -1,30 +1,33 @@
----
----
-
 <script>
   import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
   import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 </script>
 
-<div class="header-container">
-  <div>
-    <sl-icon-button name="list"></sl-icon-button>
-  </div>
+<div id="header-content">
+  <sl-icon-button name="list"></sl-icon-button>
 
-  <div>
-    <a href="/">
-      tree-Commerce
-      <sl-icon name="tree"></sl-icon>
-    </a>
-  </div>
-  <div class="account-settings">
+  <a id="logo" href="/">
+    tree-Commerce
+    <sl-icon name="tree"></sl-icon>
+  </a>
+
+  <div class="button-row">
     <sl-icon-button name="bag"></sl-icon-button>
     <sl-icon-button name="person"></sl-icon-button>
   </div>
 </div>
 
 <style>
-  .header-container {
+  sl-icon-button {
+    transform: scale(1.2);
+  }
+
+  .button-row {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  #header-content {
     height: 100%;
     display: flex;
     align-items: center;
@@ -32,12 +35,7 @@
     padding: 0 2rem;
   }
 
-  .account-settings {
-    display: flex;
-    gap: 0.25rem;
-  }
-
-  a {
+  #logo {
     margin: 0;
     font-weight: 600;
     font-size: 1.5rem;
@@ -48,9 +46,5 @@
     align-items: center;
     flex-wrap: nowrap;
     gap: .25rem;
-  }
-
-  sl-icon-button {
-    transform: scale(1.2);
   }
 </style>
