@@ -17,7 +17,16 @@ if (!images[product.data.image]) throw new Error(`"${product.data.image}" does n
 ---
 
 <BaseLayout>
-  <h2>{product.data.name}</h2>
-  <p>{product.data.description}</p>
-  <Image src={images[product.data.image]()} alt={product.data.name}/>
+  <div class="">
+    <Image src={images[product.data.image]()} alt={product.data.name}/>
+    <h2>{product.data.name}</h2>
+    <p>{product.data.description}</p>
+  </div>
 </BaseLayout>
+
+<style>
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+</style>
