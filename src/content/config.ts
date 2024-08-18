@@ -7,7 +7,7 @@ const productCollection = defineCollection({
     price: z.number(),
     stock: z.number(),
     description: z.string(),
-    image: z.string(),
+    image: z.string().transform(path => `/${path}`),
   })
 });
 
