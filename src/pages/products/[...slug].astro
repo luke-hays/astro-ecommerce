@@ -14,13 +14,32 @@ if (!product) return Astro.redirect("/404")
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif}')
 if (!images[product.data.image]) throw new Error(`"${product.data.image}" does not exist in glob: "src/assets/**/*.{jpeg,jpg,png,gif}"`);
+
+const formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+})
+
+const formattedPrice = formatter.format(product.data.price)
 ---
+<script>
+  import '@shoelace-style/shoelace/dist/components/button/button.js'
+</script>
+
 
 <BaseLayout>
-  <div class="">
-    <Image src={images[product.data.image]()} alt={product.data.name}/>
-    <h2>{product.data.name}</h2>
-    <p>{product.data.description}</p>
+  <div class="product-container">
+    <div class="img-container">
+      <Image src={images[product.data.image]()} alt={product.data.name}/>
+    </div>
+    <section>
+      <h2>{product.data.name}</h2>
+      <div>{formattedPrice}</div>
+      <p>{product.data.description}</p>
+      <div>
+        <sl-button>Add to cart</sl-button>
+      </div>
+    </section>
   </div>
 </BaseLayout>
 
@@ -28,5 +47,35 @@ if (!images[product.data.image]) throw new Error(`"${product.data.image}" does n
   img {
     max-width: 100%;
     max-height: 100%;
+    object-fit: cover;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0 0 1rem 0;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .img-container {
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1rem;
+  }
+
+  .product-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
   }
 </style>
