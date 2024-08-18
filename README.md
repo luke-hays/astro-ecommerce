@@ -1,54 +1,33 @@
-# Astro Starter Kit: Basics
+# treeCommerce
 
-```sh
-npm create astro@latest -- --template basics
-```
+This is an enterprising ecommerce venture that hawks jars of trees distilled into slime.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+This artisinal piece of code serves as a proof of concept for creating a custom website that can be hosted by me and managed by a not so technologically inclined client via a CMS.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+My wife is a forester, a former wildland firefighter, and got a kick out of a company proposing vats of algae as a supplement for trees in cities. So she is the CMS admin here.
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+This site is not real. You cannot buy this garbage. If you could, the results would be like obtaining the black goo from Prometheus. You don't want that.
 
-## 🚀 Project Structure
+## Tech Stack
 
-Inside of your Astro project, you'll see the following folders and files:
+Going to be going for a bunch of different features in Astro. List of tools:
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+- Astro
+- TypeScript
+- Eslint
+- Vitest
+- Playwright
+- Decap CMS
+- Sentry
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Additionally, I've opted to integrate Shoelace web components so that I can make styling sort of brainless.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Database is handled by Astro DB.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Running locally
 
-## 🧞 Commands
+In addition to the usual run script, we can also run [Decap](https://decapcms.org/docs/working-with-a-local-git-repository/) locally.
 
-All commands are run from the root of the project, from a terminal:
+`npx decap-server`
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+For fun I also set up Sentry for monitoring, its auth token is set in a .env file that is obviously not checked in.
