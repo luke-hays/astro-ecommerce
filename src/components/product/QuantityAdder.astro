@@ -1,0 +1,49 @@
+---
+const {quantity: number, disabled: boolean} = Astro.props
+---
+
+<div id="quantity-adder__container">
+  <sl-button id="remove" class="update-quantity">-</sl-button>
+  <div id="quantity">1</div>
+  <sl-button id="add" class="update-quantity">+</sl-button>
+</div>
+
+<style>
+  #quantity-adder__container {
+    display: flex;
+    align-items: center;
+  }
+
+  #quantity {
+    height: 2.5rem;
+    width: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: hsl(0, 0%, 100%);
+    border-top: 1px;
+    border-bottom: 1px;
+    border-left: 0;
+    border-right: 0;
+    border-style: solid;
+    border-color: hsl(240, 5%, 84%);
+    box-sizing: border-box;
+  }
+
+  sl-button {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  sl-button:first-child::part(base) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  sl-button:last-child::part(base) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+
+</style>

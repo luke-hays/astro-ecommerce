@@ -3,7 +3,8 @@ import type { ImageMetadata } from 'astro';
 import {getCollection} from "astro:content"
 import {Image} from 'astro:assets';
 
-import BaseLayout from "../../layouts/BaseLayout.astro"
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import QuantityAdder from "../../components/product/QuantityAdder.astro";
 
 const {slug} = Astro.params
 
@@ -22,6 +23,7 @@ const formatter = new Intl.NumberFormat('en-US', {
 
 const formattedPrice = formatter.format(product.data.price)
 ---
+
 <script>
   import '@shoelace-style/shoelace/dist/components/button/button.js'
 </script>
@@ -36,9 +38,8 @@ const formattedPrice = formatter.format(product.data.price)
       <h2>{product.data.name}</h2>
       <div>{formattedPrice}</div>
       <p>{product.data.description}</p>
-      <div>
-        <sl-button>Add to cart</sl-button>
-      </div>
+      <QuantityAdder />
+      <sl-button>Add to cart</sl-button>
     </section>
   </div>
 </BaseLayout>
@@ -53,8 +54,8 @@ const formattedPrice = formatter.format(product.data.price)
   section {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin: 0 0 1rem 0;
+    gap: 0.5rem;
+    margin: 0 1rem;
   }
 
   h2 {
@@ -74,8 +75,6 @@ const formattedPrice = formatter.format(product.data.price)
   .product-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     height: 100%;
   }
 </style>
