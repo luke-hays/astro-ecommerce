@@ -1,5 +1,5 @@
 import {expect, test, describe} from 'vitest'
-import {updateQuantityInCart} from '../../../src/scripts/cart'
+import {updateQuantityInCart} from '../../src/scripts/cart'
 
 describe('cart utilities', () => {
   test('can add items to a cart, up to a max of 10', () => {
