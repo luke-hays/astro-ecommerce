@@ -21,10 +21,25 @@ if (!images[product.data.image]) throw new Error(`"${product.data.image}" does n
 const formattedPrice = formatNumberToCurrency(product.data.price)
 ---
 
-<script>
+<script >
   import '@shoelace-style/shoelace/dist/components/button/button.js'
 
-  import { quantity } from '../../stores/productCounter'
+  import {quantity} from '../../stores/productCounter'
+  import {cart} from '../../stores/cart'
+  import {updateQuantityInCart} from '../../scripts/cart'
+
+  const addToCartButton = document.getElementById('add-to-cart')
+  const product = addToCartButton?.dataset.product
+
+  if (addToCartButton && product) {
+    addToCartButton.addEventListener('click', () => {
+      const currentCart = cart.get()
+      const newQuantity = quantity.get()
+      const updatedCart = updateQuantityInCart(currentCart, product, newQuantity)
+
+      cart.set(updatedCart)
+    })
+  }
 </script>
 
 <BaseLayout>
@@ -37,7 +52,7 @@ const formattedPrice = formatNumberToCurrency(product.data.price)
       <div>{formattedPrice}</div>
       <p>{product.data.description}</p>
       <QuantityAdder />
-      <sl-button>Add to cart</sl-button>
+      <sl-button data-product={product.data.name} id="add-to-cart">Add to cart</sl-button>
     </section>
   </div>
 </BaseLayout>
