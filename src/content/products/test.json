@@ -1,8 +1,8 @@
 {
-  "name": "test",
-  "price": 1,
-  "stock": 1,
-  "description": "1",
   "image": "src/assets/images/liquid-3-main.jpg",
-  "category": "test"
+  "name": "test",
+  "price": 100,
+  "stock": 20,
+  "description": "Gross Slime",
+  "category": "Primordial Ooze"
 }

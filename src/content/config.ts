@@ -16,8 +16,7 @@ const productCollection = defineCollection({
 const categoryCollection = defineCollection({
   type: 'data',
   schema: z.object({
-    pathName: z.string(),
-    parent: reference('categories').optional().default('')
+    name: z.string()
   })
 })
 

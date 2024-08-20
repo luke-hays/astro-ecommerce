@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"
+import { getCollection } from "astro:content"
+
+const {category} = Astro.params
+
+if (category == null) Astro.redirect('/404')
+
+const categories = await getCollection("categories")
+const products = await getCollection("products")
+
+const collectionCategory = categories.find(c => c.id === category)
+const filteredProducts = products.filter(product => product.data.category === collectionCategory?.data.name)
+---
+
+<BaseLayout>
+  {filteredProducts.map(product => {
+    return (
+      <div>
+        {product.data.name}
+      </div>
+    )
+  })}
+</BaseLayout>
