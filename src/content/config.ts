@@ -9,6 +9,7 @@ const productCollection = defineCollection({
     description: z.string(),
     // Necessary to add the first / or else trying to import image from this path fails
     image: z.string().transform((path) => `/${path}`),
+    category: z.string()
   }),
 });
 
@@ -16,7 +17,7 @@ const categoryCollection = defineCollection({
   type: 'data',
   schema: z.object({
     pathName: z.string(),
-    parent: reference('categories')
+    parent: reference('categories').optional().default('')
   })
 })
 
