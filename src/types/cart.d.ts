@@ -1,3 +1,3 @@
 declare interface Cart {
-  [index: string]: number
+  [index: string]: number;
 }

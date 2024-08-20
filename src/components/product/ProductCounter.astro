@@ -1,18 +1,22 @@
 <script>
   // Using nanostore since other components are going to need the quantity state in this store
-  import {quantity, incrementQuantity, decrementQuantity} from "../../stores/productCounter"
+  import {
+    quantity,
+    incrementQuantity,
+    decrementQuantity,
+  } from "../../stores/productCounter";
 
-  const addProduct = document.getElementById('add')
-  const removeProduct = document.getElementById('remove')
-  
-  if (addProduct) addProduct.addEventListener('click', incrementQuantity)
-  if (removeProduct) removeProduct.addEventListener('click', decrementQuantity)
+  const addProduct = document.getElementById("add");
+  const removeProduct = document.getElementById("remove");
+
+  if (addProduct) addProduct.addEventListener("click", incrementQuantity);
+  if (removeProduct) removeProduct.addEventListener("click", decrementQuantity);
 
   // Set a listener on the current quantity to update the display when its changed by either imported function
-  quantity.subscribe(quantity => {
-    const quantityDisplay = document.getElementById('quantity')
-    if (quantityDisplay) quantityDisplay.textContent = quantity.toString()
-  })
+  quantity.subscribe((quantity) => {
+    const quantityDisplay = document.getElementById("quantity");
+    if (quantityDisplay) quantityDisplay.textContent = quantity.toString();
+  });
 </script>
 
 <div id="quantity-adder__container">

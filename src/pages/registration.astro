@@ -12,29 +12,27 @@ import Layout from "../layouts/BaseLayout.astro";
 
 if (Astro.request.method === "POST") {
   try {
-    const data = await Astro.request.formData()
-    console.log(data)
-  } catch (error) {
-
-  }
+    const data = await Astro.request.formData();
+    console.log(data);
+  } catch (error) {}
 }
 ---
 
 <script>
-  import '@shoelace-style/shoelace/dist/components/input/input.js'
-  import '@shoelace-style/shoelace/dist/components/button/button.js'
-  import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js'
+  import "@shoelace-style/shoelace/dist/components/input/input.js";
+  import "@shoelace-style/shoelace/dist/components/button/button.js";
+  import "@shoelace-style/shoelace/dist/components/checkbox/checkbox.js";
 
-  const form = document.querySelector('form') as HTMLFormElement;
+  const form = document.querySelector("form") as HTMLFormElement;
 
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const formData = new FormData(form, e.submitter)
+      const formData = new FormData(form, e.submitter);
 
-      console.log(formData)
-    })
+      console.log(formData);
+    });
   }
 </script>
 
@@ -44,26 +42,26 @@ if (Astro.request.method === "POST") {
       <h2>Registration</h2>
 
       <sl-input
-        class="registration-form__input" 
+        class="registration-form__input"
         label="Full Name"
         name="name"
         required
       >
       </sl-input>
 
-      <sl-input 
-        class="registration-form__input" 
-        type="email" 
+      <sl-input
+        class="registration-form__input"
+        type="email"
         label="Email"
         name="email"
         required
       >
       </sl-input>
 
-      <sl-input 
-        class="registration-form__input" 
-        type="password" 
-        label="Password" 
+      <sl-input
+        class="registration-form__input"
+        type="password"
+        label="Password"
         name="password"
         minlength="8"
         password-toggle
@@ -71,10 +69,12 @@ if (Astro.request.method === "POST") {
         id="password"
       >
       </sl-input>
-      
+
       <div class="terms-condtions">
         <label for="terms-conditions">Terms & Conditions</label>
-        <sl-checkbox name="terms-conditions" required>I am aware this is a fake site.</sl-checkbox>  
+        <sl-checkbox name="terms-conditions" required
+          >I am aware this is a fake site.</sl-checkbox
+        >
       </div>
 
       <sl-button type="submit">Register Now</sl-button>
@@ -90,7 +90,7 @@ if (Astro.request.method === "POST") {
   h2 {
     margin: 0 0 1rem 0;
     font-size: 1.25rem;
-    color: var(--color-text-ink-400)
+    color: var(--color-text-ink-400);
   }
 
   sl-checkbox:hover {
@@ -98,7 +98,7 @@ if (Astro.request.method === "POST") {
   }
 
   sl-input::part(form-control-label) {
-    color: var(--color-text-ink-300)
+    color: var(--color-text-ink-300);
   }
 
   .registration-form__container {
@@ -118,13 +118,13 @@ if (Astro.request.method === "POST") {
     gap: 1.25rem;
     background-color: white;
     border-radius: 8px;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .2);
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
   }
 
   .terms-condtions {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: 0.5rem;
   }
 
   .terms-condtions {

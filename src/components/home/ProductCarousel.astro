@@ -1,25 +1,25 @@
 <script>
-  import Splide from '@splidejs/splide';
-  
-  new Splide( '#image-carousel', {
-    type: 'loop',
-    padding: '5rem',
+  import Splide from "@splidejs/splide";
+
+  new Splide("#image-carousel", {
+    type: "loop",
+    padding: "5rem",
   }).mount();
 </script>
-  
+
 <section>
   <h2 class="product-carousel__title">Cruise our ooze, <span>today</span>.</h2>
   <div id="image-carousel" class="splide" aria-label="Important Algae">
     <div class="splide__track">
       <ul class="splide__list">
         <li class="splide__slide">
-          <img src="images/green-ooze.webp">
+          <img src="images/green-ooze.webp" />
         </li>
         <li class="splide__slide">
-          <img src="images/gross-ooze.webp">
+          <img src="images/gross-ooze.webp" />
         </li>
         <li class="splide__slide">
-          <img src="images/real-pond.webp">
+          <img src="images/real-pond.webp" />
         </li>
       </ul>
     </div>
@@ -27,7 +27,7 @@
 </section>
 
 <style>
- section {
+  section {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,7 +37,7 @@
   h2 {
     margin: 2rem 0 1rem 0;
   }
-  
+
   .splide {
     margin: 1rem;
     max-width: 75rem;

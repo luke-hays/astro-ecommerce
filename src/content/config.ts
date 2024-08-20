@@ -1,17 +1,17 @@
-import {z, defineCollection} from 'astro:content';
+import { z, defineCollection } from "astro:content";
 
-const productCollection = defineCollection({ 
-  type: 'data',
+const productCollection = defineCollection({
+  type: "data",
   schema: z.object({
     name: z.string(),
     price: z.number(),
     stock: z.number(),
     description: z.string(),
     // Necessary to add the first / or else trying to import image from this path fails
-    image: z.string().transform(path => `/${path}`),
-  })
+    image: z.string().transform((path) => `/${path}`),
+  }),
 });
 
 export const collections = {
-  'products': productCollection,
+  products: productCollection,
 };
