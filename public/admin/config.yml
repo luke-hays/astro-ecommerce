@@ -6,6 +6,10 @@ backend:
 
 # Sample collection, using for config setup
 collections:
+  - name: "category"
+    label: "Product Category"
+    
+
   - name: "products"
     label: "Products"
     folder: "src/content/products"
