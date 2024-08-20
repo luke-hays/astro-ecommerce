@@ -7,5 +7,6 @@ export function formatNumberToCurrency(
     style: 'currency', 
     currency: currency
   })
+  
   return formatter.format(num)
 }

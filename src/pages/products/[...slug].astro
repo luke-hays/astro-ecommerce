@@ -8,6 +8,7 @@ import {formatNumberToCurrency} from '../../scripts/currency';
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import QuantityAdder from "../../components/product/ProductCounter.astro";
 
+// The product name is the slug
 const {slug} = Astro.params
 
 const products = await getCollection('products')
@@ -15,6 +16,9 @@ const product = products.find(product => product.data.name === slug)
 
 if (!product) return Astro.redirect("/404")
 
+// The image is saved from the CMS as a path to the assets folder in src
+// Since this is dynamic we need to handle importing using that path name
+// Astro luckily provides some helpers for this
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif}')
 if (!images[product.data.image]) throw new Error(`"${product.data.image}" does not exist in glob: "src/assets/**/*.{jpeg,jpg,png,gif}"`);
 
@@ -31,6 +35,7 @@ const formattedPrice = formatNumberToCurrency(product.data.price)
   const addToCartButton = document.getElementById('add-to-cart')
   const product = addToCartButton?.dataset.product
 
+  // Straight forward - when the user clicks add, we get the cart, our new quantity, then update the cart accordingly
   if (addToCartButton && product) {
     addToCartButton.addEventListener('click', () => {
       const currentCart = cart.get()
