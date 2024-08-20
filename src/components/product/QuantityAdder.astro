@@ -1,10 +1,21 @@
----
-const {quantity: number, disabled: boolean} = Astro.props
----
+<script>
+  import { quantity, incrementQuantity, decrementQuantity } from "../../stores/productCounter"
+
+  const addProduct = document.getElementById('add')
+  const removeProduct = document.getElementById('remove')
+  
+  if (addProduct) addProduct.addEventListener('click', incrementQuantity)
+  if (removeProduct) removeProduct.addEventListener('click', decrementQuantity)
+
+  quantity.subscribe(quantity => {
+    const quantityDisplay = document.getElementById('quantity')
+    if (quantityDisplay) quantityDisplay.textContent = quantity.toString()
+  })
+</script>
 
 <div id="quantity-adder__container">
   <sl-button id="remove" class="update-quantity">-</sl-button>
-  <div id="quantity">1</div>
+  <div id="quantity"></div>
   <sl-button id="add" class="update-quantity">+</sl-button>
 </div>
 
@@ -44,6 +55,4 @@ const {quantity: number, disabled: boolean} = Astro.props
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
-
-
 </style>
