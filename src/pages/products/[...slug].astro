@@ -29,6 +29,13 @@ if (!images[product.data.image])
   );
 
 const formattedPrice = formatNumberToCurrency(product.data.price);
+
+const categories = await getCollection("categories")
+const category = categories.find(category => category.data.name === product.data.category)
+
+// Probably want to warn sentry on a misconfiguration
+const routeName = category?.data?.name ?? 'Home'
+const routePath = category?.id ? `/categories/${category.id}` : "/"
 ---
 
 <script>
@@ -61,8 +68,8 @@ const formattedPrice = formatNumberToCurrency(product.data.price);
   <div class="product-container">
     <ul class="breadcrumb">
       <li>
-        <a href={`/categories/${product.data.category}`}>
-          {product.data.category}
+        <a href={routePath}>
+          {routeName}
         </a>
       </li>
     </ul>
