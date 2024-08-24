@@ -1,11 +1,15 @@
+---
+import Nav from "./Nav.astro"
+---
+
 <script>
   import "@shoelace-style/shoelace/dist/components/icon-button/icon-button.js";
   import "@shoelace-style/shoelace/dist/components/icon/icon.js";
 </script>
 
 <div id="header-content">
-  <sl-icon-button name="list"></sl-icon-button>
-
+  <Nav />
+  
   <a id="logo" href="/">
     tree-Commerce
     <sl-icon name="tree"></sl-icon>
