@@ -12,7 +12,7 @@ import QuantityAdder from "../../components/product/ProductCounter.astro";
 const { slug } = Astro.params;
 
 const products = await getCollection("products");
-const product = products.find((product) => product.data.name === slug);
+const product = products.find((product) => product.id === slug);
 
 if (!product) return Astro.redirect("/404");
 
@@ -22,6 +22,7 @@ if (!product) return Astro.redirect("/404");
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/**/*.{jpeg,jpg,png,gif}",
 );
+
 if (!images[product.data.image])
   throw new Error(
     `"${product.data.image}" does not exist in glob: "src/assets/**/*.{jpeg,jpg,png,gif}"`,
