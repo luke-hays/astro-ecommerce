@@ -15,7 +15,7 @@ const productCollection = await getCollection("products")
 const images = getImages()
 
 const categoryName = categoryCollection.find(c => c.id === category)?.data.name
-const products = await getProductsByCategory({
+const products = getProductsByCategory({
   products: productCollection, 
   categories: categoryCollection, 
   images, 
