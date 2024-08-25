@@ -23,6 +23,7 @@
     "@shoelace-style/shoelace": "^2.15.1",
     "@splidejs/splide": "^4.1.4",
     "astro": "^4.13.2",
+    "fp-ts": "^2.16.9",
     "nanostores": "^0.11.2",
     "typescript": "^5.5.4"
   },
