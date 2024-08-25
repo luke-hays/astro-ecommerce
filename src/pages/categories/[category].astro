@@ -15,7 +15,12 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 ); 
 
 const categoryName = categoryCollection.find(c => c.id === category)?.data.name
-const products = await getProductsByCategory(productCollection, categoryCollection, images, categoryName)
+const products = await getProductsByCategory({
+  products: productCollection, 
+  categories: categoryCollection, 
+  images, 
+  category: categoryName
+})
 ---
 
 <BaseLayout>
