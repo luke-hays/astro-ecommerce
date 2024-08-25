@@ -12,7 +12,7 @@ const {category} = Astro.params
 if (category == null) Astro.redirect('/404')
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/assets/**/*.{jpeg,jpg,png,gif}",
+  "/src/assets/**/*.{jpeg,jpg,png,gif,webp}",
 );
 
 const categories = await getCollection("categories")

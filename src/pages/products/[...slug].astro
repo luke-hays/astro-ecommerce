@@ -20,12 +20,12 @@ if (!product) return Astro.redirect("/404");
 // Since this is dynamic we need to handle importing using that path name
 // Astro luckily provides some helpers for this
 const images = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/assets/**/*.{jpeg,jpg,png,gif}",
+  "/src/assets/**/*.{jpeg,jpg,png,gif,webp}",
 );
 
 if (!images[product.data.image])
   throw new Error(
-    `"${product.data.image}" does not exist in glob: "src/assets/**/*.{jpeg,jpg,png,gif}"`,
+    `"${product.data.image}" does not exist in glob: "src/assets/**/*.{jpeg,jpg,png,gif,webp}"`,
   );
 
 const formattedPrice = formatNumberToCurrency(product.data.price);

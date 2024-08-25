@@ -1,0 +1,9 @@
+{
+  "highlight": true,
+  "name": "Oak Tree",
+  "price": 200,
+  "stock": 100,
+  "description": "A mighty oak tree in peak efficiency.",
+  "image": "src/assets/images/jar1.webp",
+  "category": "Primordial Ooze"
+}

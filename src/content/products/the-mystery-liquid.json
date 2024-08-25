@@ -1,0 +1,9 @@
+{
+  "highlight": true,
+  "price": 50,
+  "stock": 500,
+  "description": "Contains trace amounts of tree, found by the side of a road.",
+  "name": "The Mystery Liquid",
+  "category": "Pond Scum",
+  "image": "src/assets/images/jar3.webp"
+}

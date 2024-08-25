@@ -1,0 +1,9 @@
+{
+  "highlight": true,
+  "name": "Jacaranda",
+  "price": 300,
+  "stock": 10,
+  "image": "src/assets/images/jar2.webp",
+  "description": "It's still alive.",
+  "category": "Primordial Ooze"
+}

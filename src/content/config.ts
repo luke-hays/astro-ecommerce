@@ -9,7 +9,8 @@ const productCollection = defineCollection({
     description: z.string(),
     // Necessary to add the first / or else trying to import image from this path fails
     image: z.string().transform((path) => `/${path}`),
-    category: z.string()
+    category: z.string(),
+    highlight: z.boolean()
   }),
 });
 
