@@ -7,27 +7,19 @@ import QuantityAdder from "../../components/product/ProductCounter.astro";
 import Breadcrumb from "../../components/shared/Breadcrumb.astro";
 
 import { getImages } from "../../scripts/images";
+import {getProduct} from '../../scripts/product'
 
 // The product name is the slug
 const { slug } = Astro.params;
+const images = getImages()
 
 const products = await getCollection("products");
-const product = products.find((product) => product.id === slug);
+const product = getProduct({products, id: slug, images})
 
 if (!product) return Astro.redirect("/404");
 
-// The image is saved from the CMS as a path to the assets folder in src
-// Since this is dynamic we need to handle importing using that path name
-// Astro luckily provides some helpers for this
-const images = getImages()
-
-if (!images[product.data.image])
-  throw new Error(
-    `"${product.data.image}" does not exist in glob: "src/assets/**/*.{jpeg,jpg,png,gif,webp}"`,
-  );
-
 const categories = await getCollection("categories")
-const category = categories.find(category => category.data.name === product.data.category)
+const category = categories.find(category => category.data.name === product.category)
 
 // Probably want to warn sentry on a misconfiguration
 const routeName = category?.data?.name ?? 'Home'
@@ -64,15 +56,16 @@ const routePath = category?.id ? `/categories/${category.id}` : "/"
   <div class="product-container">
     <Breadcrumb routePath={routePath} routeName={routeName} />
     <div class="img-container">
-      <Image src={images[product.data.image]()} alt={product.data.name} />
+      <Image src={product.image()} alt={product.name} />
     </div>
     <section>
-      <h2>{product.data.name}</h2>
-      <div>{product.data.price}</div>
-      <p>{product.data.description}</p>
+      <h2>{product.name}</h2>
+      <div>{product.formattedPrice}</div>
+      <p>{product.description}</p>
       <QuantityAdder />
-      <sl-button data-product={product.data.name} id="add-to-cart"
-        >Add to cart</sl-button
+      <sl-button data-product={product.name} id="add-to-cart">
+        Add to cart
+      </sl-button
       >
     </section>
   </div>
