@@ -1,5 +1,6 @@
 ---
 import Nav from "./Nav.astro"
+import Cart from './Cart.astro'
 ---
 
 <script>
@@ -16,19 +17,14 @@ import Nav from "./Nav.astro"
   </a>
 
   <div class="button-row">
-    <sl-icon-button name="bag"></sl-icon-button>
+    <Cart />
     <sl-icon-button name="person"></sl-icon-button>
   </div>
 </div>
 
 <style>
-  sl-icon-button {
-    transform: scale(1.2);
-  }
-
   .button-row {
     display: flex;
-    gap: 0.25rem;
   }
 
   #header-content {

@@ -1,10 +1,12 @@
 import { MAX_PRODUCT_QUANTITY } from "./constants";
 
-export function updateQuantityInCart(
+export const getItemsInCartCount = (cart: Cart) => Object.values(cart).reduce((prev, curr) => prev + curr)
+
+export const updateQuantityInCart = (
   cart: Cart,
   productId: string,
   quantity: number,
-) {
+) => {
   const productInCart = Object.keys(cart).find((id) => id === productId);
 
   // If the product is not in the cart and we are somehow trying to add a quantity that's less than or equal to 0

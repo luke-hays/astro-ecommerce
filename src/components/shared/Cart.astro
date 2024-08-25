@@ -1,0 +1,29 @@
+<script>
+  import { cart } from "../../stores/cart";
+  import { getItemsInCartCount } from "../../scripts/cart";
+
+  const countBadge = document.getElementById('cart-count');
+
+  if (countBadge) {
+    const count = getItemsInCartCount(cart.get())
+    if (count > 0) countBadge.textContent = count.toString()
+  }
+
+</script>
+
+<div class="cart">
+  <div id="cart-count"></div>
+  <sl-icon-button name="bag" href="/checkout"></sl-icon-button>
+</div>
+
+<style>
+  .cart {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  #cart-count {
+    font-size: 0.8rem;
+  }
+</style>
