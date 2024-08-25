@@ -1,12 +1,12 @@
 # treeCommerce
 
-This is an enterprising ecommerce venture that hawks jars of trees distilled into slime. Liquid trees, or vats of algae, are far more efficient at harvesting CO2 and converting that into oxygen a your normal tree. It also looks a little silly to have a giant tank of Nickelodean slime sitting in your city. So who's to say if it's good or bad.
+This is an enterprising ecommerce venture that hawks jars of trees distilled into slime. Liquid trees, or vats of algae, are far more efficient at harvesting CO2 and converting that into oxygen than your normal tree. It also looks a little silly to have a giant tank of Nickelodean slime sitting in your city. So who's to say if it's good or bad.
 
 | ![beautiful.PNG](/media/beautiful.PNG) | 
 |:--:| 
 | *Chef's kiss* |
 
-THERE IS OPPORTUNITY FOR BUSINESS HERE. I have taken inspiration from the art of bonsai to supply urbanites with their very own liquid trees that can be housed in their increasingly tiny homes. We have the expertise of a former wildland firefighter and tree enthusiast at the local CMS admin here. Her professional opinion is that the liquid trees cannot catch on fire because they're liquid, and hell, I trust that.
+THERE IS OPPORTUNITY FOR BUSINESS HERE. I've taken inspiration from the art of bonsai to supply urbanites with their very own liquid trees that can be housed in their increasingly tiny homes. We have the expertise of a former wildland firefighter and tree enthusiast at the local CMS admin here. Her professional opinion is that the liquid trees cannot catch on fire because they're liquid, and hell, I trust that.
 
 | ![majestic.PNG](/media/majestic.PNG) | 
 |:--:| 
