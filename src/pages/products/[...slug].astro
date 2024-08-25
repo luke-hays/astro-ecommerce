@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import QuantityAdder from "../../components/product/ProductCounter.astro";
+import Breadcrumb from "../../components/shared/Breadcrumb.astro";
 
 import { getImages } from "../../scripts/images";
 
@@ -61,13 +62,7 @@ const routePath = category?.id ? `/categories/${category.id}` : "/"
 
 <BaseLayout>
   <div class="product-container">
-    <ul class="breadcrumb">
-      <li>
-        <a href={routePath}>
-          {routeName}
-        </a>
-      </li>
-    </ul>
+    <Breadcrumb routePath={routePath} routeName={routeName} />
     <div class="img-container">
       <Image src={images[product.data.image]()} alt={product.data.name} />
     </div>
@@ -117,26 +112,5 @@ const routePath = category?.id ? `/categories/${category.id}` : "/"
     gap: 1rem;
     height: 100%;
     margin: 1.5rem 2rem;
-  }
-
-  .breadcrumb {
-    display: flex;
-    gap: 1rem;
-    list-style-type: none;
-    margin: 1rem 0;
-    padding: 0;
-  }
-
-  .breadcrumb li {
-    margin: 0;
-  }
-
-  a {
-    text-decoration: none;
-    color: var(--color-text-ink-300)
-  }
-
-  a:hover {
-    color: var(--color-text-ink-400)
   }
 </style>
