@@ -1,18 +1,16 @@
 import { z, defineCollection } from "astro:content";
 
-import { formatNumberToCurrency } from "../scripts/currency";
-
 const productCollection = defineCollection({
   type: "data",
   schema: z.object({
     name: z.string(),
-    price: z.number().transform((price) => formatNumberToCurrency(price)),
+    price: z.number(),
     stock: z.number(),
     description: z.string(),
     // Necessary to add the first / or else trying to import image from this path fails
     image: z.string().transform((path) => `/${path}`),
     category: z.string(),
-    highlight: z.boolean()
+    highlight: z.boolean(),
   }),
 });
 
