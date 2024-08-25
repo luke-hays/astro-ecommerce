@@ -1,11 +1,11 @@
 ---
-const {routePath, routeName} = Astro.props;
+const {routes} = Astro.props;
 ---
 
 <ul class="breadcrumb">
   <li>
-    <a href={routePath}>
-      {routeName}
+    <a href={routes.path}>
+      {routes.label}
     </a>
   </li>
 </ul>

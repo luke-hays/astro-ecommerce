@@ -7,23 +7,21 @@ import QuantityAdder from "../../components/product/ProductCounter.astro";
 import Breadcrumb from "../../components/shared/Breadcrumb.astro";
 
 import { getImages } from "../../scripts/images";
-import {getProduct} from '../../scripts/product'
+import { getProduct } from '../../scripts/product'
+import { buildCategoryBreadcrumbs } from '../../scripts/routes'
 
 // The product name is the slug
 const { slug } = Astro.params;
-const images = getImages()
 
 const products = await getCollection("products");
+const categories = await getCollection("categories")
+const images = getImages()
+
 const product = getProduct({products, id: slug, images})
 
 if (!product) return Astro.redirect("/404");
 
-const categories = await getCollection("categories")
-const category = categories.find(category => category.data.name === product.category)
-
-// Probably want to warn sentry on a misconfiguration
-const routeName = category?.data?.name ?? 'Home'
-const routePath = category?.id ? `/categories/${category.id}` : "/"
+const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category)
 ---
 
 <script>
@@ -54,7 +52,7 @@ const routePath = category?.id ? `/categories/${category.id}` : "/"
 
 <BaseLayout>
   <div class="product-container">
-    <Breadcrumb routePath={routePath} routeName={routeName} />
+    <Breadcrumb routes={breadcrumbs} />
     <div class="img-container">
       <Image src={product.image()} alt={product.name} />
     </div>

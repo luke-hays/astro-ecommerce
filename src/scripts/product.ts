@@ -1,6 +1,8 @@
 import { pipe } from "fp-ts/lib/function";
-import { formatNumberToCurrency } from "./currency";
 import type { Category, Images, Product } from "../types/products";
+import { formatNumberToCurrency } from "./currency";
+import { buildRouteToProduct } from "./routes";
+import { getCategory } from "./categories";
 
 interface GetProductParams<T> {
   products: Product[],
@@ -15,13 +17,8 @@ interface GetProductsByCategoryParams<T> {
   category: T
 }
 
-const buildRouteToProduct = (id: string) => `/products/${id}`
-
 const getProductById = <A extends Product, B>(products: A[], id: B) =>
   products.find((product) => product.id === id) 
-
-const getCategory = <A extends Category, B>(categories: A[], category: B) => 
-  categories.find(c => c.data.name === category)?.data.name
 
 const filterProductsByCategory = <A extends Product, B>(products: A[], category: B) => 
   products.filter(product => product.data.category === category)
@@ -42,7 +39,7 @@ export const getProductsByCategory = <T>(params: GetProductsByCategoryParams<T>)
 
   return pipe(
     category,
-    (category) => getCategory(categories, category),
+    (category) => getCategory(categories, category)?.data.name,
     (categoryId) => filterProductsByCategory(products, categoryId),
     (filteredProducts) => mapProductProps(images, filteredProducts)
   )
