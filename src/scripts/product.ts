@@ -3,6 +3,7 @@ import type { Category, Images, Product } from "../types/products";
 import { formatNumberToCurrency } from "./currency";
 import { buildRouteToProduct } from "./routes";
 import { getCategory } from "./categories";
+import { quantity } from "../stores/productCounter";
 
 interface GetProductParams<T> {
   products: Product[],
@@ -26,6 +27,7 @@ const filterProductsByCategory = <A extends Product, B>(products: A[], category:
 const transformProduct = <T extends Product>(images: Images, product: T) => ({
     ...product.data,
     formattedPrice: formatNumberToCurrency(product.data.price),
+    id: product.id,
     route: buildRouteToProduct(product.id),
     image: images[product.data.image] ?? (() => {})
   }
@@ -53,5 +55,12 @@ export const getProduct = <T>(params: GetProductParams<T>) => {
     (id) => getProductById(products, id),
     (product) => product ? transformProduct(images, product) : null
   )
+}
+
+export const getProductsInCart = <T extends Product>(products: T[], images: Images, cart: Cart) => {
+  return products.map((product) => ({
+    ...transformProduct(images, product), 
+    quantity: cart[product.id]
+  }))
 }
 
