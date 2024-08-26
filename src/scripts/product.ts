@@ -63,4 +63,3 @@ export const getProductsInCart = <T extends Product>(products: T[], images: Imag
     quantity: cart[product.id]
   }))
 }
-

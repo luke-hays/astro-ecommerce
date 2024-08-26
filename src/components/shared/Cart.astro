@@ -4,11 +4,12 @@
 
   const countBadge = document.getElementById('cart-count');
 
-  if (countBadge) {
-    const count = getItemsInCartCount(cart.get())
-    if (count > 0) countBadge.textContent = count.toString()
-  }
-
+  cart.subscribe((localCart) => {
+    if (countBadge) {
+      const count = getItemsInCartCount(localCart)
+      if (count > 0) countBadge.textContent = count.toString()
+    }
+  })
 </script>
 
 <div class="cart">
