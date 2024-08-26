@@ -1,6 +1,6 @@
 import { MAX_PRODUCT_QUANTITY } from "./constants";
 
-export const getItemsInCartCount = (cart: Cart) => Object.values(cart).reduce((prev, curr) => prev + curr)
+export const getItemsInCartCount = (cart: Cart) => Object.values(cart).reduce((prev, curr) => prev + curr, 0)
 
 export const updateQuantityInCart = (
   cart: Cart,
