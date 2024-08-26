@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+import { getImages } from "../scripts/images";
+
+const productCollection = await getCollection("products");
+const images = getImages()
+---
+
+<script>
+
+</script>
+
+<BaseLayout>
+  <div class="checkout-container">
+    <h1>Your cart</h1>
+    <!-- {products.map(product => {
+      return (
+        <div>
+          <div>{product.name}</div>
+        </div>
+      )
+    })} -->
+  </div>
+</BaseLayout>
+
+<style>
+  .checkout-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+</style>
