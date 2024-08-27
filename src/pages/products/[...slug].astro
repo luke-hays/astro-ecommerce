@@ -1,6 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
+import { db, Cart } from 'astro:db'
+import { v4 as uuid } from 'uuid'
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import QuantityAdder from "../../components/product/ProductCounter.astro";
@@ -22,30 +24,29 @@ const product = getProduct({products, id: slug, images})
 if (!product) return Astro.redirect("/404");
 
 const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category)
+
+if (!Astro.cookies.has('cart')) {
+  Astro.cookies.set('cart', uuid())
+}
 ---
 
 <script>
   import "@shoelace-style/shoelace/dist/components/button/button.js";
-
   import { quantity } from "../../stores/productCounter";
-  import { cart } from "../../stores/cart";
-  import { updateQuantityInCart } from "../../scripts/cart";
 
   const addToCartButton = document.getElementById("add-to-cart");
   const product = addToCartButton?.dataset.product;
 
   // Straight forward - when the user clicks add, we get the cart, our new quantity, then update the cart accordingly
   if (addToCartButton && product) {
-    addToCartButton.addEventListener("click", () => {
-      const currentCart = cart.get();
-      const newQuantity = quantity.get();
-      const updatedCart = updateQuantityInCart(
-        currentCart,
-        product,
-        newQuantity,
-      );
-
-      cart.set(updatedCart);
+    addToCartButton.addEventListener("click", async () => {
+      await fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({product, quantity: quantity.get()})
+      })
     });
   }
 </script>
