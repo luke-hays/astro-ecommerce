@@ -1,19 +1,22 @@
-<script>
-  import { cart } from "../../stores/cart";
-  import { getItemsInCartCount } from "../../scripts/cart";
+---
+import { db, Cart as CartTable, eq } from 'astro:db'
 
-  const countBadge = document.getElementById('cart-count');
+let count = 0
 
-  cart.subscribe((localCart) => {
-    if (countBadge) {
-      const count = getItemsInCartCount(localCart)
-      if (count > 0) countBadge.textContent = count.toString()
-    }
-  })
-</script>
+if (Astro.cookies.has('cart')) {
+  const sessionId = Astro.cookies.get('cart')?.value ?? ''
+  const record = await db.select().from(CartTable).where(
+      eq(CartTable.sessionId, sessionId)
+    )
+  if (record.length > 0) {
+    count = Object.values(record[0].items as Cart).reduce((prev, curr) => prev + curr, 0)
+  }
 
+  console.log(record)
+}
+---
 <div class="cart">
-  <div id="cart-count"></div>
+  {count > 0 && <div id="cart-count">{count}</div>}
   <sl-icon-button name="bag" href="/checkout"></sl-icon-button>
 </div>
 

@@ -19,7 +19,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const {product, quantity} = await request.json()
 
-  let items = {product: quantity} as Cart
+  let items = {[product]: quantity} as Cart
 
   // Check if user has existing session
   const record = await db.select().from(CartTable).where(
