@@ -1,12 +1,33 @@
 ---
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+import { db, Cart as CartTable, eq } from 'astro:db'
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 
+import { formatNumberToCurrency } from "../scripts/currency";
 import { getImages } from "../scripts/images";
+import { getAllProductsInCart } from "../scripts/product";
 
 const productCollection = await getCollection("products");
 const images = getImages()
+
+let cart = {} as Cart
+
+if (Astro.cookies.has('cart')) {
+  const sessionId = Astro.cookies.get('cart')?.value ?? ''
+  const record = await db.select().from(CartTable).where(
+    eq(CartTable.sessionId, sessionId)
+  )
+
+  if (record.length > 0) {
+    cart = record[0].items as Cart
+  }
+}
+
+const products = getAllProductsInCart(productCollection, images, cart)
+
+console.log(products)
 ---
 
 <script>
@@ -16,13 +37,16 @@ const images = getImages()
 <BaseLayout>
   <div class="checkout-container">
     <h1>Your cart</h1>
-    <!-- {products.map(product => {
+    {products.map(product => {
       return (
         <div>
           <div>{product.name}</div>
+          <div>{product.quantity}</div>
+          <div>{formatNumberToCurrency(product.price * product.quantity)}</div>
+          <Image src={product.image()} alt={product.name}/>
         </div>
       )
-    })} -->
+    })}
   </div>
 </BaseLayout>
 

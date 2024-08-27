@@ -56,8 +56,11 @@ export const getProduct = <T>(params: GetProductParams<T>) => {
   )
 }
 
-export const getAllProducts = <T extends Product>(products: T[], images: Images) => {
-  return products.map((product) => ({
-    ...transformProduct(images, product), 
-  }))
+export const getAllProductsInCart = <T extends Product>(products: T[], images: Images, cart: Cart) => {
+  return pipe(
+    cart,
+    (cart) => products.filter(product => Object.hasOwn(cart, product.id)),
+    (filteredProducts) => mapProductProps(images, filteredProducts),
+    (transformedProducts) => transformedProducts.map(product => ({...product, quantity: cart[product.id]}))
+  )
 }
