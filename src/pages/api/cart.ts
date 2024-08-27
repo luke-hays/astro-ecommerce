@@ -34,5 +34,10 @@ export const POST: APIRoute = async ({ request }) => {
     await db.insert(CartTable).values({sessionId, items, lastUpdatedDate})
   }
 
-  return new Response('', {status: 200})
+  return new Response(JSON.stringify(items), {
+    status: 200, 
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
 }

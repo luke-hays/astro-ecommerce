@@ -1,7 +1,32 @@
 ---
+import { db, Cart as CartTable, eq } from 'astro:db'
+
 import Header from "../components/shared/Header.astro";
 import Footer from "../components/shared/Footer.astro";
+
+let count = 0
+
+if (Astro.cookies.has('cart')) {
+  const sessionId = Astro.cookies.get('cart')?.value ?? ''
+  const record = await db.select().from(CartTable).where(
+      eq(CartTable.sessionId, sessionId)
+    )
+  if (record.length > 0) {
+    count = Object.values(record[0].items as Cart).reduce((prev, curr) => prev + curr, 0)
+  }
+}
 ---
+
+<script>
+  import { $cartBadgeCount } from "../stores/cartBadgeCount";
+
+  const header = document.getElementById('treecommerce-header')
+
+  if (header) {
+    const count = header.dataset.count ? Number.parseInt(header.dataset.count) : 0
+    $cartBadgeCount.set(count)
+  }
+</script>
 
 <!doctype html>
 <html lang="en">
@@ -20,7 +45,7 @@ import Footer from "../components/shared/Footer.astro";
   </head>
   <body>
     <div id="layout-grid">
-      <header>
+      <header id="treecommerce-header" data-count={count}>
         <Header />
       </header>
       <main>
