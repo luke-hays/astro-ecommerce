@@ -14,8 +14,8 @@ const highlightedProducts = products
     return {
       ...product.data,
       id: product.id,
-      imageComponent: images[product.data.image] ?? null 
-    }
+      imageComponent: images[product.data.image] ?? null,
+    };
   });
 ---
 
@@ -33,15 +33,17 @@ const highlightedProducts = products
   <div id="image-carousel" class="splide" aria-label="Important Algae">
     <div class="splide__track">
       <ul class="splide__list">
-        {highlightedProducts.map(product => {
-          return (
-          <li class="splide__slide">
-            <a href={`/products/${product.id}`}>
-              <Image alt={product.name} src={product.imageComponent()}/>
-            </a>
-          </li>
-          )
-        })}
+        {
+          highlightedProducts.map((product) => {
+            return (
+              <li class="splide__slide">
+                <a href={`/products/${product.id}`}>
+                  <Image alt={product.name} src={product.imageComponent()} />
+                </a>
+              </li>
+            );
+          })
+        }
       </ul>
     </div>
   </div>

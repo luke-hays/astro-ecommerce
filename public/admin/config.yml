@@ -15,7 +15,7 @@ collections:
     extension: json
     fields:
       - { label: "Name", name: "name", widget: "string" }
-      
+
   - name: "products"
     label: "Products"
     folder: "src/content/products"
@@ -29,8 +29,20 @@ collections:
       - { label: "Stock", name: "stock", widget: "number" }
       - { label: "Description", name: "description", widget: "string" }
       - { label: "Featured Image", name: "image", widget: "image" }
-      - { label: "Category", name: 'category', widget: relation, collection: 'category', value_field: "name", search_fields: ["name"]}
-      - { label: "Display on front page?", name: "highlight", widget: "boolean", default: false }
+      - {
+          label: "Category",
+          name: "category",
+          widget: relation,
+          collection: "category",
+          value_field: "name",
+          search_fields: ["name"],
+        }
+      - {
+          label: "Display on front page?",
+          name: "highlight",
+          widget: "boolean",
+          default: false,
+        }
 
 media_folder: "src/assets/images" # Media files will be stored in the repo under static/images/uploads
 public_folder: "src/assets/images" # The src attribute for uploaded media will begin with /images/uploads

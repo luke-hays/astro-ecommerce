@@ -1,12 +1,12 @@
 <script>
-  import { $cartBadgeCount } from "../../stores/cartBadgeCount" 
+  import { $cartBadgeCount } from "../../stores/cartBadgeCount";
 
   $cartBadgeCount.subscribe((count) => {
-    const countElement = document.getElementById('cart-count')
+    const countElement = document.getElementById("cart-count");
     if (countElement) {
-      countElement.textContent = count > 0 ? count.toString() : '' 
+      countElement.textContent = count > 0 ? count.toString() : "";
     }
-  })
+  });
 </script>
 
 <div class="cart">

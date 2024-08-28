@@ -1,18 +1,22 @@
 ---
-import { db, Cart as CartTable, eq } from 'astro:db'
+import { db, Cart as CartTable, eq } from "astro:db";
 
 import Header from "../components/shared/Header.astro";
 import Footer from "../components/shared/Footer.astro";
 
-let count = 0
+let count = 0;
 
-if (Astro.cookies.has('cart')) {
-  const sessionId = Astro.cookies.get('cart')?.value ?? ''
-  const record = await db.select().from(CartTable).where(
-      eq(CartTable.sessionId, sessionId)
-    )
+if (Astro.cookies.has("cart")) {
+  const sessionId = Astro.cookies.get("cart")?.value ?? "";
+  const record = await db
+    .select()
+    .from(CartTable)
+    .where(eq(CartTable.sessionId, sessionId));
   if (record.length > 0) {
-    count = Object.values(record[0].items as Cart).reduce((prev, curr) => prev + curr, 0)
+    count = Object.values(record[0].items as Cart).reduce(
+      (prev, curr) => prev + curr,
+      0,
+    );
   }
 }
 ---
@@ -20,15 +24,16 @@ if (Astro.cookies.has('cart')) {
 <script>
   import { $cartBadgeCount } from "../stores/cartBadgeCount";
 
-  const header = document.getElementById('treecommerce-header')
+  const header = document.getElementById("treecommerce-header");
 
   if (header) {
-    const count = header.dataset.count ? Number.parseInt(header.dataset.count) : 0
-    $cartBadgeCount.set(count)
+    const count = header.dataset.count
+      ? Number.parseInt(header.dataset.count)
+      : 0;
+    $cartBadgeCount.set(count);
   }
 </script>
 
-<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />

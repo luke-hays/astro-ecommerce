@@ -15,13 +15,13 @@ const productCollection = defineCollection({
 });
 
 const categoryCollection = defineCollection({
-  type: 'data',
+  type: "data",
   schema: z.object({
-    name: z.string()
-  })
-})
+    name: z.string(),
+  }),
+});
 
 export const collections = {
   products: productCollection,
-  categories: categoryCollection
+  categories: categoryCollection,
 };

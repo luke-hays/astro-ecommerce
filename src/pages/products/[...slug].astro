@@ -1,31 +1,31 @@
 ---
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from "uuid";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import QuantityAdder from "../../components/product/ProductCounter.astro";
 import Breadcrumb from "../../components/shared/Breadcrumb.astro";
 
 import { getImages } from "../../scripts/images";
-import { getProduct } from '../../scripts/product'
-import { buildCategoryBreadcrumbs } from '../../scripts/routes'
+import { getProduct } from "../../scripts/product";
+import { buildCategoryBreadcrumbs } from "../../scripts/routes";
 
 // The product name is the slug
 const { slug } = Astro.params;
 
 const products = await getCollection("products");
-const categories = await getCollection("categories")
-const images = getImages()
+const categories = await getCollection("categories");
+const images = getImages();
 
-const product = getProduct({products, id: slug, images})
+const product = getProduct({ products, id: slug, images });
 
 if (!product) return Astro.redirect("/404");
 
-const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category)
+const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
 
-if (!Astro.cookies.has('cart')) {
-  Astro.cookies.set('cart', uuid())
+if (!Astro.cookies.has("cart")) {
+  Astro.cookies.set("cart", uuid());
 }
 ---
 
@@ -40,17 +40,19 @@ if (!Astro.cookies.has('cart')) {
   // Straight forward - when the user clicks add, we get the cart, our new quantity, then update the cart accordingly
   if (addToCartButton && product) {
     addToCartButton.addEventListener("click", async () => {
-      const response = await fetch('/api/cart', {
-        method: 'POST',
+      const response = await fetch("/api/cart", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({product, quantity: quantity.get()})
-      })
+        body: JSON.stringify({ product, quantity: quantity.get() }),
+      });
 
       // set store here
-      const data = await response.json() as Cart
-      $cartBadgeCount.set(Object.values(data).reduce((prev, curr) => prev + curr, 0))
+      const data = (await response.json()) as Cart;
+      $cartBadgeCount.set(
+        Object.values(data).reduce((prev, curr) => prev + curr, 0),
+      );
     });
   }
 </script>
@@ -68,8 +70,7 @@ if (!Astro.cookies.has('cart')) {
       <QuantityAdder />
       <sl-button data-product={product.id} id="add-to-cart">
         Add to cart
-      </sl-button
-      >
+      </sl-button>
     </section>
   </div>
 </BaseLayout>

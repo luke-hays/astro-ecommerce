@@ -1,28 +1,28 @@
 ---
-import { getCollection } from "astro:content"
+import { getCollection } from "astro:content";
 
-const categories = await getCollection("categories")
+const categories = await getCollection("categories");
 
-const routes = categories.map(category => ({
+const routes = categories.map((category) => ({
   path: `/categories/${category.id}`,
-  name: category.data.name
-}))
+  name: category.data.name,
+}));
 ---
 
 <script>
-    import "@shoelace-style/shoelace/dist/components/button/button.js";
-    import "@shoelace-style/shoelace/dist/components/icon-button/icon-button.js";
-    import "@shoelace-style/shoelace/dist/components/drawer/drawer.js"
+  import "@shoelace-style/shoelace/dist/components/button/button.js";
+  import "@shoelace-style/shoelace/dist/components/icon-button/icon-button.js";
+  import "@shoelace-style/shoelace/dist/components/drawer/drawer.js";
 
-    const drawer = document.querySelector('.drawer-overview') as ShoelaceDrawer;
+  const drawer = document.querySelector(".drawer-overview") as ShoelaceDrawer;
 
-    if (drawer) {
-      const openButton = document.getElementById('open-nav');
-      const closeButton = drawer.querySelector('sl-button[variant="primary"]');
+  if (drawer) {
+    const openButton = document.getElementById("open-nav");
+    const closeButton = drawer.querySelector('sl-button[variant="primary"]');
 
-      openButton?.addEventListener('click', () => drawer.show());
-      closeButton?.addEventListener('click', () => drawer.hide());
-    }
+    openButton?.addEventListener("click", () => drawer.show());
+    closeButton?.addEventListener("click", () => drawer.hide());
+  }
 </script>
 
 <div>
@@ -30,11 +30,11 @@ const routes = categories.map(category => ({
 
   <sl-drawer label="Trees" class="drawer-overview" placement="start">
     <nav>
-      {routes.map(route => {
-        return (
-          <a href={route.path}>{route.name}</a>
-        )
-      })}
+      {
+        routes.map((route) => {
+          return <a href={route.path}>{route.name}</a>;
+        })
+      }
     </nav>
   </sl-drawer>
 </div>
