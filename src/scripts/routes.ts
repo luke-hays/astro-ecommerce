@@ -13,9 +13,9 @@ const mapCategoryToRoute = <T extends Category>(category: T | undefined) => {
 
 export const buildRouteToProduct = (id: string) => `/products/${id}`;
 
-export const buildCategoryBreadcrumbs = <A extends Category[], B>(
-  categories: A,
-  id: B,
-) => {
-  return pipe(id, (id) => getCategory(categories, id), mapCategoryToRoute);
-};
+export const buildCategoryBreadcrumbs = <A extends Category[], B>(categories: A, id: B) =>
+  pipe(
+    id, 
+    (id) => getCategory(categories, id), 
+    mapCategoryToRoute
+  );
