@@ -3,9 +3,8 @@
 
   $cartBadgeCount.subscribe((count) => {
     const countElement = document.getElementById("cart-count");
-    if (countElement) {
+    if (countElement)
       countElement.textContent = count > 0 ? count.toString() : "";
-    }
   });
 </script>
 

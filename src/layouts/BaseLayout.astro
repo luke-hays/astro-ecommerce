@@ -8,10 +8,12 @@ let count = 0;
 
 if (Astro.cookies.has("cart")) {
   const sessionId = Astro.cookies.get("cart")?.value ?? "";
+
   const record = await db
     .select()
     .from(CartTable)
     .where(eq(CartTable.sessionId, sessionId));
+
   if (record.length > 0) {
     count = Object.values(record[0].items as Cart).reduce(
       (prev, curr) => prev + curr,
@@ -30,6 +32,7 @@ if (Astro.cookies.has("cart")) {
     const count = header.dataset.count
       ? Number.parseInt(header.dataset.count)
       : 0;
+
     $cartBadgeCount.set(count);
   }
 </script>

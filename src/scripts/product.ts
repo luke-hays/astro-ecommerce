@@ -17,11 +17,13 @@ interface GetProductsByCategoryParams<T> {
   category: T;
 }
 
-const getProductById = <A extends Product, B>(products: A[], id: B) => 
+const getProductById = <A extends Product, B>(products: A[], id: B) =>
   products.find((product) => product.id === id);
 
-const filterProductsByCategory = <A extends Product, B>(products: A[], category: B) => 
-  products.filter((product) => product.data.category === category);
+const filterProductsByCategory = <A extends Product, B>(
+  products: A[],
+  category: B,
+) => products.filter((product) => product.data.category === category);
 
 const transformProduct = <T extends Product>(images: Images, product: T) => ({
   ...product.data,
