@@ -38,8 +38,12 @@ if (!Astro.cookies.has("cart")) {
   const product = addToCartButton?.dataset.product;
 
   // Straight forward - when the user clicks add, we get the cart, our new quantity, then update the cart accordingly
-  if (addToCartButton && product) {
+  if (addToCartButton && product) {    
     addToCartButton.addEventListener("click", async () => {
+      addToCartButton.setAttribute('disabled', 'true')
+      addToCartButton.setAttribute('loading', 'true')
+      addToCartButton.setAttribute('variant', 'neutral')
+
       const response = await fetch("/api/cart", {
         method: "POST",
         headers: {
@@ -48,11 +52,19 @@ if (!Astro.cookies.has("cart")) {
         body: JSON.stringify({ product, quantity: quantity.get() }),
       });
 
-      // set store here
-      const data = (await response.json()) as Cart;
-      $cartBadgeCount.set(
-        Object.values(data).reduce((prev, curr) => prev + curr, 0),
-      );
+      try {
+        const data = (await response.json()) as Cart;
+
+        $cartBadgeCount.set(
+          Object.values(data).reduce((prev, curr) => prev + curr, 0),
+        );
+      } catch (error) {
+        // TODO Render Error state
+      } finally {
+        addToCartButton.removeAttribute('disabled')
+        addToCartButton.removeAttribute('loading')
+        addToCartButton.setAttribute('variant', 'default')
+      }
     });
   }
 </script>

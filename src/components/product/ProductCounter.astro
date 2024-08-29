@@ -16,13 +16,35 @@
   quantity.subscribe((quantity) => {
     const quantityDisplay = document.getElementById("quantity");
     if (quantityDisplay) quantityDisplay.textContent = quantity.toString();
+
+    if (removeProduct) {
+      if (quantity === 1) {
+        removeProduct.setAttribute('disabled', 'true')
+        removeProduct.setAttribute('variant', 'neutral')
+      }
+      if (quantity > 1 && removeProduct.hasAttribute('disabled')) {
+        removeProduct.removeAttribute('disabled')
+        removeProduct.setAttribute('variant', 'default')
+      }
+    }
+
+    if (addProduct) {
+      if (quantity === 10) {
+        addProduct.setAttribute('disabled', 'true')
+        addProduct.setAttribute('variant', 'neutral')
+      }
+      if (quantity < 10 && addProduct.hasAttribute('disabled')) {
+        addProduct.removeAttribute('disabled')
+        addProduct.setAttribute('variant', 'default')
+      }
+    }
   });
 </script>
 
 <div id="quantity-adder__container">
-  <sl-button id="remove" class="update-quantity">-</sl-button>
+  <sl-button id="remove">-</sl-button>
   <div id="quantity"></div>
-  <sl-button id="add" class="update-quantity">+</sl-button>
+  <sl-button id="add">+</sl-button>
 </div>
 
 <style>
