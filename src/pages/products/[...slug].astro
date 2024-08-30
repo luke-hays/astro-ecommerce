@@ -42,7 +42,6 @@ if (!Astro.cookies.has("cart")) {
     addToCartButton.addEventListener("click", async () => {
       addToCartButton.setAttribute('disabled', 'true')
       addToCartButton.setAttribute('loading', 'true')
-      addToCartButton.setAttribute('variant', 'neutral')
 
       const response = await fetch("/api/cart", {
         method: "POST",
@@ -63,28 +62,34 @@ if (!Astro.cookies.has("cart")) {
       } finally {
         addToCartButton.removeAttribute('disabled')
         addToCartButton.removeAttribute('loading')
-        addToCartButton.setAttribute('variant', 'default')
       }
     });
   }
 </script>
 
 <BaseLayout>
-  <div class="product-container">
-    <Breadcrumb routes={breadcrumbs} />
-    <div class="img-container">
-      <Image src={product.image()} alt={product.name} />
+  <div class="product">
+    <div class="product-layout">
+      <div class="breadcrumbs">
+        <Breadcrumb routes={breadcrumbs} />
+      </div>
+      <div class="img-container">
+        <Image src={product.image()} alt={product.name} />
+      </div>
+      <section>
+        <h2>{product.name}</h2>
+        <p>{product.formattedPrice}</p>
+        <p>{product.description}</p>
+        <div class="product-controls">    
+          <QuantityAdder />
+          <sl-button data-product={product.id} id="add-to-cart">
+            Add to cart
+          </sl-button>
+        </div>
+      </section>
     </div>
-    <section>
-      <h2>{product.name}</h2>
-      <div>{product.formattedPrice}</div>
-      <p>{product.description}</p>
-      <QuantityAdder />
-      <sl-button data-product={product.id} id="add-to-cart">
-        Add to cart
-      </sl-button>
-    </section>
   </div>
+  
 </BaseLayout>
 
 <style>
@@ -92,34 +97,91 @@ if (!Astro.cookies.has("cart")) {
     max-width: 100%;
     height: 100%;
     object-fit: cover;
+    grid-area: image;
   }
 
   section {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    grid-area: details;
   }
 
   h2 {
     margin: 0;
+    color: var(--color-text-ink-500);
   }
 
   p {
     margin: 0;
+    color: var(--color-text-ink-400);
+  }
+
+  .breadcrumbs {
+    grid-area: breadcrumbs;
   }
 
   .img-container {
     border-radius: 8px;
     overflow: hidden;
     height: 30rem;
-    width: 25rem;
+    width: 100%;
+    max-width: 25rem;
   }
 
-  .product-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    height: 100%;
+  .product-layout {
+    display: grid;
+    grid-template-areas: 
+      "breadcrumbs"
+      "image"
+      "details";
+    grid-template-columns: 1fr;
     margin: 1.5rem 2rem;
+    gap: 0.5rem;
+  }
+
+  #add-to-cart {
+    width: 10rem;
+  }
+
+  .product-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 768px) { 
+    .product {
+      display: flex;
+      justify-content: center;
+    }
+
+    .product-layout {
+      display: grid;
+      grid-template-areas: 
+        "breadcrumbs breadcrumbs"
+        "image details";
+      grid-template-columns: minmax(25rem, 35rem) 1fr;
+      margin: 1.5rem 2rem;
+      gap: 0.5rem;
+    }
+
+    .img-container {
+      width: 100%;
+      max-width: 35rem;
+      height: 40rem;
+    }
+
+    section {
+      padding: 1rem 2rem;
+    }
+  }
+
+  @media (min-width: 1536px) { 
+    h2 {
+      font-size: xx-large;
+    }
+    p {
+      font-size: x-large;
+    }
   }
 </style>

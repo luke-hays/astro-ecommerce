@@ -20,22 +20,18 @@
     if (removeProduct) {
       if (quantity === 1) {
         removeProduct.setAttribute('disabled', 'true')
-        removeProduct.setAttribute('variant', 'neutral')
       }
       if (quantity > 1 && removeProduct.hasAttribute('disabled')) {
         removeProduct.removeAttribute('disabled')
-        removeProduct.setAttribute('variant', 'default')
       }
     }
 
     if (addProduct) {
       if (quantity === 10) {
         addProduct.setAttribute('disabled', 'true')
-        addProduct.setAttribute('variant', 'neutral')
       }
       if (quantity < 10 && addProduct.hasAttribute('disabled')) {
         addProduct.removeAttribute('disabled')
-        addProduct.setAttribute('variant', 'default')
       }
     }
   });
