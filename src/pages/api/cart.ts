@@ -2,17 +2,6 @@ import type { APIRoute } from "astro";
 import { db, Cart as CartTable, eq } from "astro:db";
 import { v4 as uuid } from "uuid";
 
-export const GET: APIRoute = async ({ request }) => {
-  const sessionId = request.headers.get("cookie")?.split("=")[1] ?? "";
-
-  const record = await db
-    .select()
-    .from(CartTable)
-    .where(eq(CartTable.sessionId, sessionId));
-
-  return new Response(JSON.stringify(record));
-};
-
 export const POST: APIRoute = async ({ cookies, request }) => {
   let sessionId = cookies.get('cart')?.value
 
