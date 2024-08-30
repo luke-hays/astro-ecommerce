@@ -62,8 +62,8 @@ const products = getProductsByCategory({
   .product-gallery {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 25rem;
-    gap: 1.5rem;
+    grid-template-rows: max-content;
+    gap: 1rem;
   }
 
   .product {
@@ -97,39 +97,20 @@ const products = getProductsByCategory({
     color: var(--color-text-ink-400);
   }
 
-  @media (min-width: 768px) { 
+  @media (min-width: 1024px) { 
     .product-gallery {
       grid-template-columns: 1fr 1fr 1fr;
     }
   }
 
-  @media (min-width: 1024px) { 
-    .product-gallery {
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-    }
-  }
-
-  @media (min-width: 1280px) { 
-    .product-gallery {
-      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    }
-  }
-
   @media (min-width: 1536px) { 
     .product-gallery {
-      grid-template-rows: 30rem;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      max-width: 100rem;
     }
 
     .product-image {
       height: 25rem;
-    }
-
-    .product-price {
-      font-size: large;
-    }
-
-    .product-name {
-      font-size: larger;
     }
   }
 </style>
