@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
-import { v4 as uuid } from "uuid";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import QuantityAdder from "../../components/product/ProductCounter.astro";
@@ -23,10 +22,6 @@ const product = getProduct({ products, id: slug, images });
 if (!product) return Astro.redirect("/404");
 
 const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
-
-if (!Astro.cookies.has("cart")) {
-  Astro.cookies.set("cart", uuid());
-}
 ---
 
 <script>

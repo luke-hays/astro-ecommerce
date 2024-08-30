@@ -13,7 +13,6 @@ import Layout from "../layouts/BaseLayout.astro";
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
-    console.log(data);
   } catch (error) {}
 }
 ---
@@ -30,8 +29,6 @@ if (Astro.request.method === "POST") {
       e.preventDefault();
 
       const formData = new FormData(form, e.submitter);
-
-      console.log(formData);
     });
   }
 </script>
