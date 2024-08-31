@@ -18,6 +18,10 @@ export default defineConfig({
             src: "node_modules/@shoelace-style/shoelace/dist/themes",
             dest: "",
           },
+          {
+            src: "node_modules/@splidejs/splide/dist/css/splide.min.css",
+            dest: "",
+          }
         ],
       }),
     ],
