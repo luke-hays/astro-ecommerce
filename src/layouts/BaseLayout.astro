@@ -1,5 +1,5 @@
 ---
-import { db, Cart as CartTable, eq } from "astro:db";
+import { turso } from "../turso";
 
 import Header from "../components/shared/Header.astro";
 import Footer from "../components/shared/Footer.astro";
@@ -7,18 +7,20 @@ import Footer from "../components/shared/Footer.astro";
 let count = 0;
 
 if (Astro.cookies.has("cart")) {
-  const sessionId = Astro.cookies.get("cart")?.value ?? "";
+  const sessionId = Astro.cookies.get("cart")?.value;
 
-  const record = await db
-    .select()
-    .from(CartTable)
-    .where(eq(CartTable.sessionId, sessionId));
+  if (sessionId) {
+    const recordResponse = await turso.execute({
+      sql: "SELECT * FROM cart WHERE session_id = ?;",
+      args: [sessionId],
+    });
 
-  if (record.length > 0) {
-    count = Object.values(record[0].items as Cart).reduce(
-      (prev, curr) => prev + curr,
-      0,
-    );
+    if (recordResponse.rows.length > 0) {
+      count = Object
+        .values(JSON.parse(recordResponse.rows[0].items as string))
+        .map(val => Number(val))
+        .reduce((prev, curr) => prev + curr, 0)
+    }
   }
 }
 ---

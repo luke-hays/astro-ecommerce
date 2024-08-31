@@ -49,6 +49,8 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
       try {
         const data = (await response.json()) as Cart;
 
+        console.log(data)
+
         $cartBadgeCount.set(
           Object.values(data).reduce((prev, curr) => prev + curr, 0),
         );

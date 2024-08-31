@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { db, Cart as CartTable, eq } from "astro:db";
+import { turso } from "../../turso";
 import { v4 as uuid } from "uuid";
 
 export const POST: APIRoute = async ({ cookies, request }) => {
@@ -9,24 +9,28 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     sessionId = uuid()
   }
 
-  const lastUpdatedDate = new Date();
-``
   const { product, quantity } = await request.json();
 
   let items = { [product]: quantity } as Cart;
 
   // Check if user has existing session
-  const record = await db
-    .select()
-    .from(CartTable)
-    .where(eq(CartTable.sessionId, sessionId));
+  const recordResponse = await turso.execute({
+    sql: 'SELECT * FROM cart WHERE session_id = ?;',
+    args: [sessionId]
+  })
 
-  if (record.length > 0) {
-    items = record[0].items as Cart;
-    items[product] = quantity;
-    await db.update(CartTable).set({ sessionId, items, lastUpdatedDate });
+  if (recordResponse.rows.length === 0) {
+    await turso.execute({
+      sql: 'INSERT INTO cart (session_id, items) VALUES (?, ?);',
+      args: [sessionId, JSON.stringify(items)]
+    })
   } else {
-    await db.insert(CartTable).values({ sessionId, items, lastUpdatedDate });
+    items = JSON.parse(recordResponse.rows[0].items as any) as Cart
+    items[product] = quantity
+    await turso.execute({
+      sql: 'UPDATE cart SET items = ? WHERE session_id = ?;',
+      args: [JSON.stringify(items), sessionId]
+    })
   }
 
   cookies.set('cart', sessionId, {path: '/'})
