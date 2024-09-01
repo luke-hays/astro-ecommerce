@@ -1,6 +1,6 @@
 name: Deployment
 
-on: [push]
+on: [pull_request]
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
         uses: nwtgck/actions-netlify@v3.0
         with:
           publish-dir: './dist'
-          github-token: ${{ secrets.TREECOMMERCE_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
           enable-pull-request-comment: false
           enable-commit-comment: true
