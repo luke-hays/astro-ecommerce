@@ -30,8 +30,12 @@ List of tools:
 - Decap CMS
 - Sentry
 - Shoelace (Design Library)
+- Turso
+- SQLite
 
-Database is handled by Astro DB. It even has a [splide](https://splidejs.com/) in there!
+Database is sqllite running a the libsql client. This is because AstroDB interfaces with libSQL and I originally intended this to solely use AstroDB. However, Astro's DB studio is closed without an invite, and while self hosting is an option, I don't feel like self hosting a database. Henche, Turso combined with libSQL.
+
+ It even has a [splide](https://splidejs.com/) in there!
 
 ## Running locally
 
