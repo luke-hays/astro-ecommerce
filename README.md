@@ -1,5 +1,7 @@
 # treeCommerce
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8ae08146-9c8f-468c-8faf-75ad90617da3/deploy-status)](https://app.netlify.com/sites/tree-commerce/deploys)
+
 This is an enterprising ecommerce venture that hawks jars of trees distilled into slime. Liquid trees, or vats of algae, are far more efficient at harvesting CO2 and converting that into oxygen than your normal tree. It also looks a little silly to have a giant tank of Nickelodean slime sitting in your city. So who's to say if it's good or bad.
 
 | ![beautiful.PNG](/media/beautiful.PNG) |
