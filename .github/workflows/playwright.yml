@@ -6,15 +6,12 @@ jobs:
   setup:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./test/e2e
 
     steps:
       - uses: actions/checkout@v4
       - run: sudo apt install sqlite3
-      - run: chmod +x ./setup.sh
-      - run: ./setup.sh
+      - run: chmod +x ./test/e2e/setup.sh
+      - run: ./test/e2e/setup.sh
   
   test:
     needs: setup
