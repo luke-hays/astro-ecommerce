@@ -1,4 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
+import dotenv from 'dotenv'
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Needed to load in the correct filepath for our test's environment file
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the director
+
+dotenv.config({path: path.resolve(__dirname, 'test', 'e2e', '.env')})
 
 /**
  * Read environment variables from file.
@@ -25,7 +34,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "http://127.0.0.1:4321/",
+    baseURL: 'http://localhost:4321/',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
@@ -34,18 +43,25 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: "setup",
+      testMatch: /global\.setup\.ts/,
+    },
+    {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
+      dependencies: ['setup'],
     },
 
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
+      dependencies: ['setup'],
     },
 
     {
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
+      dependencies: ['setup'],
     },
 
     /* Test against mobile viewports. */
@@ -70,9 +86,9 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: {
+    command: 'npm start',
+    url: 'http://localhost:4321/',
+    reuseExistingServer: !process.env.CI,
+  },
 });
