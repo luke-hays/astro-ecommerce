@@ -47,3 +47,10 @@ In addition to the usual run script, we can also run [Decap](https://decapcms.or
 
 For fun I also set up Sentry for monitoring, its auth token is set in a .env file that is obviously not checked in.
 
+### Local database
+
+A local db can be created using 
+
+```
+sqlite3 db/treecommerce.db < db/creatdb.sql
+```

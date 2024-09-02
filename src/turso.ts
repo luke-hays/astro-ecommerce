@@ -1,6 +1,16 @@
-import { createClient } from "@libsql/client/web";
+import { createClient } from "@libsql/client";
 
-export const turso = createClient({
-  url: import.meta.env.TURSO_DATABASE_URL,
-  authToken: import.meta.env.TURSO_AUTH_TOKEN,
-});
+const env = import.meta.env
+const isProd = env.PROD
+
+const clientConfig = {
+  url: 'file:db/treecommerce.db',
+  authToken: '...'
+}
+
+if (isProd) {
+  clientConfig.url = env.TURSO_DATABASE_URL
+  clientConfig.authToken = env.TURSO_AUTH_TOKEN
+}
+
+export const turso = createClient(clientConfig);
