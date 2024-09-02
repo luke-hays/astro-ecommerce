@@ -1,0 +1,35 @@
+name: Playwright Tests
+
+on: [pull_request, push]
+
+jobs:
+  setup:
+    timeout-minutes: 60
+    runs-on: ubunut-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      - run: apt install sqlite3
+      - run: chmod +x ./test/e2e/setup.sh
+      - run: ./test/e2e/setup.sh
+  
+  test:
+    needs: setup
+
+    timeout-minutes: 60
+    runs-on: ubunut-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - run: npm ci
+    - run: npx playwright install --with-deps
+    - run: npx playwright test
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 7
