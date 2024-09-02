@@ -52,5 +52,5 @@ For fun I also set up Sentry for monitoring, its auth token is set in a .env fil
 A local db can be created using 
 
 ```
-sqlite3 db/treecommerce.db < db/creatdb.sql
+sqlite3 db/treecommerce.db < db/create-db.sql
 ```
