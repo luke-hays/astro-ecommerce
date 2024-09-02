@@ -87,7 +87,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: './test/e2e/setup.sh && npm start',
+    command: 'npm start',
     url: 'http://127.0.0.1:4321',
     reuseExistingServer: !process.env.CI,
   },
