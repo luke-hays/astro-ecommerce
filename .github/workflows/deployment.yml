@@ -1,6 +1,10 @@
 name: Deployment
 
-on: [pull_request]
+on: 
+  workflow_run:
+    workflows: ["Playwright Tests"]
+    types:
+      - completed
 
 jobs:
   build:
