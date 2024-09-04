@@ -40,6 +40,8 @@ const products = getAllProductsInCart(productCollection, images, cart)
   import { $cartBadgeCount } from "../stores/cartBadgeCount";
 
   const removeButtons = document.getElementsByClassName('remove-button')
+  const editButtons = document.getElementsByClassName('edit-button')
+
   for (const button of removeButtons) {
     button.addEventListener('click', (e) => {
       const target = e.target as HTMLElement
@@ -47,12 +49,30 @@ const products = getAllProductsInCart(productCollection, images, cart)
 
       if (e.target) {
         const productToRemove = document.getElementById(`${id}-product`) 
+
         if (productToRemove) {
           const currentCount = $cartBadgeCount.get()
           const quantity = parseInt(productToRemove.dataset.quantity ?? '0')
 
           $cartBadgeCount.set(currentCount - quantity)
           productToRemove.remove()
+        }
+      }
+    })
+  }
+
+  for (const button of editButtons) {
+    button.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement
+      const id = target.dataset.productid
+
+      if (e.target) {
+        const productToEdit = document.getElementById(`${id}-product`) 
+
+        if (productToEdit) {
+          const dialog = document.getElementById('edit-dialog') as HTMLDialogElement
+
+          dialog.show()
         }
       }
     })
@@ -67,7 +87,7 @@ const products = getAllProductsInCart(productCollection, images, cart)
       {
         products.map((product) => {
           return (
-            <div class="product" id={`${product.id}-product`} data-quantity={product.quantity}>
+            <div class="product" id={`${product.id}-product`} data-name={product.name} data-quantity={product.quantity}>
               <div class="product-image">
                 <Image src={product.image()} alt={product.name} />
               </div>
@@ -93,7 +113,7 @@ const products = getAllProductsInCart(productCollection, images, cart)
       }
     </div>
   </div>
-  <sl-dialog id="edit-dialog" label="Edit Items">
+  <sl-dialog id="edit-dialog" label="Edit Quantity">
 
   </sl-dialog>
   <sl-dialog id="remove-dialog" label="Remove Items?">
