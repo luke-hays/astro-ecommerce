@@ -1,50 +1,79 @@
+---
+const {id, productQuantity} = Astro.props
+---
+
 <script>
   // Using nanostore since other components are going to need the quantity state in this store
   import {
-    quantity,
-    incrementQuantity,
-    decrementQuantity,
+    $counts,
+    incrementCount,
+    decrementCount,
   } from "../../stores/productCounter";
 
-  const addProduct = document.getElementById("add");
-  const removeProduct = document.getElementById("remove");
+  class ProductCounter extends HTMLElement {
+    constructor() {
+      super()
 
-  if (addProduct) addProduct.addEventListener("click", incrementQuantity);
-  if (removeProduct) removeProduct.addEventListener("click", decrementQuantity);
+      const addProduct = this.querySelector("#add");
+      const removeProduct = this.querySelector("#remove");
+      const display = this.querySelector('#quantity')
+      const id = this.dataset.id
+      const initialQuantity = parseInt(this.dataset.count ?? '1')
 
-  // Set a listener on the current quantity to update the display when its changed by either imported function
-  quantity.subscribe((quantity) => {
-    const quantityDisplay = document.getElementById("quantity");
-    if (quantityDisplay) quantityDisplay.textContent = quantity.toString();
+      if (!id) return
 
-    if (removeProduct) {
-      if (quantity === 1) {
-        removeProduct.setAttribute('disabled', 'true')
-      }
-      if (quantity > 1 && removeProduct.hasAttribute('disabled')) {
-        removeProduct.removeAttribute('disabled')
+      if (addProduct) addProduct.addEventListener("click", () => incrementCount(id));
+      if (removeProduct) removeProduct.addEventListener("click", () => decrementCount(id));
+
+      // Set a listener on the current quantity to update the display when its changed by either imported function
+      $counts.subscribe((counts) => {
+        const quantityDisplay = this.querySelector("#quantity");
+        const count = counts[id];
+
+        if (count == null) return
+
+        if (quantityDisplay) quantityDisplay.textContent = counts[id].toString();
+
+        if (removeProduct) {
+          if (counts[id] <= 1) {
+            removeProduct.setAttribute('disabled', 'true')
+          }
+          if (counts[id] > 1 && removeProduct.hasAttribute('disabled')) {
+            removeProduct.removeAttribute('disabled')
+          }
+        }
+
+        if (addProduct) {
+          if (counts[id] >= 10) {
+            addProduct.setAttribute('disabled', 'true')
+          }
+          if (counts[id] < 10 && addProduct.hasAttribute('disabled')) {
+            addProduct.removeAttribute('disabled')
+          }
+        }
+      });
+
+      let count = $counts.get()[id]
+
+      if (count == null) {
+        $counts.set({...$counts.get(), [id]: initialQuantity})
+      } else {
+        if(display) display.textContent = count.toString()
       }
     }
+  }
 
-    if (addProduct) {
-      if (quantity === 10) {
-        addProduct.setAttribute('disabled', 'true')
-      }
-      if (quantity < 10 && addProduct.hasAttribute('disabled')) {
-        addProduct.removeAttribute('disabled')
-      }
-    }
-  });
+  customElements.define('product-counter', ProductCounter)
 </script>
 
-<div id="quantity-adder__container">
+<product-counter data-id={id} data-count={productQuantity}>
   <sl-button id="remove">-</sl-button>
   <div id="quantity"></div>
   <sl-button id="add">+</sl-button>
-</div>
+</product-counter>
 
 <style>
-  #quantity-adder__container {
+  product-counter {
     display: flex;
     align-items: center;
   }
