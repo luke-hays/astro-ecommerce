@@ -26,7 +26,7 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
 
 <script>
   import "@shoelace-style/shoelace/dist/components/button/button.js";
-  import { quantity } from "../../stores/productCounter";
+  import { $counts } from "../../stores/productCounter";
   import { $cartBadgeCount } from "../../stores/cartBadgeCount";
 
   const addToCartButton = document.getElementById("add-to-cart");
@@ -43,7 +43,7 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ product, quantity: quantity.get() }),
+        body: JSON.stringify({ product, quantity: $counts.get()[product] }),
       });
 
       try {
@@ -78,7 +78,7 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
         <p>{product.formattedPrice}</p>
         <p>{product.description}</p>
         <div class="product-controls">    
-          <QuantityAdder />
+          <QuantityAdder id={product.id}/>
           <sl-button data-product={product.id} id="add-to-cart">
             Add to cart
           </sl-button>
