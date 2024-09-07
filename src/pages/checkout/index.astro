@@ -1,11 +1,11 @@
 ---
 import { getCollection } from "astro:content";
 
-import BaseLayout from "../layouts/BaseLayout.astro";
-import ProductCard from "../components/product/ProductCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProductCard from "../../components/product/ProductCard.astro";
 
-import { getImages } from "../scripts/images";
-import { getAllProductsInCart } from "../scripts/product";
+import { getImages } from "../../scripts/images";
+import { getAllProductsInCart } from "../../scripts/product";
 
 const productCollection = await getCollection("products");
 const images = getImages();
