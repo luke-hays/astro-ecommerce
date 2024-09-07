@@ -2,14 +2,14 @@ import type { APIRoute } from "astro";
 import { turso } from "../../turso";
 import { v4 as uuid } from "uuid";
 
-export const GET: APIRoute = async({request, cookies}) => {
-  let sessionId: string | undefined | null = cookies.get('cart')?.value
+export const GET: APIRoute = async ({ request, cookies }) => {
+  let sessionId: string | undefined | null = cookies.get("cart")?.value;
 
   if (!sessionId) {
-    const url = new URL(request.url)
-    const searchParams = new URLSearchParams(url.search)
+    const url = new URL(request.url);
+    const searchParams = new URLSearchParams(url.search);
 
-    sessionId = searchParams.get('id')
+    sessionId = searchParams.get("id");
   }
 
   if (sessionId) {
@@ -19,7 +19,7 @@ export const GET: APIRoute = async({request, cookies}) => {
     });
 
     if (recordResponse.rows.length > 0) {
-      const items = recordResponse.rows[0].items as string
+      const items = recordResponse.rows[0].items as string;
 
       return new Response(JSON.stringify(items), {
         status: 200,
@@ -30,19 +30,19 @@ export const GET: APIRoute = async({request, cookies}) => {
     }
   }
 
-  return new Response('{}', {
+  return new Response("{}", {
     status: 200,
     headers: {
       "Content-Type": "application/json",
     },
   });
-}
+};
 
 export const POST: APIRoute = async ({ cookies, request }) => {
-  let sessionId = cookies.get('cart')?.value
+  let sessionId = cookies.get("cart")?.value;
 
   if (!sessionId) {
-    sessionId = uuid()
+    sessionId = uuid();
   }
 
   const { product, quantity } = await request.json();
@@ -51,25 +51,25 @@ export const POST: APIRoute = async ({ cookies, request }) => {
 
   // Check if user has existing session
   const recordResponse = await turso.execute({
-    sql: 'SELECT * FROM cart WHERE session_id = ?;',
-    args: [sessionId]
-  })
+    sql: "SELECT * FROM cart WHERE session_id = ?;",
+    args: [sessionId],
+  });
 
   if (recordResponse.rows.length === 0) {
     await turso.execute({
-      sql: 'INSERT INTO cart (session_id, items) VALUES (?, ?);',
-      args: [sessionId, JSON.stringify(items)]
-    })
+      sql: "INSERT INTO cart (session_id, items) VALUES (?, ?);",
+      args: [sessionId, JSON.stringify(items)],
+    });
   } else {
-    items = JSON.parse(recordResponse.rows[0].items as any) as Cart
-    items[product] = quantity
+    items = JSON.parse(recordResponse.rows[0].items as any) as Cart;
+    items[product] = quantity;
     await turso.execute({
-      sql: 'UPDATE cart SET items = ? WHERE session_id = ?;',
-      args: [JSON.stringify(items), sessionId]
-    })
+      sql: "UPDATE cart SET items = ? WHERE session_id = ?;",
+      args: [JSON.stringify(items), sessionId],
+    });
   }
 
-  cookies.set('cart', sessionId, {path: '/'})
+  cookies.set("cart", sessionId, { path: "/" });
 
   return new Response(JSON.stringify(items), {
     status: 200,
@@ -80,43 +80,45 @@ export const POST: APIRoute = async ({ cookies, request }) => {
 };
 
 export const DELETE: APIRoute = async ({ cookies, request }) => {
-  let sessionId = cookies.get('cart')?.value
+  let sessionId = cookies.get("cart")?.value;
 
   if (!sessionId) {
-    sessionId = uuid()
+    sessionId = uuid();
   }
 
-  const url = new URL(request.url)
-  const params = new URLSearchParams(url.search)
+  const url = new URL(request.url);
+  const params = new URLSearchParams(url.search);
 
-  const productId = params.get('id')
+  const productId = params.get("id");
 
   if (productId == null) {
     return new Response(null, {
-      status: 400
-    })
+      status: 400,
+    });
   }
 
   // Check if user has existing session
   const recordResponse = await turso.execute({
-    sql: 'SELECT * FROM cart WHERE session_id = ?;',
-    args: [sessionId]
-  })
+    sql: "SELECT * FROM cart WHERE session_id = ?;",
+    args: [sessionId],
+  });
 
   if (recordResponse.rows.length === 0) {
     return new Response(null, {
-      status: 400
-    })  
+      status: 400,
+    });
   } else {
-    let items = JSON.parse(recordResponse.rows[0].items as any) as Cart
-    
+    let items = JSON.parse(recordResponse.rows[0].items as any) as Cart;
+
     if (productId in items) {
-      items = Object.fromEntries(Object.entries(items).filter(([k, _]) => k !== productId))
+      items = Object.fromEntries(
+        Object.entries(items).filter(([k, _]) => k !== productId),
+      );
 
       await turso.execute({
-        sql: 'UPDATE cart SET items = ? WHERE session_id = ?;',
-        args: [JSON.stringify(items), sessionId]
-      })
+        sql: "UPDATE cart SET items = ? WHERE session_id = ?;",
+        args: [JSON.stringify(items), sessionId],
+      });
 
       return new Response(JSON.stringify(items), {
         status: 200,
@@ -126,9 +128,8 @@ export const DELETE: APIRoute = async ({ cookies, request }) => {
       });
     } else {
       return new Response(null, {
-        status: 400
-      })
+        status: 400,
+      });
     }
   }
 };
-

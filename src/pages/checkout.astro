@@ -13,27 +13,26 @@ const images = getImages();
 let cart = {} as Cart;
 
 if (Astro.cookies.has("cart")) {
-  const sessionId = Astro.cookies.get("cart")?.value
+  const sessionId = Astro.cookies.get("cart")?.value;
 
   if (sessionId) {
     try {
-      const url = new URL(`/api/cart?id=${sessionId}`, Astro.url)
-      const response = await fetch(url)
-      cart = JSON.parse((await response.json())) as Cart
+      const url = new URL(`/api/cart?id=${sessionId}`, Astro.url);
+      const response = await fetch(url);
+      cart = JSON.parse(await response.json()) as Cart;
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 }
 
-const products = getAllProductsInCart(productCollection, images, cart)
-const productsCount = Object.keys(products).length
+const products = getAllProductsInCart(productCollection, images, cart);
+const productsCount = Object.keys(products).length;
 ---
 
 <script>
   import "@shoelace-style/shoelace/dist/components/button/button.js";
   import "@shoelace-style/shoelace/dist/components/divider/divider.js";
-
 </script>
 
 <BaseLayout>
@@ -45,21 +44,23 @@ const productsCount = Object.keys(products).length
       </div>
       {
         products.map((product) => {
-          return (
-            <ProductCard product={product} />
-          );
+          return <ProductCard product={product} />;
         })
       }
-      {productsCount > 0 &&
-        <div class="checkout-total">
-          <h2>Order total</h2>
-          <sl-divider></sl-divider>
-          <div id="total">Total:</div>
-          <sl-divider></sl-divider>
-          <div class="continue-container">
-            <sl-button id="continue" size="small">Continue</sl-button>
+      {
+        productsCount > 0 && (
+          <div class="checkout-total">
+            <h2>Order total</h2>
+            <sl-divider />
+            <div id="total">Total:</div>
+            <sl-divider />
+            <div class="continue-container">
+              <sl-button id="continue" size="small">
+                Continue
+              </sl-button>
+            </div>
           </div>
-        </div>
+        )
       }
     </div>
   </div>

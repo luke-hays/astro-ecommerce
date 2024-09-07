@@ -33,10 +33,10 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
   const product = addToCartButton?.dataset.product;
 
   // Straight forward - when the user clicks add, we get the cart, our new quantity, then update the cart accordingly
-  if (addToCartButton && product) {    
+  if (addToCartButton && product) {
     addToCartButton.addEventListener("click", async () => {
-      addToCartButton.setAttribute('disabled', 'true')
-      addToCartButton.setAttribute('loading', 'true')
+      addToCartButton.setAttribute("disabled", "true");
+      addToCartButton.setAttribute("loading", "true");
 
       const response = await fetch("/api/cart", {
         method: "POST",
@@ -49,7 +49,7 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
       try {
         const data = (await response.json()) as Cart;
 
-        console.log(data)
+        console.log(data);
 
         $cartBadgeCount.set(
           Object.values(data).reduce((prev, curr) => prev + curr, 0),
@@ -57,8 +57,8 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
       } catch (error) {
         // TODO Render Error state
       } finally {
-        addToCartButton.removeAttribute('disabled')
-        addToCartButton.removeAttribute('loading')
+        addToCartButton.removeAttribute("disabled");
+        addToCartButton.removeAttribute("loading");
       }
     });
   }
@@ -77,8 +77,8 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
         <h2>{product.name}</h2>
         <p>{product.formattedPrice}</p>
         <p>{product.description}</p>
-        <div class="product-controls">    
-          <QuantityAdder id={product.id}/>
+        <div class="product-controls">
+          <QuantityAdder id={product.id} />
           <sl-button data-product={product.id} id="add-to-cart">
             Add to cart
           </sl-button>
@@ -86,7 +86,6 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
       </section>
     </div>
   </div>
-  
 </BaseLayout>
 
 <style>
@@ -128,7 +127,7 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
 
   .product-layout {
     display: grid;
-    grid-template-areas: 
+    grid-template-areas:
       "breadcrumbs"
       "image"
       "details";
@@ -146,7 +145,7 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
     gap: 0.5rem;
   }
 
-  @media (min-width: 768px) { 
+  @media (min-width: 768px) {
     .product {
       display: flex;
       justify-content: center;
@@ -154,7 +153,7 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
 
     .product-layout {
       display: grid;
-      grid-template-areas: 
+      grid-template-areas:
         "breadcrumbs breadcrumbs"
         "image details";
       grid-template-columns: minmax(25rem, 35rem) 1fr;
@@ -173,7 +172,7 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
     }
   }
 
-  @media (min-width: 1536px) { 
+  @media (min-width: 1536px) {
     h2 {
       font-size: x-large;
     }

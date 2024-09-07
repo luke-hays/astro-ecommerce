@@ -5,12 +5,12 @@ import { createClient } from "@libsql/client";
 let env: ImportMetaEnv | NodeJS.ProcessEnv = import.meta.env;
 
 if (env == null) {
-  env = process.env
+  env = process.env;
 }
 
 const clientConfig = {
-  url: 'file:db/treecommerce.db',
-  authToken: '...'
+  url: "file:db/treecommerce.db",
+  authToken: "...",
 };
 
 if (env.PROD) {
@@ -18,10 +18,10 @@ if (env.PROD) {
   clientConfig.authToken = env.TURSO_AUTH_TOKEN;
 }
 
-if (env.TESTING === 'true') {
+if (env.TESTING === "true") {
   // Sets up an in memory database when running e2e tests. Could also point to a staging db or anything if desired
-  clientConfig.url = 'file:db/treecommerce-test.db';
-  clientConfig.authToken = '...';
+  clientConfig.url = "file:db/treecommerce-test.db";
+  clientConfig.authToken = "...";
 }
 
 export const turso = createClient(clientConfig);

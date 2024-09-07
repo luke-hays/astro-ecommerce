@@ -21,7 +21,7 @@ export default defineConfig({
           {
             src: "node_modules/@splidejs/splide/dist/css/splide.min.css",
             dest: "",
-          }
+          },
         ],
       }),
     ],

@@ -1,5 +1,5 @@
 ---
-const {id, productQuantity} = Astro.props
+const { id, productQuantity } = Astro.props;
 ---
 
 <script>
@@ -12,58 +12,61 @@ const {id, productQuantity} = Astro.props
 
   class ProductCounter extends HTMLElement {
     constructor() {
-      super()
+      super();
 
       const addProduct = this.querySelector("#add");
       const removeProduct = this.querySelector("#remove");
-      const display = this.querySelector('#quantity')
-      const id = this.dataset.id
-      const initialQuantity = parseInt(this.dataset.count ?? '1')
+      const display = this.querySelector("#quantity");
+      const id = this.dataset.id;
+      const initialQuantity = parseInt(this.dataset.count ?? "1");
 
-      if (!id) return
+      if (!id) return;
 
-      if (addProduct) addProduct.addEventListener("click", () => incrementCount(id));
-      if (removeProduct) removeProduct.addEventListener("click", () => decrementCount(id));
+      if (addProduct)
+        addProduct.addEventListener("click", () => incrementCount(id));
+      if (removeProduct)
+        removeProduct.addEventListener("click", () => decrementCount(id));
 
       // Set a listener on the current quantity to update the display when its changed by either imported function
       $counts.subscribe((counts) => {
         const quantityDisplay = this.querySelector("#quantity");
         const count = counts[id];
 
-        if (count == null) return
+        if (count == null) return;
 
-        if (quantityDisplay) quantityDisplay.textContent = counts[id].toString();
+        if (quantityDisplay)
+          quantityDisplay.textContent = counts[id].toString();
 
         if (removeProduct) {
           if (counts[id] <= 1) {
-            removeProduct.setAttribute('disabled', 'true')
+            removeProduct.setAttribute("disabled", "true");
           }
-          if (counts[id] > 1 && removeProduct.hasAttribute('disabled')) {
-            removeProduct.removeAttribute('disabled')
+          if (counts[id] > 1 && removeProduct.hasAttribute("disabled")) {
+            removeProduct.removeAttribute("disabled");
           }
         }
 
         if (addProduct) {
           if (counts[id] >= 10) {
-            addProduct.setAttribute('disabled', 'true')
+            addProduct.setAttribute("disabled", "true");
           }
-          if (counts[id] < 10 && addProduct.hasAttribute('disabled')) {
-            addProduct.removeAttribute('disabled')
+          if (counts[id] < 10 && addProduct.hasAttribute("disabled")) {
+            addProduct.removeAttribute("disabled");
           }
         }
       });
 
-      let count = $counts.get()[id]
+      let count = $counts.get()[id];
 
       if (count == null) {
-        $counts.set({...$counts.get(), [id]: initialQuantity})
+        $counts.set({ ...$counts.get(), [id]: initialQuantity });
       } else {
-        if(display) display.textContent = count.toString()
+        if (display) display.textContent = count.toString();
       }
     }
   }
 
-  customElements.define('product-counter', ProductCounter)
+  customElements.define("product-counter", ProductCounter);
 </script>
 
 <product-counter data-id={id} data-count={productQuantity}>

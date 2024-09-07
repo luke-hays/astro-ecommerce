@@ -20,16 +20,16 @@ export const decrementQuantity = () => {
   quantity.set(currentQuantity - 1);
 };
 
-export const $counts = atom<{[index: string]: number}>({})
+export const $counts = atom<{ [index: string]: number }>({});
 
 export const incrementCount = (id: string) => {
-  const count = $counts.get()[id] ?? 0
+  const count = $counts.get()[id] ?? 0;
   if (count >= 10) return;
-  $counts.set({...$counts.get(), [id]: count + 1})
-}
+  $counts.set({ ...$counts.get(), [id]: count + 1 });
+};
 
 export const decrementCount = (id: string) => {
-  const count = $counts.get()[id] ?? 0
+  const count = $counts.get()[id] ?? 0;
   if (count <= 1) return;
-  $counts.set({...$counts.get(), [id]: count - 1})
-}
+  $counts.set({ ...$counts.get(), [id]: count - 1 });
+};

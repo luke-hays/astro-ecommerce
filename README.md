@@ -37,7 +37,7 @@ List of tools:
 
 Database is sqllite running a the libsql client. This is because AstroDB interfaces with libSQL and I originally intended this to solely use AstroDB. However, Astro's DB studio is closed without an invite, and while self hosting is an option, I don't feel like self hosting a database. Henche, Turso combined with libSQL.
 
- It even has a [splide](https://splidejs.com/) in there!
+It even has a [splide](https://splidejs.com/) in there!
 
 ## Running locally
 
@@ -49,7 +49,7 @@ For fun I also set up Sentry for monitoring, its auth token is set in a .env fil
 
 ### Local database
 
-A local db can be created using 
+A local db can be created using
 
 ```
 sqlite3 db/treecommerce.db < db/create-db.sql
