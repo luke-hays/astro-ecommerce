@@ -11,7 +11,7 @@ const { product } = Astro.props;
   import "@shoelace-style/shoelace/dist/components/icon-button/icon-button.js";
   import "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
 
-  import { $cartBadgeCount } from "../../stores/cartBadgeCount";
+  import { $totalCartItems } from "../../stores/totalCartItems";
   import { $counts } from "../../stores/productCounts";
   import { formatNumberToCurrency } from "../../utils/currency";
   import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
@@ -30,7 +30,7 @@ const { product } = Astro.props;
       const addToCartButton = this.querySelector("#add-to-cart");
 
       removeButton?.addEventListener("click", async () => {
-        const currentCount = $cartBadgeCount.get();
+        const currentCount = $totalCartItems.get();
         const counts = $counts.get();
 
         if (id && quantity) {
@@ -48,7 +48,7 @@ const { product } = Astro.props;
 
             console.log(data);
 
-            $cartBadgeCount.set(currentCount - count);
+            $totalCartItems.set(currentCount - count);
             this.remove();
           } catch (error) {
             // TODO Render Error state
@@ -84,7 +84,7 @@ const { product } = Astro.props;
 
             console.log(data);
 
-            $cartBadgeCount.set(
+            $totalCartItems.set(
               Object.values(data).reduce((prev, curr) => prev + curr, 0),
             );
 
@@ -98,7 +98,7 @@ const { product } = Astro.props;
         });
       }
 
-      $cartBadgeCount.subscribe(() => {
+      $totalCartItems.subscribe(() => {
         const counts = $counts.get();
 
         const priceDisplay = this.querySelector("#price");
