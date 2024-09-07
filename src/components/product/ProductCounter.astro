@@ -8,60 +8,56 @@ const { id, productQuantity } = Astro.props;
     $counts,
     incrementCount,
     decrementCount,
+    getItemCount,
+    updateCount
   } from "../../stores/productCounts";
 
   class ProductCounter extends HTMLElement {
     constructor() {
       super();
 
-      const addProduct = this.querySelector("#add");
-      const removeProduct = this.querySelector("#remove");
-      const display = this.querySelector("#quantity");
       const id = this.dataset.id;
-      const initialQuantity = parseInt(this.dataset.count ?? "1");
 
-      if (!id) return;
+      if (!id) return; // TODO: Consider what to do if no ID exists
 
-      if (addProduct)
-        addProduct.addEventListener("click", () => incrementCount(id));
-      if (removeProduct)
-        removeProduct.addEventListener("click", () => decrementCount(id));
+      const addProduct = this.querySelector(`#increment-${id}`);
+      const removeProduct = this.querySelector(`#decrement-${id}`);
+      const display = this.querySelector(`#${id}-count`);
+
+      if (!addProduct || !removeProduct || !display) return;
+
+      addProduct.addEventListener("click", () => incrementCount(id));
+      removeProduct.addEventListener("click", () => decrementCount(id));
 
       // Set a listener on the current quantity to update the display when its changed by either imported function
       $counts.subscribe((counts) => {
-        const quantityDisplay = this.querySelector("#quantity");
         const count = counts[id];
 
         if (count == null) return;
 
-        if (quantityDisplay)
-          quantityDisplay.textContent = counts[id].toString();
+        display.textContent = counts[id].toString();
 
-        if (removeProduct) {
-          if (counts[id] <= 1) {
-            removeProduct.setAttribute("disabled", "true");
-          }
-          if (counts[id] > 1 && removeProduct.hasAttribute("disabled")) {
-            removeProduct.removeAttribute("disabled");
-          }
+        if (counts[id] <= 1) {
+          removeProduct.setAttribute("disabled", "true");
+        } else if (counts[id] > 1 && removeProduct.hasAttribute("disabled")) {
+          removeProduct.removeAttribute("disabled");
         }
 
-        if (addProduct) {
-          if (counts[id] >= 10) {
-            addProduct.setAttribute("disabled", "true");
-          }
-          if (counts[id] < 10 && addProduct.hasAttribute("disabled")) {
-            addProduct.removeAttribute("disabled");
-          }
+        if (counts[id] >= 10) {
+          addProduct.setAttribute("disabled", "true");
+        } else if (counts[id] < 10 && addProduct.hasAttribute("disabled")) {
+          addProduct.removeAttribute("disabled");
         }
       });
 
-      let count = $counts.get()[id];
+      let initialCount = getItemCount(id)
+      const initialQuantity = this.dataset.count;
 
-      if (count == null) {
-        $counts.set({ ...$counts.get(), [id]: initialQuantity });
-      } else {
-        if (display) display.textContent = count.toString();
+      // Product either hasn't been added yet, or this state may not contain it yet
+      if (initialCount === 0 && initialQuantity == null) {
+        updateCount(id, 0)
+      } else if (initialCount === 0 && initialQuantity != null) {
+        updateCount(id, parseInt(initialQuantity))
       }
     }
   }
@@ -70,9 +66,9 @@ const { id, productQuantity } = Astro.props;
 </script>
 
 <product-counter data-id={id} data-count={productQuantity}>
-  <sl-button id="remove">-</sl-button>
-  <div id="quantity"></div>
-  <sl-button id="add">+</sl-button>
+  <sl-button id={`decrement-${id}`}>-</sl-button>
+  <div class="counter" id={`${id}-count`}></div>
+  <sl-button id={`increment-${id}`}>+</sl-button>
 </product-counter>
 
 <style>
@@ -81,7 +77,7 @@ const { id, productQuantity } = Astro.props;
     align-items: center;
   }
 
-  #quantity {
+  .counter {
     height: 2.5rem;
     width: 2.5rem;
     display: flex;
