@@ -13,19 +13,20 @@ const {product} = Astro.props
 
   import { $cartBadgeCount } from "../../stores/cartBadgeCount";
   import { $counts } from "../../stores/productCounter"
+import { formatNumberToCurrency } from "../../scripts/currency";
+import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
 
   class ProductCard extends HTMLElement {
     constructor() {
       super()
 
-      debugger
-
       const id = this.dataset.id;
       const quantity = this.dataset.quantity;
+      const price = this.dataset.price;
 
       const removeButton = this.querySelector(`#remove-${id}`)
       const editButton = this.querySelector(`#edit-${id}`)
-      const editDialog = this.querySelector(`#edit-${id}-dialog`) as HTMLDialogElement
+      const editDialog = this.querySelector(`#edit-${id}-dialog`) as SlDialog
       const addToCartButton = this.querySelector('#add-to-cart')
 
       removeButton?.addEventListener('click', () => {
@@ -50,7 +51,7 @@ const {product} = Astro.props
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ id, quantity: $counts.get()[id ?? ''] }),
+            body: JSON.stringify({ product: id, quantity: $counts.get()[id ?? ''] }),
           });
 
           try {
@@ -61,13 +62,31 @@ const {product} = Astro.props
             $cartBadgeCount.set(
               Object.values(data).reduce((prev, curr) => prev + curr, 0),
             );
+
+            editDialog.hide()
           } catch (error) {
             // TODO Render Error state
           } finally {
             addToCartButton.removeAttribute('disabled')
             addToCartButton.removeAttribute('loading')
           }
-        })};
+      })};
+
+      $cartBadgeCount.subscribe(() => {
+        const counts = $counts.get()
+
+        const priceDisplay = this.querySelector('#price')
+        if (priceDisplay && price && id) { 
+          const count = counts[id] ?? quantity
+          priceDisplay.textContent = formatNumberToCurrency(parseInt(price) * count)
+        }
+
+        const quantityDisplay = this.querySelector('#quantityx')
+        if (quantityDisplay && id && quantity) {
+          let count = counts[id] ?? quantity
+          quantityDisplay.textContent = `x${count}`
+        }
+      })
 
     }
   }
@@ -76,20 +95,20 @@ const {product} = Astro.props
 </script>
 
 
-<product-card class="product" data-id={product.id} data-quantity={product.quantity}>
+<product-card class="product" data-id={product.id} data-quantity={product.quantity} data-price={product.price}>
   <div class="product-image">
     <Image src={product.image()} alt={product.name} />
   </div>
   <div class="product-details">
     <div>
       <div class="name">{product.name}</div>
-      <div class="price">
+      <div id="price" class="price">
         {formatNumberToCurrency(product.price * product.quantity)}
       </div>
     </div>
 
     <div class="product-actions">
-      <div class="quantity">x{product.quantity}</div>
+      <div id="quantityx" class="quantity">x{product.quantity}</div>
       <div class="controls">
         <sl-button id={`edit-${product.id}`} size="small">Edit</sl-button>
         <sl-button id={`remove-${product.id}`} size="small">Remove</sl-button>
