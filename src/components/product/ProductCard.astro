@@ -29,12 +29,34 @@ import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialo
       const editDialog = this.querySelector(`#edit-${id}-dialog`) as SlDialog
       const addToCartButton = this.querySelector('#add-to-cart')
 
-      removeButton?.addEventListener('click', () => {
+      removeButton?.addEventListener('click', async () => {
         const currentCount = $cartBadgeCount.get()
-        const newQuantity = parseInt(quantity ?? '0')
+        const counts = $counts.get()
 
-        $cartBadgeCount.set(currentCount - newQuantity)
-        this.remove()
+        if (id && quantity) {
+          removeButton.setAttribute('disabled', 'true')
+          removeButton.setAttribute('loading', 'true')
+
+          const count = counts[id] ?? parseInt(quantity)
+
+          const response = await fetch(`/api/cart?id=${id}`, {
+            method: "DELETE",
+          });
+
+          try {
+            const data = (await response.json()) as Cart;
+
+            console.log(data)
+
+            $cartBadgeCount.set(currentCount - count)
+            this.remove()
+          } catch (error) {
+            // TODO Render Error state
+          } finally {
+            removeButton.removeAttribute('disabled')
+            removeButton.removeAttribute('loading')
+          }
+        }
       })
 
       editButton?.addEventListener('click', () => {
