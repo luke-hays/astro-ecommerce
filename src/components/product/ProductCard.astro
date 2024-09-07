@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { formatNumberToCurrency } from "../../scripts/currency";
+import { formatNumberToCurrency } from "../../utils/currency"
 import ProductCounter from "./ProductCounter.astro";
 
 const { product } = Astro.props;
@@ -13,7 +13,7 @@ const { product } = Astro.props;
 
   import { $cartBadgeCount } from "../../stores/cartBadgeCount";
   import { $counts } from "../../stores/productCounts";
-  import { formatNumberToCurrency } from "../../scripts/currency";
+  import { formatNumberToCurrency } from "../../utils/currency";
   import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
 
   class ProductCard extends HTMLElement {

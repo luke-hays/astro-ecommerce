@@ -1,5 +1,5 @@
 import { expect, test, describe } from "vitest";
-import { formatNumberToCurrency } from "../../src/scripts/currency";
+import { formatNumberToCurrency } from "../../../src/utils/currency";
 
 describe("currency utilities", () => {
   test("provides a function to format a number to a currency string", () => {

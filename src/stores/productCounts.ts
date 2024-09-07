@@ -4,6 +4,7 @@
 // TODO: consider what to do if a new count is out of bounds
 
 import { atom } from "nanostores";
+import { MAX_PRODUCT_QUANTITY } from "../utils/constants";
 
 // State consists of tracking the id of an item with its current count
 // This is used for single and multiple product tracking, like on a specific Product page or the Checkout page
@@ -25,7 +26,7 @@ export const removeCount = (id: string) => {
 export const incrementCount = (id: string) => {
   const count = getItemCount(id)
 
-  if (count >= 10) return;
+  if (count >= MAX_PRODUCT_QUANTITY) return;
 
   updateCount(id, count + 1);
 };

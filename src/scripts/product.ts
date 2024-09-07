@@ -1,6 +1,6 @@
 import { pipe } from "fp-ts/lib/function";
 import type { Category, Images, Product } from "../types/products";
-import { formatNumberToCurrency } from "./currency";
+import { formatNumberToCurrency } from "../utils/currency";
 import { buildRouteToProduct } from "./routes";
 import { getCategory } from "./categories";
 
