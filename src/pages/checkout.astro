@@ -1,14 +1,11 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProductCard from "../components/product/ProductCard.astro";
 
-import { formatNumberToCurrency } from "../scripts/currency";
 import { getImages } from "../scripts/images";
 import { getAllProductsInCart } from "../scripts/product";
-import { turso } from "../turso";
-import ProductCard from "../components/product/ProductCard.astro";
 
 const productCollection = await getCollection("products");
 const images = getImages();
@@ -19,13 +16,12 @@ if (Astro.cookies.has("cart")) {
   const sessionId = Astro.cookies.get("cart")?.value
 
   if (sessionId) {
-    const recordResponse = await turso.execute({
-      sql: 'SELECT * FROM cart WHERE session_id = ?;',
-      args: [sessionId]
-    })
-
-    if (recordResponse.rows.length > 0) {
-      cart = JSON.parse(recordResponse.rows[0].items as any) as Cart;
+    try {
+      const url = new URL(`/api/cart?id=${sessionId}`, Astro.url)
+      const response = await fetch(url)
+      cart = JSON.parse((await response.json())) as Cart
+    } catch (error) {
+      console.error(error)
     }
   }
 }

@@ -13,8 +13,8 @@ const {product} = Astro.props
 
   import { $cartBadgeCount } from "../../stores/cartBadgeCount";
   import { $counts } from "../../stores/productCounter"
-import { formatNumberToCurrency } from "../../scripts/currency";
-import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
+  import { formatNumberToCurrency } from "../../scripts/currency";
+  import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
 
   class ProductCard extends HTMLElement {
     constructor() {
@@ -39,11 +39,11 @@ import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialo
 
           const count = counts[id] ?? parseInt(quantity)
 
-          const response = await fetch(`/api/cart?id=${id}`, {
-            method: "DELETE",
-          });
-
           try {
+            const response = await fetch(`/api/cart?id=${id}`, {
+              method: "DELETE",
+            });
+
             const data = (await response.json()) as Cart;
 
             console.log(data)
@@ -68,15 +68,15 @@ import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialo
           addToCartButton.setAttribute('disabled', 'true')
           addToCartButton.setAttribute('loading', 'true')
 
-          const response = await fetch("/api/cart", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ product: id, quantity: $counts.get()[id ?? ''] }),
-          });
-
           try {
+            const response = await fetch("/api/cart", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ product: id, quantity: $counts.get()[id ?? ''] }),
+            });
+
             const data = (await response.json()) as Cart;
 
             console.log(data)
