@@ -12,9 +12,10 @@ const { product } = Astro.props;
   import "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
 
   import { $totalCartItems } from "../../stores/totalCartItems";
-  import { $counts } from "../../stores/productCounts";
+  import { $counts, getItemCount } from "../../stores/productCounts";
   import { formatNumberToCurrency } from "../../utils/currency";
   import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
+import { deleteCartItem, updateCart } from "../../stores/cart";
 
   class ProductCard extends HTMLElement {
     constructor() {
@@ -30,25 +31,12 @@ const { product } = Astro.props;
       const addToCartButton = this.querySelector("#add-to-cart");
 
       removeButton?.addEventListener("click", async () => {
-        const currentCount = $totalCartItems.get();
-        const counts = $counts.get();
-
         if (id && quantity) {
           removeButton.setAttribute("disabled", "true");
           removeButton.setAttribute("loading", "true");
 
-          const count = counts[id] ?? parseInt(quantity);
-
           try {
-            const response = await fetch(`/api/cart?id=${id}`, {
-              method: "DELETE",
-            });
-
-            const data = (await response.json()) as Cart;
-
-            console.log(data);
-
-            $totalCartItems.set(currentCount - count);
+            deleteCartItem(id)
             this.remove();
           } catch (error) {
             // TODO Render Error state
@@ -68,26 +56,11 @@ const { product } = Astro.props;
           addToCartButton.setAttribute("disabled", "true");
           addToCartButton.setAttribute("loading", "true");
 
+          if (!id) return
+
+
           try {
-            const response = await fetch("/api/cart", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                product: id,
-                quantity: $counts.get()[id ?? ""],
-              }),
-            });
-
-            const data = (await response.json()) as Cart;
-
-            console.log(data);
-
-            $totalCartItems.set(
-              Object.values(data).reduce((prev, curr) => prev + curr, 0),
-            );
-
+            updateCart(id, getItemCount(id))
             editDialog.hide();
           } catch (error) {
             // TODO Render Error state
