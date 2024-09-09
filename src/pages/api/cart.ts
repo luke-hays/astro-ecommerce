@@ -13,9 +13,9 @@ export const GET: APIRoute = async ({ request, cookies }) => {
   // A session may not yet exist for this user, so we need to return an empty response
   if (!sessionId) return emptyJsonBody()
 
-  const items = await getCartForSession(sessionId)
+  const {cart} = await getCartForSession(sessionId)
 
-  return jsonBody(items)
+  return jsonBody(cart)
 };
 
 export const POST: APIRoute = async ({ cookies, request }) => {
@@ -25,13 +25,13 @@ export const POST: APIRoute = async ({ cookies, request }) => {
   if (!sessionId) sessionId = uuid();
 
   const { product, quantity } = await request.json();
-  const cartRecord = await getCartForSession(sessionId)
+  const {cart, sessionHasCart} = await getCartForSession(sessionId)
   const items = { [product]: quantity } as Cart;
-  const parsedCartRecord = JSON.parse(cartRecord) as Cart
+  const parsedCartRecord = JSON.parse(cart) as Cart
 
   cookies.set(COOKIE_KEY_CART, sessionId, { path: "/" });
 
-  if (Object.keys(parsedCartRecord).length === 0) {
+  if (Object.keys(parsedCartRecord).length === 0 && !sessionHasCart) {
     await insertNewCart(sessionId, items)
     return jsonBody(items)
   }
@@ -53,8 +53,8 @@ export const DELETE: APIRoute = async ({ cookies, request }) => {
   if (productId == null) return badRequest()
 
   // Check if user has existing session
-  const items = await getCartForSession(sessionId)
-  const parsedItems = JSON.parse(items) as Cart
+  const {cart} = await getCartForSession(sessionId)
+  const parsedItems = JSON.parse(cart) as Cart
 
   if (Object.keys(parsedItems).length === 0) return badRequest()
   if (!Object.hasOwn(parsedItems, productId)) return badRequest()

@@ -6,13 +6,15 @@ export const getCartForSession = async (sessionId: string) => {
     args: [sessionId],
   });
 
-  let items = '{}'
+  let cart = '{}'
+  let sessionHasCart = false
 
   if (records.rows.length > 0) {
-    items = records.rows[0].items as string
+    cart = records.rows[0].items as string
+    sessionHasCart = true
   }
 
-  return items
+  return {cart, sessionHasCart}
 }
 
 export const insertNewCart = async (sessionId: string, items: Cart) => {
@@ -31,7 +33,7 @@ export const updateCartItem = async (sessionId: string, items: Cart) => {
 
 export const deleteCart = async (sessionId: string) => {
   await turso.execute({
-    sql: "DELETE FROM cart WHERE session_id = ?;",
-    args: [sessionId],
+    sql: "UPDATE cart SET items = ? WHERE session_id = ?;",
+    args: [JSON.stringify({}), sessionId],
   });
 }

@@ -9,12 +9,12 @@ export const DELETE: APIRoute = async ({request, cookies}) => {
 
   if (!sessionId) return missingResource()
 
-  const items = await getCartForSession(sessionId)
-  const parsedItems = JSON.parse(items) as Cart
+  const {cart, sessionHasCart} = await getCartForSession(sessionId)
+  const parsedItems = JSON.parse(cart) as Cart
 
-  if (Object.keys(parsedItems).length === 0) return badRequest()
+  if (Object.keys(parsedItems).length === 0 || !sessionHasCart) return badRequest()
 
-  deleteCart(sessionId)
-  cookies.delete('cart', {path: '/'})
+  await deleteCart(sessionId)
+  
   return okResponse()
 }
