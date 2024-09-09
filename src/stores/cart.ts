@@ -9,8 +9,6 @@ onMount($cart, () => {
 
     const data = await response.json();
 
-    console.log(data);
-
     if (typeof data === "string") {
       $cart.set(JSON.parse(data));
     } else {
@@ -51,7 +49,7 @@ export const getCartItem = (id: string) => {
   return $cart.get()[id];
 };
 
-export const deleteCart = (id: string) => {
+export const deleteCart = () => {
   task(async () => {
     try {
       await fetch("/api/empty-cart", { method: "DELETE" });
