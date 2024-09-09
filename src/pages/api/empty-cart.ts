@@ -5,9 +5,9 @@ import { missingResource, badRequest, okResponse } from "./responses/generic";
 import { deleteCart, getCartForSession } from "./db/cart";
 
 export const DELETE: APIRoute = async ({request, cookies}) => {
-  let sessionId = getCartValueFromApiRoute({request, cookies})
+  const sessionId = getCartValueFromApiRoute({request, cookies})
 
-  if (!sessionId) return missingResource()
+  if (!sessionId) return badRequest()
 
   const {cart, sessionHasCart} = await getCartForSession(sessionId)
   const parsedItems = JSON.parse(cart) as Cart
@@ -15,6 +15,6 @@ export const DELETE: APIRoute = async ({request, cookies}) => {
   if (Object.keys(parsedItems).length === 0 || !sessionHasCart) return badRequest()
 
   await deleteCart(sessionId)
-  
+
   return okResponse()
 }
