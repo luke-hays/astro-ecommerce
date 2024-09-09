@@ -1,13 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
-import dotenv from 'dotenv'
-import path from 'path';
-import { fileURLToPath } from 'url';
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // Needed to load in the correct filepath for our test's environment file
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the director
 
-dotenv.config({path: path.resolve(__dirname, 'test', 'e2e', '.env')})
+dotenv.config({ path: path.resolve(__dirname, "test", "e2e", ".env") });
 
 /**
  * Read environment variables from file.
@@ -34,7 +34,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:4321/',
+    baseURL: "http://localhost:4321/",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
@@ -49,19 +49,19 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
-      dependencies: ['setup'],
+      dependencies: ["setup"],
     },
 
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
-      dependencies: ['setup'],
+      dependencies: ["setup"],
     },
 
     {
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
-      dependencies: ['setup'],
+      dependencies: ["setup"],
     },
 
     /* Test against mobile viewports. */
@@ -87,8 +87,8 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm start',
-    url: 'http://localhost:4321/',
+    command: "npm start",
+    url: "http://localhost:4321/",
     reuseExistingServer: !process.env.CI,
   },
 });

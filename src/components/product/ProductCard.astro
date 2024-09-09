@@ -1,9 +1,9 @@
 ---
 import { Image } from "astro:assets";
-import { formatNumberToCurrency } from "../../scripts/currency";
+import { formatNumberToCurrency } from "../../utils/currency";
 import ProductCounter from "./ProductCounter.astro";
 
-const {product} = Astro.props
+const { product } = Astro.props;
 ---
 
 <script>
@@ -11,113 +11,95 @@ const {product} = Astro.props
   import "@shoelace-style/shoelace/dist/components/icon-button/icon-button.js";
   import "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
 
-  import { $cartBadgeCount } from "../../stores/cartBadgeCount";
-  import { $counts } from "../../stores/productCounter"
-  import { formatNumberToCurrency } from "../../scripts/currency";
+  import { $totalCartItems } from "../../stores/totalCartItems";
+  import { $counts, getItemCount } from "../../stores/productCounts";
+  import { formatNumberToCurrency } from "../../utils/currency";
   import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
+  import { deleteCartItem, updateCart } from "../../stores/cart";
+  import { $products } from "../../stores/products";
 
   class ProductCard extends HTMLElement {
     constructor() {
-      super()
+      super();
 
       const id = this.dataset.id;
       const quantity = this.dataset.quantity;
       const price = this.dataset.price;
 
-      const removeButton = this.querySelector(`#remove-${id}`)
-      const editButton = this.querySelector(`#edit-${id}`)
-      const editDialog = this.querySelector(`#edit-${id}-dialog`) as SlDialog
-      const addToCartButton = this.querySelector('#add-to-cart')
+      const removeButton = this.querySelector(`#remove-${id}`);
+      const editButton = this.querySelector(`#edit-${id}`);
+      const editDialog = this.querySelector(`#edit-${id}-dialog`) as SlDialog;
+      const addToCartButton = this.querySelector("#add-to-cart");
 
-      removeButton?.addEventListener('click', async () => {
-        const currentCount = $cartBadgeCount.get()
-        const counts = $counts.get()
-
+      removeButton?.addEventListener("click", async () => {
         if (id && quantity) {
-          removeButton.setAttribute('disabled', 'true')
-          removeButton.setAttribute('loading', 'true')
-
-          const count = counts[id] ?? parseInt(quantity)
+          removeButton.setAttribute("disabled", "true");
+          removeButton.setAttribute("loading", "true");
 
           try {
-            const response = await fetch(`/api/cart?id=${id}`, {
-              method: "DELETE",
-            });
-
-            const data = (await response.json()) as Cart;
-
-            console.log(data)
-
-            $cartBadgeCount.set(currentCount - count)
-            this.remove()
+            deleteCartItem(id);
+            this.remove();
           } catch (error) {
             // TODO Render Error state
           } finally {
-            removeButton.removeAttribute('disabled')
-            removeButton.removeAttribute('loading')
+            removeButton.removeAttribute("disabled");
+            removeButton.removeAttribute("loading");
           }
         }
-      })
+      });
 
-      editButton?.addEventListener('click', () => {
-        editDialog.show()
-      })
+      editButton?.addEventListener("click", () => {
+        editDialog.show();
+      });
 
-      if (addToCartButton) { 
+      if (addToCartButton) {
         addToCartButton.addEventListener("click", async () => {
-          addToCartButton.setAttribute('disabled', 'true')
-          addToCartButton.setAttribute('loading', 'true')
+          addToCartButton.setAttribute("disabled", "true");
+          addToCartButton.setAttribute("loading", "true");
+
+          if (!id) return;
 
           try {
-            const response = await fetch("/api/cart", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ product: id, quantity: $counts.get()[id ?? ''] }),
-            });
-
-            const data = (await response.json()) as Cart;
-
-            console.log(data)
-
-            $cartBadgeCount.set(
-              Object.values(data).reduce((prev, curr) => prev + curr, 0),
-            );
-
-            editDialog.hide()
+            updateCart(id, getItemCount(id));
+            editDialog.hide();
           } catch (error) {
             // TODO Render Error state
           } finally {
-            addToCartButton.removeAttribute('disabled')
-            addToCartButton.removeAttribute('loading')
+            addToCartButton.removeAttribute("disabled");
+            addToCartButton.removeAttribute("loading");
           }
-      })};
+        });
+      }
 
-      $cartBadgeCount.subscribe(() => {
-        const counts = $counts.get()
+      $totalCartItems.subscribe(() => {
+        const counts = $counts.get();
 
-        const priceDisplay = this.querySelector('#price')
-        if (priceDisplay && price && id) { 
-          const count = counts[id] ?? quantity
-          priceDisplay.textContent = formatNumberToCurrency(parseInt(price) * count)
+        const priceDisplay = this.querySelector("#price");
+        if (priceDisplay && price && id) {
+          const count = counts[id] ?? quantity;
+          priceDisplay.textContent = formatNumberToCurrency(
+            parseInt(price) * count,
+          );
         }
 
-        const quantityDisplay = this.querySelector('#quantityx')
+        const quantityDisplay = this.querySelector("#quantityx");
         if (quantityDisplay && id && quantity) {
-          let count = counts[id] ?? quantity
-          quantityDisplay.textContent = `x${count}`
+          let count = counts[id] ?? quantity;
+          quantityDisplay.textContent = `x${count}`;
         }
-      })
-
+      });
     }
   }
 
-  customElements.define('product-card', ProductCard)
+  customElements.define("product-card", ProductCard);
 </script>
 
-
-<product-card class="product" data-id={product.id} data-quantity={product.quantity} data-price={product.price}>
+<product-card
+  class="product"
+  data-id={product.id}
+  data-quantity={product.quantity}
+  data-price={product.price}
+>
   <div class="product-image">
     <Image src={product.image()} alt={product.name} />
   </div>
@@ -137,13 +119,16 @@ const {product} = Astro.props
       </div>
     </div>
   </div>
-  <sl-dialog id={`edit-${product.id}-dialog`} label={`Edit ${product.name} Quantity?`}>
+  <sl-dialog
+    id={`edit-${product.id}-dialog`}
+    label={`Edit ${product.name} Quantity?`}
+  >
     <div class="product-dialog">
       <div class="product-image">
         <Image src={product.image()} alt={product.name} />
       </div>
       <div class="update-cart">
-        <ProductCounter id={product.id} productQuantity={product.quantity}/>
+        <ProductCounter id={product.id} productQuantity={product.quantity} />
         <sl-button data-product={product.id} id="add-to-cart">
           Update cart
         </sl-button>

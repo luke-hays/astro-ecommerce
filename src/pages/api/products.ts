@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
 import { turso } from "../../turso";
 
 export const GET: APIRoute = async ({ request, cookies }) => {
@@ -18,15 +19,17 @@ export const GET: APIRoute = async ({ request, cookies }) => {
     });
 
     if (recordResponse.rows.length > 0) {
-      const items = recordResponse.rows[0].items as string;
-      const parsedItems = JSON.parse(items) as Cart;
+      const items = JSON.parse(recordResponse.rows[0].items as string);
+      const productCollection = await getCollection("products");
 
-      const count = Object.values(parsedItems).reduce(
-        (prev: number, curr: number) => prev + curr,
-        0,
-      );
+      const products: any = {};
+      for (const product of productCollection) {
+        if (Object.hasOwn(items, product.id)) {
+          products[product.id] = product.data.price;
+        }
+      }
 
-      return new Response(`{"count": ${count}}`, {
+      return new Response(JSON.stringify(products), {
         status: 200,
         headers: {
           "Content-Type": "application/json",
@@ -35,7 +38,7 @@ export const GET: APIRoute = async ({ request, cookies }) => {
     }
   }
 
-  return new Response('{"count": 0}', {
+  return new Response("{}", {
     status: 200,
     headers: {
       "Content-Type": "application/json",

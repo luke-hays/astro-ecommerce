@@ -5,34 +5,20 @@ import Footer from "../components/shared/Footer.astro";
 let count = 0;
 
 if (Astro.cookies.has("cart")) {
-  const sessionId = Astro.cookies.get("cart")?.value
+  const sessionId = Astro.cookies.get("cart")?.value;
 
   if (sessionId) {
     try {
-      const url = new URL(`/api/cart-count?id=${sessionId}`, Astro.url)
-      const response = await fetch(url)
-      const data = await response.json()
-      count = data.count
+      const url = new URL(`/api/cart-count?id=${sessionId}`, Astro.url);
+      const response = await fetch(url);
+      const data = await response.json();
+      count = data.count;
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 }
 ---
-
-<script>
-  import { $cartBadgeCount } from "../stores/cartBadgeCount";
-
-  const header = document.getElementById("treecommerce-header");
-
-  if (header) {
-    const count = header.dataset.count
-      ? Number.parseInt(header.dataset.count)
-      : 0;
-
-    $cartBadgeCount.set(count);
-  }
-</script>
 
 <html lang="en">
   <head>
@@ -41,10 +27,7 @@ if (Astro.cookies.has("cart")) {
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/themes/light.css" />
-    <link
-      rel="stylesheet"
-      href="splide.min.css"
-    />
+    <link rel="stylesheet" href="splide.min.css" />
     <meta name="generator" content={Astro.generator} />
     <title>tree-Commerce</title>
   </head>
