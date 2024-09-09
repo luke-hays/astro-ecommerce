@@ -19,7 +19,7 @@ export const GET: APIRoute = async ({ request, cookies }) => {
     });
 
     if (recordResponse.rows.length > 0) {
-      const items = recordResponse.rows[0].items as string;
+      const items = recordResponse.rows[0].items;
 
       return new Response(JSON.stringify(items), {
         status: 200,
@@ -63,6 +63,7 @@ export const POST: APIRoute = async ({ cookies, request }) => {
   } else {
     items = JSON.parse(recordResponse.rows[0].items as any) as Cart;
     items[product] = quantity;
+    
     await turso.execute({
       sql: "UPDATE cart SET items = ? WHERE session_id = ?;",
       args: [JSON.stringify(items), sessionId],
@@ -83,7 +84,9 @@ export const DELETE: APIRoute = async ({ cookies, request }) => {
   let sessionId = cookies.get("cart")?.value;
 
   if (!sessionId) {
-    sessionId = uuid();
+    return new Response(null, {
+      status: 400,
+    });
   }
 
   const url = new URL(request.url);
