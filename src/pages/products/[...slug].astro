@@ -24,13 +24,13 @@ if (!product) return Astro.redirect("/404");
 
 const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
 
-let cart: Cart = {}
+let cart: Cart = {};
 if (Astro.cookies.has("cart")) {
   const sessionId = Astro.cookies.get("cart")?.value;
 
   if (sessionId) {
     try {
-      const url = new URL(`/api/cart?id=${sessionId}`, Astro.url);
+      const url = new URL(`/api/cart?session-id=${sessionId}`, Astro.url);
       const response = await fetch(url);
       cart = JSON.parse(await response.json());
     } catch (error) {
@@ -57,7 +57,7 @@ if (Astro.cookies.has("cart")) {
         updateCart(id, getItemCount(id));
       } catch (error) {
         // TODO Render Error state
-        console.log(error)
+        console.log(error);
       } finally {
         addToCartButton.removeAttribute("disabled");
         addToCartButton.removeAttribute("loading");
@@ -80,7 +80,7 @@ if (Astro.cookies.has("cart")) {
         <p>{product.formattedPrice}</p>
         <p>{product.description}</p>
         <div class="product-controls">
-          <ProductCounter id={product.id} productQuantity={cart[product.id]}/>
+          <ProductCounter id={product.id} productQuantity={cart[product.id]} />
           <sl-button data-id={product.id} id="add-to-cart">
             Add to cart
           </sl-button>

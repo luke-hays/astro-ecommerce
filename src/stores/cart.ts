@@ -1,4 +1,5 @@
 import { task, onMount, atom } from "nanostores";
+import { PARAM_PRODUCT_ID } from "../utils/constants";
 
 export const $cart = atom<Cart>({});
 
@@ -9,9 +10,9 @@ onMount($cart, () => {
     const data = await response.json();
 
     if (typeof data === "string") {
-      $cart.set(JSON.parse(data))
+      $cart.set(JSON.parse(data));
     } else {
-      $cart.set(data)
+      $cart.set(data);
     }
   });
 });
@@ -34,7 +35,7 @@ export const updateCart = (id: string, count: number) => {
 
 export const deleteCartItem = (id: string) => {
   task(async () => {
-    const response = await fetch(`/api/cart?id=${id}`, {
+    const response = await fetch(`/api/cart?${PARAM_PRODUCT_ID}=${id}`, {
       method: "DELETE",
     });
 
@@ -45,16 +46,16 @@ export const deleteCartItem = (id: string) => {
 };
 
 export const getCartItem = (id: string) => {
-  return $cart.get()[id]
-}
+  return $cart.get()[id];
+};
 
-export const deleteCart = (id: string) => {
+export const deleteCart = () => {
   task(async () => {
     try {
-      await fetch('/api/empty-cart', {method: "DELETE"})
-      $cart.set({})
+      await fetch("/api/empty-cart", { method: "DELETE" });
+      $cart.set({});
     } catch {
       // TODO: think of error handling
     }
-  })
-}
+  });
+};
