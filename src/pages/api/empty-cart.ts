@@ -1,39 +1,20 @@
 import type { APIRoute } from "astro";
-import { turso } from "../../turso";
 
-export const DELETE: APIRoute = async ({cookies}) => {
-  let sessionId = cookies.get("cart")?.value;
+import { getCartValueFromApiRoute } from "./utils/session";
+import { missingResource, badRequest, okResponse } from "./responses/generic";
+import { deleteCart, getCartForSession } from "./db/cart";
 
-  if (!sessionId) {
-    return new Response(null, {
-      status: 400,
-    });  
-  }
+export const DELETE: APIRoute = async ({request, cookies}) => {
+  let sessionId = getCartValueFromApiRoute({request, cookies})
 
-  // Check if user has existing session
-  const recordResponse = await turso.execute({
-    sql: "SELECT * FROM cart WHERE session_id = ?;",
-    args: [sessionId],
-  });
+  if (!sessionId) return missingResource()
 
-  if (recordResponse.rows.length === 0) {
-    return new Response(null, {
-      status: 400,
-    });
-  } else {
-    try {
-      await turso.execute({
-        sql: "DELETE FROM cart WHERE session_id = ?;",
-        args: [sessionId],
-      });
+  const items = await getCartForSession(sessionId)
+  const parsedItems = JSON.parse(items) as Cart
 
-      cookies.delete('cart', {path: '/'})
+  if (Object.keys(parsedItems).length === 0) return badRequest()
 
-      return new Response(null, {status: 200})
-    } catch (error) {
-      return new Response(null, {
-        status: 500,
-      });
-    }
-  }
+  deleteCart(sessionId)
+  cookies.delete('cart', {path: '/'})
+  return okResponse()
 }

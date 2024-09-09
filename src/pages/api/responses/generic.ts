@@ -15,3 +15,5 @@ export const jsonBody = (body: unknown) => new Response(JSON.stringify(body), {
     'Content-Type': 'application/json'
   }
 })
+
+export const okResponse = () => new Response(null, {status: 200})

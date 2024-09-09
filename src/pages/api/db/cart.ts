@@ -28,3 +28,10 @@ export const updateCartItem = async (sessionId: string, items: Cart) => {
     args: [JSON.stringify(items), sessionId],
   });
 }
+
+export const deleteCart = async (sessionId: string) => {
+  await turso.execute({
+    sql: "DELETE FROM cart WHERE session_id = ?;",
+    args: [sessionId],
+  });
+}

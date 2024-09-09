@@ -1,10 +1,11 @@
 import type { APIRoute } from "astro";
-import { turso } from "../../turso";
 import { v4 as uuid } from "uuid";
+
+import { COOKIE_KEY_CART, PARAM_PRODUCT_ID } from "../../utils/constants";
+
 import { getCartValueFromApiRoute } from "./utils/session";
 import { badRequest, emptyJsonBody, jsonBody, missingResource } from "./responses/generic";
 import { getCartForSession, insertNewCart, updateCartItem } from "./db/cart";
-import { COOKIE_KEY_CART, PARAM_PRODUCT_ID } from "../../utils/constants";
 
 export const GET: APIRoute = async ({ request, cookies }) => {
   let sessionId = getCartValueFromApiRoute({request, cookies})
