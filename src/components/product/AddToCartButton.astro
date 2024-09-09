@@ -1,5 +1,5 @@
 ---
-const {productId, buttonText = "Add to cart"} = Astro.props;
+const { productId, buttonText = "Add to cart" } = Astro.props;
 ---
 
 <script>
@@ -9,25 +9,24 @@ const {productId, buttonText = "Add to cart"} = Astro.props;
 
   class AddToCartButton extends SlButton {
     constructor() {
-      super()
+      super();
 
-      const productId = this.dataset.id
+      const productId = this.dataset.id;
 
-      if (!productId) return
+      if (!productId) return;
 
-      this.addEventListener('click', async () => {
+      this.addEventListener("click", async () => {
         this.setAttribute("disabled", "true");
         this.setAttribute("loading", "true");
-        
-        try {
-          await updateCart(productId, getItemCount(productId))
-        } catch (error) {
 
+        try {
+          await updateCart(productId, getItemCount(productId));
+        } catch (error) {
         } finally {
           this.removeAttribute("disabled");
           this.removeAttribute("loading");
         }
-      })
+      });
 
       $counts.subscribe((counts) => {
         if (counts[productId] <= 0 || counts[productId] > 10) {
@@ -35,11 +34,11 @@ const {productId, buttonText = "Add to cart"} = Astro.props;
         } else {
           this.removeAttribute("disabled");
         }
-      })
-    } 
+      });
+    }
   }
 
-  customElements.define('add-to-cart-button', AddToCartButton)
+  customElements.define("add-to-cart-button", AddToCartButton);
 </script>
 
 <add-to-cart-button data-id={productId}>

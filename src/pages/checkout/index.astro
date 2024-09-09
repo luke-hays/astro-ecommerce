@@ -55,7 +55,7 @@ const productsCount = Object.keys(products).length;
     if (sessionId) {
       emptyCartButton.addEventListener("click", () => {
         deleteCart();
-        
+
         cartList?.remove();
         checkoutTotal?.remove();
         emptyCartButton.remove();
