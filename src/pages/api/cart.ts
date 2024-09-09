@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { v4 as uuid } from "uuid";
 
-import { COOKIE_KEY_CART, PARAM_PRODUCT_ID } from "../../utils/constants";
+import { COOKIE_KEY_CART, MAX_PRODUCT_QUANTITY, PARAM_PRODUCT_ID } from "../../utils/constants";
 
 import { getCartValueFromApiRoute } from "./utils/session";
 import {
@@ -33,6 +33,8 @@ export const POST: APIRoute = async ({ cookies, request }) => {
   const { cart, sessionHasCart } = await getCartForSession(sessionId);
   const items = { [product]: quantity } as Cart;
   const parsedCartRecord = JSON.parse(cart) as Cart;
+
+  if (quantity <= 0 || quantity > MAX_PRODUCT_QUANTITY) return badRequest()
 
   cookies.set(COOKIE_KEY_CART, sessionId, { path: "/" });
 

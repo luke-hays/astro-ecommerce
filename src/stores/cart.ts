@@ -17,8 +17,12 @@ onMount($cart, () => {
   });
 });
 
-export const updateCart = (id: string, count: number) => {
-  task(async () => {
+export const getCartItem = (id: string) => {
+  return $cart.get()[id];
+};
+
+export const updateCart = async (id: string, count: number) => {
+  await task(async () => {
     const response = await fetch("/api/cart", {
       method: "POST",
       headers: {
@@ -33,8 +37,8 @@ export const updateCart = (id: string, count: number) => {
   });
 };
 
-export const deleteCartItem = (id: string) => {
-  task(async () => {
+export const deleteCartItem = async (id: string) => {
+  await task(async () => {
     const response = await fetch(`/api/cart?${PARAM_PRODUCT_ID}=${id}`, {
       method: "DELETE",
     });
@@ -45,17 +49,9 @@ export const deleteCartItem = (id: string) => {
   });
 };
 
-export const getCartItem = (id: string) => {
-  return $cart.get()[id];
-};
-
-export const deleteCart = () => {
-  task(async () => {
-    try {
-      await fetch("/api/empty-cart", { method: "DELETE" });
-      $cart.set({});
-    } catch {
-      // TODO: think of error handling
-    }
+export const deleteCart = async () => {
+  await task(async () => {
+    await fetch("/api/empty-cart", { method: "DELETE" });
+    $cart.set({});
   });
 };

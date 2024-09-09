@@ -32,9 +32,7 @@ const products = getProductsByCategory({
         products.map((product) => {
           return (
             <a class="product" href={product.route}>
-              <div class="product-image">
-                <Image src={product.image()} alt={product.name} />
-              </div>
+              <Image src={product.image()} alt={product.name} />
               <div class="product-name">{product.name}</div>
               <div class="product-price">{product.formattedPrice}</div>
             </a>
@@ -47,7 +45,7 @@ const products = getProductsByCategory({
 
 <style>
   .product-container {
-    padding: 1.5rem 2rem;
+    padding: 1.5rem 0.5rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -61,9 +59,9 @@ const products = getProductsByCategory({
 
   .product-gallery {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, 11rem);
     grid-template-rows: max-content;
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
   .product {
@@ -73,18 +71,10 @@ const products = getProductsByCategory({
     text-decoration: none;
   }
 
-  .product-image {
-    border-radius: 4px;
-    height: 20rem;
-    overflow: hidden;
-    margin-bottom: 0.5rem;
-  }
-
-  .product-image > img {
+  img {
     width: 100%;
-    height: inherit;
+    height: auto;
     object-fit: cover;
-    margin-bottom: 0.5rem;
   }
 
   .product-price {
@@ -99,18 +89,7 @@ const products = getProductsByCategory({
 
   @media (min-width: 1024px) {
     .product-gallery {
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(5, minmax(11rem, 17rem));
     }
-  }
-
-  @media (min-width: 1536px) {
-    .product-gallery {
-      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-      max-width: 100rem;
-    }
-
-    .product-image {
-      height: 25rem;
-    }
-  }
+  } */
 </style>
