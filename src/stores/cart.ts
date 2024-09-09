@@ -5,8 +5,9 @@ export const $cart = atom<Cart>({})
 onMount($cart, () => {
   task(async () => {
     const response = await fetch("/api/cart");
-    console.log(response)
+
     const data = JSON.parse(await response.json())
+    
     $cart.set(data)
   })
 })

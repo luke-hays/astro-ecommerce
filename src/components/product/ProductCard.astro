@@ -15,7 +15,8 @@ const { product } = Astro.props;
   import { $counts, getItemCount } from "../../stores/productCounts";
   import { formatNumberToCurrency } from "../../utils/currency";
   import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
-import { deleteCartItem, updateCart } from "../../stores/cart";
+  import { deleteCartItem, updateCart } from "../../stores/cart";
+  import { $products } from "../../stores/products";
 
   class ProductCard extends HTMLElement {
     constructor() {
@@ -57,7 +58,6 @@ import { deleteCartItem, updateCart } from "../../stores/cart";
           addToCartButton.setAttribute("loading", "true");
 
           if (!id) return
-
 
           try {
             updateCart(id, getItemCount(id))

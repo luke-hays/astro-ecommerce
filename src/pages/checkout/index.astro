@@ -33,6 +33,15 @@ const productsCount = Object.keys(products).length;
 <script>
   import "@shoelace-style/shoelace/dist/components/button/button.js";
   import "@shoelace-style/shoelace/dist/components/divider/divider.js";
+
+  import { $totalCost } from "../../stores/totalCost";
+  import { formatNumberToCurrency } from "../../utils/currency";
+  
+  const totalElement = document.getElementById('total');
+
+  if (totalElement) {
+    $totalCost.subscribe(cost => totalElement.textContent = formatNumberToCurrency(cost))
+  }
 </script>
 
 <BaseLayout>
@@ -52,7 +61,7 @@ const productsCount = Object.keys(products).length;
           <div class="checkout-total">
             <h2>Order total</h2>
             <sl-divider />
-            <div id="total">Total:</div>
+            <div class="total-label">Total: <span id="total"></span></div>
             <sl-divider />
             <div class="continue-container">
               <sl-button id="continue" size="small">
@@ -116,7 +125,11 @@ const productsCount = Object.keys(products).length;
     width: 5rem;
   }
 
-  #total {
+  .total-label {
     font-weight: 600;
+  }
+
+  #total {
+    font-weight: 400;
   }
 </style>
