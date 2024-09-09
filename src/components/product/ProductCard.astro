@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { formatNumberToCurrency } from "../../utils/currency"
+import { formatNumberToCurrency } from "../../utils/currency";
 import ProductCounter from "./ProductCounter.astro";
 
 const { product } = Astro.props;
@@ -37,7 +37,7 @@ const { product } = Astro.props;
           removeButton.setAttribute("loading", "true");
 
           try {
-            deleteCartItem(id)
+            deleteCartItem(id);
             this.remove();
           } catch (error) {
             // TODO Render Error state
@@ -57,10 +57,10 @@ const { product } = Astro.props;
           addToCartButton.setAttribute("disabled", "true");
           addToCartButton.setAttribute("loading", "true");
 
-          if (!id) return
+          if (!id) return;
 
           try {
-            updateCart(id, getItemCount(id))
+            updateCart(id, getItemCount(id));
             editDialog.hide();
           } catch (error) {
             // TODO Render Error state

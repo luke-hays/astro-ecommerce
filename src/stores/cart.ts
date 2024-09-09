@@ -1,16 +1,16 @@
-import {task, onMount, atom} from "nanostores"
+import { task, onMount, atom } from "nanostores";
 
-export const $cart = atom<Cart>({})
+export const $cart = atom<Cart>({});
 
 onMount($cart, () => {
   task(async () => {
     const response = await fetch("/api/cart");
 
-    const data = JSON.parse(await response.json())
-    
-    $cart.set(data)
-  })
-})
+    const data = JSON.parse(await response.json());
+
+    $cart.set(data);
+  });
+});
 
 export const updateCart = (id: string, count: number) => {
   task(async () => {
@@ -22,11 +22,11 @@ export const updateCart = (id: string, count: number) => {
       body: JSON.stringify({ product: id, quantity: count }),
     });
 
-    const data = await response.json()
+    const data = await response.json();
 
-    $cart.set(data)
-  })
-}
+    $cart.set(data);
+  });
+};
 
 export const deleteCartItem = (id: string) => {
   task(async () => {
@@ -36,7 +36,6 @@ export const deleteCartItem = (id: string) => {
 
     const data = await response.json();
 
-    $cart.set(data)
-  })
-
-}
+    $cart.set(data);
+  });
+};

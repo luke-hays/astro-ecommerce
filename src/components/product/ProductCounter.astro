@@ -9,7 +9,7 @@ const { id, productQuantity } = Astro.props;
     incrementCount,
     decrementCount,
     getItemCount,
-    updateCount
+    updateCount,
   } from "../../stores/productCounts";
 
   class ProductCounter extends HTMLElement {
@@ -50,14 +50,14 @@ const { id, productQuantity } = Astro.props;
         }
       });
 
-      let initialCount = getItemCount(id)
+      let initialCount = getItemCount(id);
       const initialQuantity = this.dataset.count;
 
       // Product either hasn't been added yet, or this state may not contain it yet
       if (initialCount === 0 && initialQuantity == null) {
-        updateCount(id, 0)
+        updateCount(id, 0);
       } else if (initialCount === 0 && initialQuantity != null) {
-        updateCount(id, parseInt(initialQuantity))
+        updateCount(id, parseInt(initialQuantity));
       }
     }
   }

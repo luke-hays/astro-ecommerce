@@ -4,14 +4,14 @@
   class TotalCartItems extends HTMLElement {
     constructor() {
       super();
-      
+
       $totalCartItems.subscribe((totalItems) => {
         this.textContent = totalItems > 0 ? totalItems.toString() : "";
       });
     }
   }
 
-  customElements.define('total-cart-items', TotalCartItems)
+  customElements.define("total-cart-items", TotalCartItems);
 </script>
 
 <div class="cart">

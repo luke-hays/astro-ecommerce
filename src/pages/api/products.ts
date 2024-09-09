@@ -22,10 +22,10 @@ export const GET: APIRoute = async ({ request, cookies }) => {
       const items = JSON.parse(recordResponse.rows[0].items as string);
       const productCollection = await getCollection("products");
 
-      const products: any = {}
+      const products: any = {};
       for (const product of productCollection) {
         if (Object.hasOwn(items, product.id)) {
-          products[product.id] = product.data.price
+          products[product.id] = product.data.price;
         }
       }
 
@@ -44,4 +44,4 @@ export const GET: APIRoute = async ({ request, cookies }) => {
       "Content-Type": "application/json",
     },
   });
-}
+};

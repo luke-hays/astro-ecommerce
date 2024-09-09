@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import ProductCard from '../../components/product/ProductCard.astro'
+import ProductCard from "../../components/product/ProductCard.astro";
 
 import { getImages } from "../../scripts/images";
 import { getAllProductsInCart } from "../../scripts/product";
@@ -36,11 +36,13 @@ const productsCount = Object.keys(products).length;
 
   import { $totalCost } from "../../stores/totalCost";
   import { formatNumberToCurrency } from "../../utils/currency";
-  
-  const totalElement = document.getElementById('total');
+
+  const totalElement = document.getElementById("total");
 
   if (totalElement) {
-    $totalCost.subscribe(cost => totalElement.textContent = formatNumberToCurrency(cost))
+    $totalCost.subscribe(
+      (cost) => (totalElement.textContent = formatNumberToCurrency(cost)),
+    );
   }
 </script>
 
@@ -61,7 +63,9 @@ const productsCount = Object.keys(products).length;
           <div class="checkout-total">
             <h2>Order total</h2>
             <sl-divider />
-            <div class="total-label">Total: <span id="total"></span></div>
+            <div class="total-label">
+              Total: <span id="total" />
+            </div>
             <sl-divider />
             <div class="continue-container">
               <sl-button id="continue" size="small">

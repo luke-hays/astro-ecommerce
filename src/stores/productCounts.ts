@@ -10,21 +10,22 @@ import { MAX_PRODUCT_QUANTITY } from "../utils/constants";
 // This is used for single and multiple product tracking, like on a specific Product page or the Checkout page
 export const $counts = atom<Cart>({});
 
-export const updateCount = (id: string, newCount: number) => $counts.set({ ...$counts.get(), [id]: newCount });
+export const updateCount = (id: string, newCount: number) =>
+  $counts.set({ ...$counts.get(), [id]: newCount });
 export const getItemCount = (id: string) => $counts.get()[id] ?? 0;
 
 export const removeCount = (id: string) => {
-  const counts = Object
-    .entries($counts.get())
-    .filter(([itemId, _]) => itemId !== id)
+  const counts = Object.entries($counts.get()).filter(
+    ([itemId, _]) => itemId !== id,
+  );
 
-  const newCounts = Object.fromEntries(counts)
+  const newCounts = Object.fromEntries(counts);
 
-  $counts.set({...newCounts})
-}
+  $counts.set({ ...newCounts });
+};
 
 export const incrementCount = (id: string) => {
-  const count = getItemCount(id)
+  const count = getItemCount(id);
 
   if (count >= MAX_PRODUCT_QUANTITY) return;
 
@@ -32,13 +33,13 @@ export const incrementCount = (id: string) => {
 };
 
 export const decrementCount = (id: string) => {
-  const count = getItemCount(id)
+  const count = getItemCount(id);
 
   if (count <= 0) return;
 
   if (count - 1 < 1) {
-    removeCount(id)
+    removeCount(id);
   } else {
     updateCount(id, count - 1);
-  };
+  }
 };
