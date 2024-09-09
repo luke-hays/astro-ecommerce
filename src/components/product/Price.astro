@@ -15,7 +15,8 @@ const { product } = Astro.props;
       const id = this.dataset.id;
 
       if (id) {
-        $products.subscribe((products) => {
+        $products.subscribe(async (productsPromise) => {
+          const products = await productsPromise
           const cost = products[id];
           const quantity = getCartItem(id);
 

@@ -1,5 +1,5 @@
 ---
-const { productId, buttonText = "Add to cart" } = Astro.props;
+const {productId, buttonText = "Add to cart"} = Astro.props;
 ---
 
 <script>
@@ -7,46 +7,48 @@ const { productId, buttonText = "Add to cart" } = Astro.props;
   import { updateCart } from "../../stores/cart";
   import { $counts, getItemCount } from "../../stores/productCounts";
 
-  class AddToCartButton extends SlButton {
+  class AddToCartButton extends HTMLElement {
     constructor() {
-      super();
+      super()
 
-      const productId = this.dataset.id;
+      const productId = this.dataset.id
+      const button = this.querySelector('#add')
 
-      if (!productId) return;
+      if (!productId || !button) return
 
-      this.addEventListener("click", async () => {
-        this.setAttribute("disabled", "true");
-        this.setAttribute("loading", "true");
-
+      button.addEventListener('click', async () => {
+        button.setAttribute("disabled", "true");
+        button.setAttribute("loading", "true");
+        
         try {
-          await updateCart(productId, getItemCount(productId));
+          await updateCart(productId, getItemCount(productId))
         } catch (error) {
+
         } finally {
-          this.removeAttribute("disabled");
-          this.removeAttribute("loading");
+          button.removeAttribute("disabled");
+          button.removeAttribute("loading");
         }
-      });
+      })
 
       $counts.subscribe((counts) => {
         if (counts[productId] <= 0 || counts[productId] > 10) {
-          this.setAttribute("disabled", "true");
+          button.setAttribute("disabled", "true");
         } else {
-          this.removeAttribute("disabled");
+          button.removeAttribute("disabled");
         }
-      });
-    }
+      })
+    } 
   }
 
-  customElements.define("add-to-cart-button", AddToCartButton);
+  customElements.define('add-to-cart-button', AddToCartButton)
 </script>
 
 <add-to-cart-button data-id={productId}>
-  {buttonText}
+  <sl-button id="add">{buttonText}</sl-button>
 </add-to-cart-button>
 
 <style>
-  add-to-cart-button::part(base) {
+  sl-button::part(base) {
     width: 10rem;
   }
 </style>

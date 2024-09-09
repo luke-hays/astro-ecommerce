@@ -1,8 +1,8 @@
 import { computed, task } from "nanostores";
 import { $cart } from "./cart";
 
-export const $products = computed($cart, (cart) =>
-  task(async () => {
+export const $products = computed($cart, async (cart) =>
+  await task(async () => {
     if (Object.keys(cart).length <= 0) {
       return {};
     }

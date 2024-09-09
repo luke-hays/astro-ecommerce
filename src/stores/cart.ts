@@ -17,6 +17,10 @@ onMount($cart, () => {
   });
 });
 
+export const getCartItem = (id: string) => {
+  return $cart.get()[id];
+};
+
 export const updateCart = async (id: string, count: number) => {
   await task(async () => {
     const response = await fetch("/api/cart", {
@@ -33,8 +37,8 @@ export const updateCart = async (id: string, count: number) => {
   });
 };
 
-export const deleteCartItem = (id: string) => {
-  task(async () => {
+export const deleteCartItem = async (id: string) => {
+  await task(async () => {
     const response = await fetch(`/api/cart?${PARAM_PRODUCT_ID}=${id}`, {
       method: "DELETE",
     });
@@ -45,12 +49,8 @@ export const deleteCartItem = (id: string) => {
   });
 };
 
-export const getCartItem = (id: string) => {
-  return $cart.get()[id];
-};
-
-export const deleteCart = () => {
-  task(async () => {
+export const deleteCart = async () => {
+  await task(async () => {
     await fetch("/api/empty-cart", { method: "DELETE" });
     $cart.set({});
   });

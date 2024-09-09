@@ -6,6 +6,7 @@ import ProductCard from "../../components/product/ProductCard.astro";
 
 import { getImages } from "../../scripts/images";
 import { getAllProductsInCart } from "../../scripts/product";
+import OrderTotal from "../../components/checkout/orderTotal.astro";
 
 const productCollection = await getCollection("products");
 const images = getImages();
@@ -33,32 +34,19 @@ const productsCount = Object.keys(products).length;
 
 <script>
   import "@shoelace-style/shoelace/dist/components/button/button.js";
-  import "@shoelace-style/shoelace/dist/components/divider/divider.js";
-
-  import { $totalCost } from "../../stores/totalCost";
-  import { formatNumberToCurrency } from "../../utils/currency";
   import { deleteCart } from "../../stores/cart";
+import { $totalCartItems } from "../../stores/totalCartItems";
 
-  const totalElement = document.getElementById("total");
   const emptyCartButton = document.getElementById("empty-cart");
-  const cartList = document.getElementById("cart-list");
-  const checkoutTotal = document.getElementById("checkout-total");
-
-  if (totalElement) {
-    $totalCost.subscribe(
-      (cost) => (totalElement.textContent = formatNumberToCurrency(cost)),
-    );
-  }
+  const checkoutCart = document.getElementById("checkout-cart")
 
   if (emptyCartButton) {
     const sessionId = emptyCartButton.dataset.id;
     if (sessionId) {
-      emptyCartButton.addEventListener("click", () => {
-        deleteCart();
-
-        cartList?.remove();
-        checkoutTotal?.remove();
+      emptyCartButton.addEventListener("click", async () => {
+        await deleteCart();
         emptyCartButton.remove();
+        checkoutCart?.remove();
       });
     }
   }
@@ -70,37 +58,26 @@ const productsCount = Object.keys(products).length;
       <div class="title">
         <h1>Your cart</h1>
         {
-          productsCount > 0 && (
+          productsCount > 0 && 
             <sl-button size="small" id="empty-cart" data-id={sessionId}>
               Empty cart
             </sl-button>
+        }
+      </div>
+      <div id="checkout-cart">
+        <div id="cart-list">
+          {
+            products.map((product) => {
+              return <ProductCard product={product} />;
+            })
+          }
+        </div>
+        {
+          productsCount > 0 && (
+            <OrderTotal />
           )
         }
       </div>
-      <div id="cart-list">
-        {
-          products.map((product) => {
-            return <ProductCard product={product} />;
-          })
-        }
-      </div>
-      {
-        productsCount > 0 && (
-          <div id="checkout-total">
-            <h2>Order total</h2>
-            <sl-divider />
-            <div class="total-label">
-              Total: <span id="total" />
-            </div>
-            <sl-divider />
-            <div class="continue-container">
-              <sl-button id="continue" size="small">
-                Continue
-              </sl-button>
-            </div>
-          </div>
-        )
-      }
     </div>
   </div>
 </BaseLayout>
@@ -132,38 +109,13 @@ const productsCount = Object.keys(products).length;
     align-items: end;
   }
 
-  #checkout-total {
+  #cart-list {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    border: 1px solid var(--color-text-ink-200);
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    background-color: white;
+    gap: 1rem;
   }
 
-  h2 {
-    margin: 0;
-  }
-
-  .continue-container {
-    display: flex;
-    justify-content: end;
-  }
-
-  #continue {
-    width: 5rem;
-  }
-
-  .total-label {
-    font-weight: 600;
-  }
-
-  #total {
-    font-weight: 400;
-  }
-
-  #cart-list {
+  #checkout-cart {
     display: flex;
     flex-direction: column;
     gap: 1rem;
