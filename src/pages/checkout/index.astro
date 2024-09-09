@@ -16,8 +16,6 @@ let sessionId = "";
 if (Astro.cookies.has("cart")) {
   sessionId = Astro.cookies.get("cart")?.value ?? "";
 
-  console.log(sessionId);
-
   if (sessionId) {
     try {
       const url = new URL(`/api/cart?session-id=${sessionId}`, Astro.url);
@@ -56,7 +54,8 @@ const productsCount = Object.keys(products).length;
     const sessionId = emptyCartButton.dataset.id;
     if (sessionId) {
       emptyCartButton.addEventListener("click", () => {
-        deleteCart(sessionId);
+        deleteCart();
+        
         cartList?.remove();
         checkoutTotal?.remove();
         emptyCartButton.remove();
