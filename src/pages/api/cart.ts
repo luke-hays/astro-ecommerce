@@ -1,41 +1,19 @@
 import type { APIRoute } from "astro";
 import { turso } from "../../turso";
 import { v4 as uuid } from "uuid";
+import { getValueFromApiRoute } from "./responses/session";
+import { badRequest, emptyJsonBody, jsonBody } from "./responses/generic";
+import { getCartForSession } from "./db/cart";
 
 export const GET: APIRoute = async ({ request, cookies }) => {
-  let sessionId: string | undefined | null = cookies.get("cart")?.value;
+  let sessionId = getValueFromApiRoute({request, cookies, key: 'session-id'})
 
-  if (!sessionId) {
-    const url = new URL(request.url);
-    const searchParams = new URLSearchParams(url.search);
+  // A session may not yet exist for this user, so we need to return an empty response
+  if (!sessionId) return emptyJsonBody()
 
-    sessionId = searchParams.get("id");
-  }
+  const items = await getCartForSession(sessionId)
 
-  if (sessionId) {
-    const recordResponse = await turso.execute({
-      sql: "SELECT * FROM cart WHERE session_id = ?;",
-      args: [sessionId],
-    });
-
-    if (recordResponse.rows.length > 0) {
-      const items = recordResponse.rows[0].items;
-
-      return new Response(JSON.stringify(items), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    }
-  }
-
-  return new Response("{}", {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  return jsonBody(items)
 };
 
 export const POST: APIRoute = async ({ cookies, request }) => {

@@ -30,7 +30,7 @@ if (Astro.cookies.has("cart")) {
 
   if (sessionId) {
     try {
-      const url = new URL(`/api/cart?id=${sessionId}`, Astro.url);
+      const url = new URL(`/api/cart?session-id=${sessionId}`, Astro.url);
       const response = await fetch(url);
       cart = JSON.parse(await response.json());
     } catch (error) {
