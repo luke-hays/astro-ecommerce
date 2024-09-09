@@ -51,11 +51,7 @@ export const getCartItem = (id: string) => {
 
 export const deleteCart = () => {
   task(async () => {
-    try {
-      await fetch("/api/empty-cart", { method: "DELETE" });
-      $cart.set({});
-    } catch {
-      // TODO: think of error handling
-    }
+    await fetch("/api/empty-cart", { method: "DELETE" });
+    $cart.set({});
   });
 };
