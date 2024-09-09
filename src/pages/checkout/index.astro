@@ -12,8 +12,11 @@ const images = getImages();
 
 let cart = {} as Cart;
 
+let sessionId = ''
 if (Astro.cookies.has("cart")) {
-  const sessionId = Astro.cookies.get("cart")?.value;
+  sessionId = Astro.cookies.get("cart")?.value ?? '';
+
+  console.log(sessionId)
 
   if (sessionId) {
     try {
@@ -36,13 +39,26 @@ const productsCount = Object.keys(products).length;
 
   import { $totalCost } from "../../stores/totalCost";
   import { formatNumberToCurrency } from "../../utils/currency";
+  import { deleteCart } from "../../stores/cart";
 
   const totalElement = document.getElementById("total");
+  const emptyCartButton = document.getElementById("empty-cart");
+  const cartList = document.getElementById('cart-list');
 
   if (totalElement) {
     $totalCost.subscribe(
-      (cost) => (totalElement.textContent = formatNumberToCurrency(cost)),
+      (cost) => totalElement.textContent = formatNumberToCurrency(cost),
     );
+  }
+
+  if (emptyCartButton) {
+    const sessionId = emptyCartButton.dataset.id
+    if (sessionId) {
+      emptyCartButton.addEventListener('click', () => {
+        deleteCart(sessionId)
+        cartList?.remove()
+      })
+    }
   }
 </script>
 
@@ -51,13 +67,15 @@ const productsCount = Object.keys(products).length;
     <div class="checkout-container">
       <div class="title">
         <h1>Your cart</h1>
-        {productsCount > 0 && <sl-button size="small">Empty cart</sl-button>}
+        {productsCount > 0 && <sl-button size="small" id="empty-cart" data-id={sessionId}>Empty cart</sl-button>}
       </div>
-      {
-        products.map((product) => {
-          return <ProductCard product={product} />;
-        })
-      }
+      <div id='cart-list'>
+        {
+          products.map((product) => {
+            return <ProductCard product={product} />;
+          })
+        }
+      </div>
       {
         productsCount > 0 && (
           <div class="checkout-total">

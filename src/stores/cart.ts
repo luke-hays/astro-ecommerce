@@ -6,9 +6,13 @@ onMount($cart, () => {
   task(async () => {
     const response = await fetch("/api/cart");
 
-    const data = JSON.parse(await response.json());
+    const data = await response.json();
 
-    $cart.set(data);
+    if (typeof data === "string") {
+      $cart.set(JSON.parse(data))
+    } else {
+      $cart.set(data)
+    }
   });
 });
 
@@ -42,4 +46,15 @@ export const deleteCartItem = (id: string) => {
 
 export const getCartItem = (id: string) => {
   return $cart.get()[id]
+}
+
+export const deleteCart = (id: string) => {
+  task(async () => {
+    try {
+      await fetch('/api/empty-cart', {method: "DELETE"})
+      $cart.set({})
+    } catch {
+      // TODO: think of error handling
+    }
+  })
 }
