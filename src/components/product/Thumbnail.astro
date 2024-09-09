@@ -1,0 +1,23 @@
+---
+import { Image } from "astro:assets";
+
+const { product } = Astro.props;
+---
+
+<div class="product-image">
+  <Image src={product.image()} alt={product.name} />
+</div>
+
+<style>
+  .product-image {
+    border-radius: 4px;
+    height: 10rem;
+    overflow: hidden;
+  }
+
+  .product-image > img {
+    width: 100%;
+    height: inherit;
+    object-fit: cover;
+  }
+</style>
