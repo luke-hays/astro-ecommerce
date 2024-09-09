@@ -17,8 +17,8 @@ onMount($cart, () => {
   });
 });
 
-export const updateCart = (id: string, count: number) => {
-  task(async () => {
+export const updateCart = async (id: string, count: number) => {
+  await task(async () => {
     const response = await fetch("/api/cart", {
       method: "POST",
       headers: {

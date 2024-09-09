@@ -1,11 +1,12 @@
 ---
 // TODO: Get User's initial quantiy of this product
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ProductCounter from "../../components/product/ProductCounter.astro";
 import Breadcrumb from "../../components/shared/Breadcrumb.astro";
+import ProductImage from "../../components/product/ProductImage.astro";
+import AddToCartButton from "../../components/product/AddToCartButton.astro";
 
 import { getImages } from "../../scripts/images";
 import { getProduct } from "../../scripts/product";
@@ -40,40 +41,14 @@ if (Astro.cookies.has("cart")) {
 }
 ---
 
-<script>
-  import "@shoelace-style/shoelace/dist/components/button/button.js";
-  import { getItemCount } from "../../stores/productCounts";
-  import { updateCart } from "../../stores/cart";
-
-  const addToCartButton = document.getElementById("add-to-cart");
-  const id = addToCartButton?.dataset.id;
-
-  if (addToCartButton && id) {
-    addToCartButton.addEventListener("click", async () => {
-      addToCartButton.setAttribute("disabled", "true");
-      addToCartButton.setAttribute("loading", "true");
-
-      try {
-        updateCart(id, getItemCount(id));
-      } catch (error) {
-        // TODO Render Error state
-        console.log(error);
-      } finally {
-        addToCartButton.removeAttribute("disabled");
-        addToCartButton.removeAttribute("loading");
-      }
-    });
-  }
-</script>
-
 <BaseLayout>
   <div class="product">
     <div class="product-layout">
       <div class="breadcrumbs">
         <Breadcrumb routes={breadcrumbs} />
       </div>
-      <div class="img-container">
-        <Image src={product.image()} alt={product.name} />
+      <div class="product-image">
+        <ProductImage product={product}/>
       </div>
       <section>
         <h2>{product.name}</h2>
@@ -81,9 +56,7 @@ if (Astro.cookies.has("cart")) {
         <p>{product.description}</p>
         <div class="product-controls">
           <ProductCounter id={product.id} productQuantity={cart[product.id]} />
-          <sl-button data-id={product.id} id="add-to-cart">
-            Add to cart
-          </sl-button>
+          <AddToCartButton productId={product.id} />
         </div>
       </section>
     </div>
@@ -91,42 +64,6 @@ if (Astro.cookies.has("cart")) {
 </BaseLayout>
 
 <style>
-  img {
-    max-width: 100%;
-    height: 100%;
-    object-fit: cover;
-    grid-area: image;
-  }
-
-  section {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    grid-area: details;
-  }
-
-  h2 {
-    margin: 0;
-    color: var(--color-text-ink-500);
-  }
-
-  p {
-    margin: 0;
-    color: var(--color-text-ink-400);
-  }
-
-  .breadcrumbs {
-    grid-area: breadcrumbs;
-  }
-
-  .img-container {
-    border-radius: 8px;
-    overflow: hidden;
-    height: 30rem;
-    width: 100%;
-    max-width: 25rem;
-  }
-
   .product-layout {
     display: grid;
     grid-template-areas:
@@ -138,8 +75,29 @@ if (Astro.cookies.has("cart")) {
     gap: 0.5rem;
   }
 
-  #add-to-cart {
-    width: 10rem;
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    grid-area: details;
+  }
+
+  .breadcrumbs {
+    grid-area: breadcrumbs;
+  }
+
+  .product-image {
+    grid-area: image;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--color-text-ink-500);
+  }
+
+  p {
+    margin: 0;
+    color: var(--color-text-ink-400);
   }
 
   .product-controls {

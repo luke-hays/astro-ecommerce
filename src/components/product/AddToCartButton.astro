@@ -1,0 +1,53 @@
+---
+const {productId, buttonText = "Add to cart"} = Astro.props;
+---
+
+<script>
+  import { SlButton } from "@shoelace-style/shoelace";
+  import { updateCart } from "../../stores/cart";
+  import { $counts, getItemCount } from "../../stores/productCounts";
+
+  class AddToCartButton extends SlButton {
+    constructor() {
+      super()
+
+      const productId = this.dataset.id
+
+      if (!productId) return
+
+      this.addEventListener('click', async () => {
+        this.setAttribute("disabled", "true");
+        this.setAttribute("loading", "true");
+        
+        try {
+          await updateCart(productId, getItemCount(productId))
+        } catch (error) {
+
+        } finally {
+          this.removeAttribute("disabled");
+          this.removeAttribute("loading");
+        }
+      })
+
+      $counts.subscribe((counts) => {
+        if (counts[productId] <= 0 || counts[productId] > 10) {
+          this.setAttribute("disabled", "true");
+        } else {
+          this.removeAttribute("disabled");
+        }
+      })
+    } 
+  }
+
+  customElements.define('add-to-cart-button', AddToCartButton)
+</script>
+
+<add-to-cart-button data-id={productId}>
+  {buttonText}
+</add-to-cart-button>
+
+<style>
+  add-to-cart-button::part(base) {
+    width: 10rem;
+  }
+</style>
