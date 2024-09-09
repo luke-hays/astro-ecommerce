@@ -1,23 +1,6 @@
 ---
 import Header from "../components/shared/Header.astro";
 import Footer from "../components/shared/Footer.astro";
-
-let count = 0;
-
-if (Astro.cookies.has("cart")) {
-  const sessionId = Astro.cookies.get("cart")?.value;
-
-  if (sessionId) {
-    try {
-      const url = new URL(`/api/cart-count?id=${sessionId}`, Astro.url);
-      const response = await fetch(url);
-      const data = await response.json();
-      count = data.count;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-}
 ---
 
 <html lang="en">
@@ -33,7 +16,7 @@ if (Astro.cookies.has("cart")) {
   </head>
   <body>
     <div id="layout-grid">
-      <header id="treecommerce-header" data-count={count}>
+      <header id="treecommerce-header">
         <Header />
       </header>
       <main>

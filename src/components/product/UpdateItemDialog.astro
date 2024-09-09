@@ -1,0 +1,80 @@
+---
+import ProductCounter from "./ProductCounter.astro";
+import Thumbnail from "./Thumbnail.astro";
+
+const { product } = Astro.props;
+---
+
+<script>
+  import { SlDialog } from "@shoelace-style/shoelace";
+  import { updateCart } from "../../stores/cart";
+  import { getItemCount } from "../../stores/productCounts";
+
+  class UpdateItemDialog extends SlDialog {
+    constructor() {
+      super()
+
+      const id = this.dataset.id;
+      const addToCartButton = this.querySelector("#add-to-cart");
+
+      if (addToCartButton && id) {
+        addToCartButton.addEventListener("click", async () => {
+          addToCartButton.setAttribute("disabled", "true");
+          addToCartButton.setAttribute("loading", "true");
+
+          if (!id) return;
+
+          try {
+            updateCart(id, getItemCount(id));
+            this.hide();
+          } catch (error) {
+            // TODO Render Error state
+          } finally {
+            addToCartButton.removeAttribute("disabled");
+            addToCartButton.removeAttribute("loading");
+          }
+        });
+      }
+    }
+  }
+
+  customElements.define('update-item-dialog', UpdateItemDialog)
+</script>
+
+<update-item-dialog
+  id={`edit-${product.id}-dialog`}
+  label={`Edit ${product.name} Quantity?`}
+  data-id={product.id}
+>
+  <div class="product-dialog">
+    <Thumbnail product={product}/>
+    <div class="update-cart">
+      <ProductCounter id={product.id} productQuantity={product.quantity} />
+      <sl-button id="add-to-cart">
+        Update cart
+      </sl-button>
+    </div>
+  </div>
+</update-item-dialog>
+
+<style>
+  update-item-dialog::part(base) {
+    min-height: 20rem;
+  }
+
+  .product-dialog {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .product-dialog > .product-image {
+    width: 10rem;
+  }
+  
+  .update-cart {
+    display: flex;
+    gap: 1rem;
+  }
+</style>

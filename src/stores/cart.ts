@@ -39,3 +39,7 @@ export const deleteCartItem = (id: string) => {
     $cart.set(data);
   });
 };
+
+export const getCartItem = (id: string) => {
+  return $cart.get()[id]
+}

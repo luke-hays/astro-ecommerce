@@ -1,22 +1,18 @@
 ---
-import { Image } from "astro:assets";
-import { formatNumberToCurrency } from "../../utils/currency";
-import ProductCounter from "./ProductCounter.astro";
+import UpdateItemDialog from "./UpdateItemDialog.astro";
+import Thumbnail from "./Thumbnail.astro"
+import Price from "./Price.astro";
+import Quantity from "./Quantity.astro";
 
 const { product } = Astro.props;
 ---
 
 <script>
   import "@shoelace-style/shoelace/dist/components/button/button.js";
-  import "@shoelace-style/shoelace/dist/components/icon-button/icon-button.js";
   import "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
-
-  import { $totalCartItems } from "../../stores/totalCartItems";
-  import { $counts, getItemCount } from "../../stores/productCounts";
-  import { formatNumberToCurrency } from "../../utils/currency";
   import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
-  import { deleteCartItem, updateCart } from "../../stores/cart";
-  import { $products } from "../../stores/products";
+
+  import { deleteCartItem } from "../../stores/cart";
 
   class ProductCard extends HTMLElement {
     constructor() {
@@ -24,12 +20,10 @@ const { product } = Astro.props;
 
       const id = this.dataset.id;
       const quantity = this.dataset.quantity;
-      const price = this.dataset.price;
 
       const removeButton = this.querySelector(`#remove-${id}`);
       const editButton = this.querySelector(`#edit-${id}`);
       const editDialog = this.querySelector(`#edit-${id}-dialog`) as SlDialog;
-      const addToCartButton = this.querySelector("#add-to-cart");
 
       removeButton?.addEventListener("click", async () => {
         if (id && quantity) {
@@ -51,43 +45,6 @@ const { product } = Astro.props;
       editButton?.addEventListener("click", () => {
         editDialog.show();
       });
-
-      if (addToCartButton) {
-        addToCartButton.addEventListener("click", async () => {
-          addToCartButton.setAttribute("disabled", "true");
-          addToCartButton.setAttribute("loading", "true");
-
-          if (!id) return;
-
-          try {
-            updateCart(id, getItemCount(id));
-            editDialog.hide();
-          } catch (error) {
-            // TODO Render Error state
-          } finally {
-            addToCartButton.removeAttribute("disabled");
-            addToCartButton.removeAttribute("loading");
-          }
-        });
-      }
-
-      $totalCartItems.subscribe(() => {
-        const counts = $counts.get();
-
-        const priceDisplay = this.querySelector("#price");
-        if (priceDisplay && price && id) {
-          const count = counts[id] ?? quantity;
-          priceDisplay.textContent = formatNumberToCurrency(
-            parseInt(price) * count,
-          );
-        }
-
-        const quantityDisplay = this.querySelector("#quantityx");
-        if (quantityDisplay && id && quantity) {
-          let count = counts[id] ?? quantity;
-          quantityDisplay.textContent = `x${count}`;
-        }
-      });
     }
   }
 
@@ -100,41 +57,22 @@ const { product } = Astro.props;
   data-quantity={product.quantity}
   data-price={product.price}
 >
-  <div class="product-image">
-    <Image src={product.image()} alt={product.name} />
-  </div>
+  <Thumbnail product={product}/>
   <div class="product-details">
     <div>
       <div class="name">{product.name}</div>
-      <div id="price" class="price">
-        {formatNumberToCurrency(product.price * product.quantity)}
-      </div>
+      <Price product={product}/>
     </div>
 
     <div class="product-actions">
-      <div id="quantityx" class="quantity">x{product.quantity}</div>
+      <Quantity product={product}/>
       <div class="controls">
         <sl-button id={`edit-${product.id}`} size="small">Edit</sl-button>
         <sl-button id={`remove-${product.id}`} size="small">Remove</sl-button>
       </div>
     </div>
   </div>
-  <sl-dialog
-    id={`edit-${product.id}-dialog`}
-    label={`Edit ${product.name} Quantity?`}
-  >
-    <div class="product-dialog">
-      <div class="product-image">
-        <Image src={product.image()} alt={product.name} />
-      </div>
-      <div class="update-cart">
-        <ProductCounter id={product.id} productQuantity={product.quantity} />
-        <sl-button data-product={product.id} id="add-to-cart">
-          Update cart
-        </sl-button>
-      </div>
-    </div>
-  </sl-dialog>
+  <UpdateItemDialog product={product}/>
 </product-card>
 
 <style>
@@ -155,45 +93,10 @@ const { product } = Astro.props;
     flex-grow: 1;
   }
 
-  .product-image {
-    border-radius: 4px;
-    height: 10rem;
-    overflow: hidden;
-  }
-
-  sl-dialog::part(base) {
-    min-height: 20rem;
-  }
-
-  .product-image > img {
-    width: 100%;
-    height: inherit;
-    object-fit: cover;
-  }
-
-  .product-dialog {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .product-dialog > .product-image {
-    width: 10rem;
-  }
-
   .name {
     font-size: 1.2rem;
     font-weight: 600;
     color: var(--color-text-ink-500);
-  }
-
-  .quantity {
-    color: var(--color-text-ink-300);
-  }
-
-  .price {
-    color: var(--color-text-ink-300);
   }
 
   .product-actions {
@@ -207,10 +110,5 @@ const { product } = Astro.props;
     display: flex;
     gap: 0.25rem;
     flex-wrap: nowrap;
-  }
-
-  .update-cart {
-    display: flex;
-    gap: 1rem;
   }
 </style>

@@ -1,0 +1,37 @@
+---
+// TODO: This can be confusing, breakdown total for all items and original price
+const { product } = Astro.props
+---
+
+<script>
+  import { getCartItem } from "../../stores/cart"
+  import { $products } from "../../stores/products"
+  import { formatNumberToCurrency } from "../../utils/currency"
+
+  class PriceDisplay extends HTMLElement{
+    constructor() {
+      super()
+
+      const id = this.dataset.id
+
+      if (id) {
+        $products.subscribe(products => {
+          const cost = products[id]
+          const quantity = getCartItem(id)
+
+          this.textContent = formatNumberToCurrency(cost * quantity)
+        })
+      }
+    }
+  }
+
+  customElements.define('price-display', PriceDisplay)
+</script>
+
+<price-display data-id={product.id}></price-display>
+
+<style>
+  price-display {
+    color: var(--color-text-ink-300);
+  }
+</style>
