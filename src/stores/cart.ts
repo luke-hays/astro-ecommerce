@@ -1,4 +1,5 @@
 import { task, onMount, atom } from "nanostores";
+import { PARAM_PRODUCT_ID } from "../utils/constants";
 
 export const $cart = atom<Cart>({});
 
@@ -7,6 +8,8 @@ onMount($cart, () => {
     const response = await fetch("/api/cart");
 
     const data = await response.json();
+
+    console.log(data)
 
     if (typeof data === "string") {
       $cart.set(JSON.parse(data))
@@ -34,7 +37,7 @@ export const updateCart = (id: string, count: number) => {
 
 export const deleteCartItem = (id: string) => {
   task(async () => {
-    const response = await fetch(`/api/cart?id=${id}`, {
+    const response = await fetch(`/api/cart?${PARAM_PRODUCT_ID}=${id}`, {
       method: "DELETE",
     });
 
