@@ -12,11 +12,11 @@ const images = getImages();
 
 let cart = {} as Cart;
 
-let sessionId = ''
+let sessionId = "";
 if (Astro.cookies.has("cart")) {
-  sessionId = Astro.cookies.get("cart")?.value ?? '';
+  sessionId = Astro.cookies.get("cart")?.value ?? "";
 
-  console.log(sessionId)
+  console.log(sessionId);
 
   if (sessionId) {
     try {
@@ -43,24 +43,24 @@ const productsCount = Object.keys(products).length;
 
   const totalElement = document.getElementById("total");
   const emptyCartButton = document.getElementById("empty-cart");
-  const cartList = document.getElementById('cart-list');
-  const checkoutTotal = document.getElementById('checkout-total')
+  const cartList = document.getElementById("cart-list");
+  const checkoutTotal = document.getElementById("checkout-total");
 
   if (totalElement) {
     $totalCost.subscribe(
-      (cost) => totalElement.textContent = formatNumberToCurrency(cost),
+      (cost) => (totalElement.textContent = formatNumberToCurrency(cost)),
     );
   }
 
   if (emptyCartButton) {
-    const sessionId = emptyCartButton.dataset.id
+    const sessionId = emptyCartButton.dataset.id;
     if (sessionId) {
-      emptyCartButton.addEventListener('click', () => {
-        deleteCart(sessionId)
-        cartList?.remove()
-        checkoutTotal?.remove()
-        emptyCartButton.remove()
-      })
+      emptyCartButton.addEventListener("click", () => {
+        deleteCart(sessionId);
+        cartList?.remove();
+        checkoutTotal?.remove();
+        emptyCartButton.remove();
+      });
     }
   }
 </script>
@@ -70,9 +70,15 @@ const productsCount = Object.keys(products).length;
     <div class="checkout-container">
       <div class="title">
         <h1>Your cart</h1>
-        {productsCount > 0 && <sl-button size="small" id="empty-cart" data-id={sessionId}>Empty cart</sl-button>}
+        {
+          productsCount > 0 && (
+            <sl-button size="small" id="empty-cart" data-id={sessionId}>
+              Empty cart
+            </sl-button>
+          )
+        }
       </div>
-      <div id='cart-list'>
+      <div id="cart-list">
         {
           products.map((product) => {
             return <ProductCard product={product} />;
@@ -157,7 +163,7 @@ const productsCount = Object.keys(products).length;
   #total {
     font-weight: 400;
   }
-  
+
   #cart-list {
     display: flex;
     flex-direction: column;

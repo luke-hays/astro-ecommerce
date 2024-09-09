@@ -1,20 +1,21 @@
 import type { APIRoute } from "astro";
 
 import { getCartValueFromApiRoute } from "./utils/session";
-import { missingResource, badRequest, okResponse } from "./responses/generic";
+import { badRequest, okResponse } from "./responses/generic";
 import { deleteCart, getCartForSession } from "./db/cart";
 
-export const DELETE: APIRoute = async ({request, cookies}) => {
-  const sessionId = getCartValueFromApiRoute({request, cookies})
+export const DELETE: APIRoute = async ({ request, cookies }) => {
+  const sessionId = getCartValueFromApiRoute({ request, cookies });
 
-  if (!sessionId) return badRequest()
+  if (!sessionId) return badRequest();
 
-  const {cart, sessionHasCart} = await getCartForSession(sessionId)
-  const parsedItems = JSON.parse(cart) as Cart
+  const { cart, sessionHasCart } = await getCartForSession(sessionId);
+  const parsedItems = JSON.parse(cart) as Cart;
 
-  if (Object.keys(parsedItems).length === 0 || !sessionHasCart) return badRequest()
+  if (Object.keys(parsedItems).length === 0 || !sessionHasCart)
+    return badRequest();
 
-  await deleteCart(sessionId)
+  await deleteCart(sessionId);
 
-  return okResponse()
-}
+  return okResponse();
+};

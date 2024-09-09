@@ -12,7 +12,7 @@ const { product } = Astro.props;
 
   class UpdateItemDialog extends SlDialog {
     constructor() {
-      super()
+      super();
 
       const id = this.dataset.id;
       const addToCartButton = this.querySelector("#add-to-cart");
@@ -38,7 +38,7 @@ const { product } = Astro.props;
     }
   }
 
-  customElements.define('update-item-dialog', UpdateItemDialog)
+  customElements.define("update-item-dialog", UpdateItemDialog);
 </script>
 
 <update-item-dialog
@@ -47,12 +47,10 @@ const { product } = Astro.props;
   data-id={product.id}
 >
   <div class="product-dialog">
-    <Thumbnail product={product}/>
+    <Thumbnail product={product} />
     <div class="update-cart">
       <ProductCounter id={product.id} productQuantity={product.quantity} />
-      <sl-button id="add-to-cart">
-        Update cart
-      </sl-button>
+      <sl-button id="add-to-cart"> Update cart </sl-button>
     </div>
   </div>
 </update-item-dialog>
@@ -72,7 +70,7 @@ const { product } = Astro.props;
   .product-dialog > .product-image {
     width: 10rem;
   }
-  
+
   .update-cart {
     display: flex;
     gap: 1rem;

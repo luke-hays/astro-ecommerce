@@ -6,11 +6,11 @@ import { getCartValueFromApiRoute } from "./utils/session";
 import { badRequest } from "./responses/generic";
 
 export const GET: APIRoute = async ({ request, cookies }) => {
-  const sessionId = getCartValueFromApiRoute({request, cookies})
+  const sessionId = getCartValueFromApiRoute({ request, cookies });
 
-  if (!sessionId) return badRequest()
+  if (!sessionId) return badRequest();
 
-  const {cart} = await getCartForSession(sessionId)
+  const { cart } = await getCartForSession(sessionId);
   const productCollection = await getCollection("products");
 
   const parsedCart = JSON.parse(cart);

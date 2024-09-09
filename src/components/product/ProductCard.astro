@@ -1,6 +1,6 @@
 ---
 import UpdateItemDialog from "./UpdateItemDialog.astro";
-import Thumbnail from "./Thumbnail.astro"
+import Thumbnail from "./Thumbnail.astro";
 import Price from "./Price.astro";
 import Quantity from "./Quantity.astro";
 
@@ -57,22 +57,22 @@ const { product } = Astro.props;
   data-quantity={product.quantity}
   data-price={product.price}
 >
-  <Thumbnail product={product}/>
+  <Thumbnail product={product} />
   <div class="product-details">
     <div>
       <div class="name">{product.name}</div>
-      <Price product={product}/>
+      <Price product={product} />
     </div>
 
     <div class="product-actions">
-      <Quantity product={product}/>
+      <Quantity product={product} />
       <div class="controls">
         <sl-button id={`edit-${product.id}`} size="small">Edit</sl-button>
         <sl-button id={`remove-${product.id}`} size="small">Remove</sl-button>
       </div>
     </div>
   </div>
-  <UpdateItemDialog product={product}/>
+  <UpdateItemDialog product={product} />
 </product-card>
 
 <style>
