@@ -20,20 +20,6 @@ if (Astro.cookies.has("cart")) {
 }
 ---
 
-<script>
-  import { $totalCartItems } from "../stores/totalCartItems";
-
-  const header = document.getElementById("treecommerce-header");
-
-  if (header) {
-    const count = header.dataset.count
-      ? Number.parseInt(header.dataset.count)
-      : 0;
-
-    $totalCartItems.set(count);
-  }
-</script>
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
