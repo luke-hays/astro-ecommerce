@@ -1,8 +1,8 @@
 ---
 import UpdateItemDialog from "./UpdateItemDialog.astro";
 import Thumbnail from "./Thumbnail.astro"
-
-import { formatNumberToCurrency } from "../../utils/currency";
+import Price from "./Price.astro";
+import Quantity from "./Quantity.astro";
 
 const { product } = Astro.props;
 ---
@@ -13,9 +13,6 @@ const { product } = Astro.props;
   import "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
   import type SlDialog from "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
 
-  import { $totalCartItems } from "../../stores/totalCartItems";
-  import { $counts } from "../../stores/productCounts";
-  import { formatNumberToCurrency } from "../../utils/currency";
   import { deleteCartItem } from "../../stores/cart";
 
   class ProductCard extends HTMLElement {
@@ -24,7 +21,6 @@ const { product } = Astro.props;
 
       const id = this.dataset.id;
       const quantity = this.dataset.quantity;
-      const price = this.dataset.price;
 
       const removeButton = this.querySelector(`#remove-${id}`);
       const editButton = this.querySelector(`#edit-${id}`);
@@ -50,24 +46,6 @@ const { product } = Astro.props;
       editButton?.addEventListener("click", () => {
         editDialog.show();
       });
-
-      $totalCartItems.subscribe(() => {
-        const counts = $counts.get();
-
-        const priceDisplay = this.querySelector("#price");
-        if (priceDisplay && price && id) {
-          const count = counts[id] ?? quantity;
-          priceDisplay.textContent = formatNumberToCurrency(
-            parseInt(price) * count,
-          );
-        }
-
-        const quantityDisplay = this.querySelector("#quantityx");
-        if (quantityDisplay && id && quantity) {
-          let count = counts[id] ?? quantity;
-          quantityDisplay.textContent = `x${count}`;
-        }
-      });
     }
   }
 
@@ -84,13 +62,11 @@ const { product } = Astro.props;
   <div class="product-details">
     <div>
       <div class="name">{product.name}</div>
-      <div id="price" class="price">
-        {formatNumberToCurrency(product.price * product.quantity)}
-      </div>
+      <Price product={product}/>
     </div>
 
     <div class="product-actions">
-      <div id="quantityx" class="quantity">x{product.quantity}</div>
+      <Quantity product={product}/>
       <div class="controls">
         <sl-button id={`edit-${product.id}`} size="small">Edit</sl-button>
         <sl-button id={`remove-${product.id}`} size="small">Remove</sl-button>
@@ -122,14 +98,6 @@ const { product } = Astro.props;
     font-size: 1.2rem;
     font-weight: 600;
     color: var(--color-text-ink-500);
-  }
-
-  .quantity {
-    color: var(--color-text-ink-300);
-  }
-
-  .price {
-    color: var(--color-text-ink-300);
   }
 
   .product-actions {

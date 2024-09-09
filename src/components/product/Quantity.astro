@@ -1,0 +1,31 @@
+---
+const {product} = Astro.props
+---
+
+<script>
+  import { $cart } from "../../stores/cart";
+
+  class QuantityDisplay extends HTMLElement {
+    constructor() {
+      super();
+
+      const id = this.dataset.id
+
+      if (id) {
+        $cart.subscribe(cart => {
+          this.textContent = `x${cart[id]}`
+        })
+      }
+    }
+  }
+
+  customElements.define('quantity-display', QuantityDisplay)
+</script>
+
+<quantity-display data-id={product.id}>x{product.quantity}</quantity-display>
+
+<style>
+  quantity-display {
+    color: var(--color-text-ink-300);
+  }
+</style>
