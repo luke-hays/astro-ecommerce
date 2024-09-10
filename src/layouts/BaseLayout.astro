@@ -2,6 +2,13 @@
 import Header from "../components/shared/Header.astro";
 import Footer from "../components/shared/Footer.astro";
 ---
+<script>
+  import "@shoelace-style/shoelace/dist/components/icon-button/icon-button.js";
+  import "@shoelace-style/shoelace/dist/components/icon/icon.js";
+  import "@shoelace-style/shoelace/dist/components/button/button.js";
+  import "@shoelace-style/shoelace/dist/components/drawer/drawer.js";
+
+</script>
 
 <html lang="en">
   <head>
@@ -16,15 +23,15 @@ import Footer from "../components/shared/Footer.astro";
   </head>
   <body>
     <div id="layout-grid">
-      <header id="treecommerce-header">
+      <header>
         <Header />
       </header>
-      <main>
+      <!-- <main>
         <slot />
-      </main>
-      <footer>
+      </main> -->
+      <!-- <footer>
         <Footer />
-      </footer>
+      </footer> -->
     </div>
   </body>
   <style>
