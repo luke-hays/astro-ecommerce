@@ -40,12 +40,6 @@ const {productId, buttonText = "Add to cart"} = Astro.props;
   }
 
   customElements.define('add-to-cart-button', AddToCartButton)
-
-  const addToCartButton = document.querySelector('add-to-cart-button')
-
-  if (addToCartButton) {
-    addToCartButton.classList.add('ready')
-  }
 </script>
 
 <add-to-cart-button data-id={productId}>
@@ -55,14 +49,5 @@ const {productId, buttonText = "Add to cart"} = Astro.props;
 <style>
   sl-button::part(base) {
     width: 10rem;
-  }
-
-  add-to-cart-button {
-    opacity: 0;
-  }
-
-  add-to-cart-button.ready {
-    opacity: 1;
-    transition: 0.4s opacity;
   }
 </style>

@@ -63,16 +63,6 @@ const { id, productQuantity } = Astro.props;
   }
 
   customElements.define("product-counter", ProductCounter);
-
-  await Promise.allSettled([
-    customElements.whenDefined('product-counter')
-  ])
-
-  const counter = document.querySelector('product-counter')
-
-  if (counter) {
-    counter.classList.add('ready')
-  }
 </script>
 
 <product-counter data-id={id} data-count={productQuantity}>
@@ -85,12 +75,6 @@ const { id, productQuantity } = Astro.props;
   product-counter {
     display: flex;
     align-items: center;
-    opacity: 0;
-  }
-
-  product-counter.ready {
-    opacity: 1;
-    transition: 0.4s opacity;
   }
 
   .counter {
