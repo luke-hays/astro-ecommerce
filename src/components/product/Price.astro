@@ -1,5 +1,5 @@
 ---
-// TODO: This can be confusing, breakdown total for all items and original price
+import { formatNumberToCurrency } from "../../utils/currency";
 const { product } = Astro.props;
 ---
 
@@ -13,27 +13,109 @@ const { product } = Astro.props;
       super();
 
       const id = this.dataset.id;
+      const skeletons = this.querySelectorAll('sl-skeleton')
+      const text = this.querySelector('#calculated-price-text')
+      const prices = this.querySelector('#prices')
 
-      if (id) {
+      if (id && text && skeletons) {
         $products.subscribe((products) => {
-          if (!products) return;
+          if (!products || !(id in products)) return;
 
           const cost = products[id];
           const quantity = getCartItem(id);
+          text.textContent = `${formatNumberToCurrency(cost * quantity)}`;
 
-          this.textContent = formatNumberToCurrency(cost * quantity);
+          // debugger
+
+          skeletons.forEach(skeleton => {
+            skeleton.classList.add('finished')
+          })
+
+          // debugger
         });
       }
+
+      skeletons.forEach(skeleton => {
+        skeleton?.addEventListener('transitionend', () => {
+          // debugger
+          skeleton.remove()
+          // debugger
+          if (!prices?.classList.contains('finished')) {
+            prices?.classList.add('finished')
+          }
+        })
+      })
     }
   }
 
   customElements.define("price-display", PriceDisplay);
 </script>
 
-<price-display data-id={product.id}></price-display>
+<price-display data-id={product.id}>
+  <div>
+    <sl-skeleton effect="sheen"></sl-skeleton>
+    <sl-skeleton effect="sheen"></sl-skeleton>
+    <div id="prices">
+      <p id="total-label"><strong>Total</strong>:</p>
+      <p id="calculated-price"><span id="calculated-price-text"></span></p>
+      <p><strong>Original</strong>: </p>
+      <p>{formatNumberToCurrency(product.price)}</p>
+    </div>
+  </div>
+</price-display>
 
 <style>
   price-display {
     color: var(--color-text-ink-300);
+    margin-top: 0.25rem;
+  }
+
+  sl-skeleton {
+    width: 10rem;
+    height: 1rem;
+  }
+
+  sl-skeleton.finished {
+    width: 0;
+    transition: 0.4s width;
+  }
+
+  #prices {
+    display: grid;
+    grid-template-areas: 
+      "total-label total-calculation"
+      "original-label original-calcuation";
+      grid-template-columns: 4rem 1fr;
+    opacity: 0;
+  }
+
+  #prices.finished {
+    opacity: 1;
+    transition: 0.4s opacitiy;
+  }
+
+  #total-label {
+    grid-area: total-label;
+  }
+
+  #calculated-price {
+    grid-area: total-calculation;
+  }
+
+  p {
+    margin: 0;
+    font-size: .9rem;
+    height: 1rem;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .tab {
+    display: inline-block;
+    margin-left: 1.5rem;
   }
 </style>
