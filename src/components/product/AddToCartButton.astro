@@ -1,34 +1,38 @@
 ---
-const {productId, buttonText = "Add to cart"} = Astro.props;
+const { productId, buttonText = "Add to cart" } = Astro.props;
 ---
 
 <script>
-  import { SlButton } from "@shoelace-style/shoelace";
+  import type { SlDialog } from "@shoelace-style/shoelace";
   import { updateCart } from "../../stores/cart";
   import { $counts, getItemCount } from "../../stores/productCounts";
 
   class AddToCartButton extends HTMLElement {
     constructor() {
-      super()
+      super();
 
-      const productId = this.dataset.id
-      const button = this.querySelector('#add')
+      const productId = this.dataset.id;
+      const button = this.querySelector("#add");
 
-      if (!productId || !button) return
+      if (!productId || !button) return;
 
-      button.addEventListener('click', async () => {
+      button.addEventListener("click", async () => {
         button.setAttribute("disabled", "true");
         button.setAttribute("loading", "true");
-        
-        try {
-          await updateCart(productId, getItemCount(productId))
-        } catch (error) {
 
+        try {
+          await updateCart(productId, getItemCount(productId));
+        } catch (error) {
         } finally {
           button.removeAttribute("disabled");
           button.removeAttribute("loading");
+
+          const dialog = document.querySelector(
+            "update-item-dialog",
+          ) as SlDialog;
+          if (dialog) dialog.hide();
         }
-      })
+      });
 
       $counts.subscribe((counts) => {
         if (counts[productId] <= 0 || counts[productId] > 10) {
@@ -36,11 +40,11 @@ const {productId, buttonText = "Add to cart"} = Astro.props;
         } else {
           button.removeAttribute("disabled");
         }
-      })
-    } 
+      });
+    }
   }
 
-  customElements.define('add-to-cart-button', AddToCartButton)
+  customElements.define("add-to-cart-button", AddToCartButton);
 </script>
 
 <add-to-cart-button data-id={productId}>

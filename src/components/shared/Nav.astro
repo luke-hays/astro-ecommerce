@@ -10,11 +10,9 @@ const routes = categories.map((category) => ({
 ---
 
 <script>
-  import "@shoelace-style/shoelace/dist/components/button/button.js";
-  import "@shoelace-style/shoelace/dist/components/icon-button/icon-button.js";
-  import "@shoelace-style/shoelace/dist/components/drawer/drawer.js";
+  import type { SlDrawer } from "@shoelace-style/shoelace";
 
-  const drawer = document.querySelector(".drawer-overview") as ShoelaceDrawer;
+  const drawer = document.querySelector(".drawer-overview") as SlDrawer;
 
   if (drawer) {
     const openButton = document.getElementById("open-nav");
@@ -45,6 +43,7 @@ const routes = categories.map((category) => ({
     flex-direction: column;
     gap: 1rem;
   }
+
   a {
     text-decoration: none;
     color: var(--color-text-ink-400);
