@@ -6,10 +6,12 @@
 
 html {
   height: 100%;
+  scrollbar-gutter: stable;
 }
 
 body {
   height: 100%;
   font-family: var(--sl-font-sans);
   margin: 0;
+
 }

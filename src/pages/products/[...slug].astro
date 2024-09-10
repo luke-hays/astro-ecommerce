@@ -41,9 +41,19 @@ if (Astro.cookies.has("cart")) {
 }
 ---
 
+<script>
+  await Promise.allSettled([
+    customElements.whenDefined('sl-button')
+  ])
+
+  const layout = document.getElementById('product-layout')
+
+  if (layout) layout.classList.add('ready')
+</script>
+
 <BaseLayout>
   <div class="product">
-    <div class="product-layout">
+    <div id="product-layout">
       <div class="breadcrumbs">
         <Breadcrumb routes={breadcrumbs} />
       </div>
@@ -64,7 +74,7 @@ if (Astro.cookies.has("cart")) {
 </BaseLayout>
 
 <style>
-  .product-layout {
+  #product-layout {
     display: grid;
     grid-template-areas:
       "breadcrumbs"
@@ -73,6 +83,12 @@ if (Astro.cookies.has("cart")) {
     grid-template-columns: 1fr;
     margin: 1.5rem 2rem;
     gap: 0.5rem;
+    opacity: 0;
+  }
+
+  #product-layout.ready {
+    opacity: 1;
+    transition: 0.4s opacity;
   }
 
   section {
@@ -111,7 +127,7 @@ if (Astro.cookies.has("cart")) {
       justify-content: center;
     }
 
-    .product-layout {
+    #product-layout {
       display: grid;
       grid-template-areas:
         "breadcrumbs breadcrumbs"
