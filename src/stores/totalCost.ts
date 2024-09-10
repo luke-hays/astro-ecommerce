@@ -1,13 +1,16 @@
-import { computed } from "nanostores";
-import { $cart } from "./cart";
+import { computed, task } from "nanostores";
+import { getCart } from "./cart";
 import { $products } from "./products";
 
-export const $totalCost = computed([$cart, $products], (cart, products) => {
-  let total = 0;
+export const $totalCost = computed($products, products => {
+    let total = 0
 
-  for (const [id, count] of Object.entries(cart)) {
-    total += products[id] * count;
+    const cart = getCart()
+    
+    for (const [id, count] of Object.entries(cart)) {
+      total += products[id] * count;
+    }
+
+    return total
   }
-
-  return total;
-});
+)

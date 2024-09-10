@@ -13,7 +13,9 @@
 
       if (!totalElement) return
 
-      $totalCost.subscribe((cost) => totalElement.textContent = formatNumberToCurrency(cost))
+      $totalCost.subscribe(cost => {
+        totalElement.textContent = formatNumberToCurrency(cost)
+      })
     }
   }
 

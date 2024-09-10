@@ -2,6 +2,7 @@ import { task, onMount, atom } from "nanostores";
 import { PARAM_PRODUCT_ID } from "../utils/constants";
 
 export const $cart = atom<Cart>({});
+export const $totalPrice = atom(0)
 
 onMount($cart, () => {
   task(async () => {
@@ -16,6 +17,10 @@ onMount($cart, () => {
     }
   });
 });
+
+export const getCart = () => {
+  return $cart.get()
+}
 
 export const getCartItem = (id: string) => {
   return $cart.get()[id];
