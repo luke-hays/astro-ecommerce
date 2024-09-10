@@ -37,11 +37,22 @@ const productsCount = Object.keys(products).length;
 <script>
   import { $cleared } from "../../stores/cart";
 
-  const cartDetails = document.querySelector("#cart-details");
+  const cartDetails = document.getElementById("cart-details");
+  const emptyButton = document.getElementById("empty-cart");
+  const emptyCart = document.getElementById('empty-display');
+
+  if (emptyCart) {
+    const count = parseInt(emptyCart.dataset.count ?? '0')
+    if (count === 0) {
+      emptyCart.removeAttribute('hidden')
+    }
+  }
 
   $cleared.subscribe((cleared) => {
-    if (cleared && cartDetails) {
-      cartDetails.remove();
+    if (cleared) {
+      cartDetails?.remove();
+      emptyButton?.remove()
+      emptyCart?.removeAttribute('hidden')
     }
   });
 </script>
@@ -53,17 +64,21 @@ const productsCount = Object.keys(products).length;
         <h1>Your cart</h1>
         {productsCount > 0 && <EmptyCartButton sessionId={sessionId} />}
       </div>
-      <EmptyCart />
-      <div id="cart-details">
-        <div id="cart-list">
-          {
-            products.map((product) => {
-              return <ProductCard product={product} />;
-            })
-          }
-        </div>
-        {productsCount > 0 && <OrderTotal />}
+      <div id="empty-display" hidden data-count={productsCount}>
+        <EmptyCart />
       </div>
+      {productsCount > 0 &&
+        <div id="cart-details">
+          <div id="cart-list">
+            {
+              products.map((product) => {
+                return <ProductCard product={product} />;
+              })
+            }
+          </div>
+          <OrderTotal />
+        </div>
+      }
     </div>
   </div>
 </BaseLayout>
