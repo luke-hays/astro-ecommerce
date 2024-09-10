@@ -14,8 +14,9 @@ const { sessionId } = Astro.props;
 
       if (!sessionId || !emptyCart) return;
 
-      emptyCart.addEventListener("click", () => {
-        deleteCart();
+      emptyCart.addEventListener("click", async () => {
+        await deleteCart();
+        this.remove();
       });
     }
   }
