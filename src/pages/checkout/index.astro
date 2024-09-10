@@ -8,6 +8,7 @@ import { getImages } from "../../scripts/images";
 import { getAllProductsInCart } from "../../scripts/product";
 import OrderTotal from "../../components/checkout/orderTotal.astro";
 import EmptyCartButton from "../../components/product/EmptyCartButton.astro";
+import EmptyCart from "../../components/checkout/emptyCart.astro";
 
 const productCollection = await getCollection("products");
 const images = getImages();
@@ -52,6 +53,7 @@ const productsCount = Object.keys(products).length;
         <h1>Your cart</h1>
         {productsCount > 0 && <EmptyCartButton sessionId={sessionId} />}
       </div>
+      <EmptyCart />
       <div id="cart-details">
         <div id="cart-list">
           {
