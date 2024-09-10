@@ -3,6 +3,17 @@ import Nav from "./Nav.astro";
 import Cart from "./Cart.astro";
 ---
 
+<script>
+  const container = document.getElementById('header-content')
+
+  await Promise.allSettled([
+    customElements.whenDefined('sl-icon-button'),
+    customElements.whenDefined('sl-icon')
+  ])
+
+  container?.classList.add('ready')
+</script>
+
 <div id="header-content">
   <Nav />
 
@@ -41,5 +52,14 @@ import Cart from "./Cart.astro";
     align-items: center;
     flex-wrap: nowrap;
     gap: 0.25rem;
+  }  
+
+  #header-content {
+    opacity: 0;
+  }
+
+  #header-content.ready {
+    opacity: 1;
+    transition: 0.4s opacity;
   }
 </style>
