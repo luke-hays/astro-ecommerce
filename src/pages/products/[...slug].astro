@@ -42,13 +42,11 @@ if (Astro.cookies.has("cart")) {
 ---
 
 <script>
-  await Promise.allSettled([
-    customElements.whenDefined('sl-button')
-  ])
+  await Promise.allSettled([customElements.whenDefined("sl-button")]);
 
-  const layout = document.getElementById('product-layout')
+  const layout = document.getElementById("product-layout");
 
-  if (layout) layout.classList.add('ready')
+  if (layout) layout.classList.add("ready");
 </script>
 
 <BaseLayout>

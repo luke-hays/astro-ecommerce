@@ -1,31 +1,29 @@
 ---
-const {sessionId} = Astro.props;
+const { sessionId } = Astro.props;
 ---
 
 <script>
-  import { deleteCart } from "../../stores/cart"
+  import { deleteCart } from "../../stores/cart";
 
-  class EmptyCartButton extends HTMLElement{
+  class EmptyCartButton extends HTMLElement {
     constructor() {
-      super()
+      super();
 
-      const sessionId = this.dataset.id
-      const emptyCart = this.querySelector('#empty-cart')
+      const sessionId = this.dataset.id;
+      const emptyCart = this.querySelector("#empty-cart");
 
-      if (!sessionId || !emptyCart) return
+      if (!sessionId || !emptyCart) return;
 
       emptyCart.addEventListener("click", async () => {
         await deleteCart();
-        this.remove()
+        this.remove();
       });
     }
   }
 
-  customElements.define('empty-cart-button', EmptyCartButton)
+  customElements.define("empty-cart-button", EmptyCartButton);
 </script>
 
 <empty-cart-button data-id={sessionId}>
-  <sl-button size="small" id="empty-cart">
-    Empty cart
-  </sl-button>
+  <sl-button size="small" id="empty-cart"> Empty cart </sl-button>
 </empty-cart-button>

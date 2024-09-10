@@ -4,14 +4,14 @@ import Cart from "./Cart.astro";
 ---
 
 <script>
-  const container = document.getElementById('header-content')
+  const container = document.getElementById("header-content");
 
   await Promise.allSettled([
-    customElements.whenDefined('sl-icon-button'),
-    customElements.whenDefined('sl-icon')
-  ])
+    customElements.whenDefined("sl-icon-button"),
+    customElements.whenDefined("sl-icon"),
+  ]);
 
-  container?.classList.add('ready')
+  container?.classList.add("ready");
 </script>
 
 <div id="header-content">
@@ -52,7 +52,7 @@ import Cart from "./Cart.astro";
     align-items: center;
     flex-wrap: nowrap;
     gap: 0.25rem;
-  }  
+  }
 
   #header-content {
     opacity: 0;

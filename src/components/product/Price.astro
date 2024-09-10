@@ -16,7 +16,7 @@ const { product } = Astro.props;
 
       if (id) {
         $products.subscribe((products) => {
-          if (!products) return
+          if (!products) return;
 
           const cost = products[id];
           const quantity = getCartItem(id);

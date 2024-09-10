@@ -2,7 +2,7 @@ import { task, onMount, atom } from "nanostores";
 import { PARAM_PRODUCT_ID } from "../utils/constants";
 
 export const $cart = atom<Cart>({});
-export const $cleared = atom(false)
+export const $cleared = atom(false);
 
 onMount($cart, () => {
   task(async () => {
@@ -19,8 +19,8 @@ onMount($cart, () => {
 });
 
 export const getCart = () => {
-  return $cart.get()
-}
+  return $cart.get();
+};
 
 export const getCartItem = (id: string) => {
   return $cart.get()[id];
@@ -58,6 +58,6 @@ export const deleteCart = async () => {
   await task(async () => {
     await fetch("/api/empty-cart", { method: "DELETE" });
     $cart.set({});
-    $cleared.set(true)
+    $cleared.set(true);
   });
 };
