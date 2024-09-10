@@ -13,27 +13,57 @@ const { product } = Astro.props;
       super();
 
       const id = this.dataset.id;
+      const skeleton = this.querySelector('sl-skeleton')
+      const text = this.querySelector('p')
 
-      if (id) {
+      if (id && text) {
         $products.subscribe((products) => {
-          if (!products) return;
+          if (!products || !(id in products)) return;
 
           const cost = products[id];
           const quantity = getCartItem(id);
+          text.textContent = formatNumberToCurrency(cost * quantity);
 
-          this.textContent = formatNumberToCurrency(cost * quantity);
+          skeleton?.classList.add('finished')
         });
       }
+
+      skeleton?.addEventListener('transitionend', () => {
+        skeleton.remove()
+        text?.classList.add('finished')
+      })
     }
   }
 
   customElements.define("price-display", PriceDisplay);
 </script>
 
-<price-display data-id={product.id}></price-display>
+<price-display data-id={product.id}>
+  <sl-skeleton effect="sheen"></sl-skeleton>
+  <p></p>
+</price-display>
 
 <style>
   price-display {
     color: var(--color-text-ink-300);
+  }
+
+  sl-skeleton {
+    width: 5rem;
+  }
+
+  sl-skeleton.finished {
+    width: 0;
+    transition: 0.25s width;
+  }
+
+  p {
+    opacity: 0;
+    margin: 0;
+  }
+
+  p.finished {
+    opacity: 1;
+    transition: 0.25s opacity;
   }
 </style>

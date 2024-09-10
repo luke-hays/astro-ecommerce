@@ -27,10 +27,13 @@ const { productId, buttonText = "Add to cart" } = Astro.props;
           button.removeAttribute("disabled");
           button.removeAttribute("loading");
 
-          const dialog = document.querySelector(
+          const dialogs = document.querySelectorAll(
             "update-item-dialog",
-          ) as SlDialog;
-          if (dialog) dialog.hide();
+          ) as NodeListOf<SlDialog>;
+
+          for (const dialog of dialogs) {
+            dialog.hide()
+          }
         }
       });
 

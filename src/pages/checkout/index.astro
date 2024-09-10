@@ -40,6 +40,7 @@ const productsCount = Object.keys(products).length;
   const cartDetails = document.getElementById("cart-details");
   const emptyButton = document.getElementById("empty-cart");
   const emptyCart = document.getElementById('empty-display');
+  const checkoutLayout = document.getElementById('checkout-layout')
 
   if (emptyCart) {
     const count = parseInt(emptyCart.dataset.count ?? '0')
@@ -55,10 +56,17 @@ const productsCount = Object.keys(products).length;
       emptyCart?.removeAttribute('hidden')
     }
   });
+
+  await Promise.allSettled([
+    customElements.whenDefined('sl-button'),
+    customElements.whenDefined('sl-dialog'),
+  ])
+
+  checkoutLayout?.classList.add('ready')
 </script>
 
 <BaseLayout>
-  <div class="checkout-layout">
+  <div id="checkout-layout">
     <div class="checkout-container">
       <div class="title">
         <h1>Your cart</h1>
@@ -89,9 +97,15 @@ const productsCount = Object.keys(products).length;
     color: var(--color-text-ink-500);
   }
 
-  .checkout-layout {
+  #checkout-layout {
     display: flex;
     justify-content: center;
+    opacity: 0;
+  }
+
+  #checkout-layout.ready {
+    opacity: 1;
+    transition: 0.25s opacity;
   }
 
   .checkout-container {
