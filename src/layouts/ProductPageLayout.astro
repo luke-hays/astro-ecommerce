@@ -1,0 +1,18 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+---
+
+<BaseLayout>
+  <div>
+    <slot />
+  </div>
+</BaseLayout>
+
+<style>
+  @media (min-width: 768px) {
+    div {
+      display: flex;
+      justify-content: center;
+    }
+  }
+</style>
