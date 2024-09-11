@@ -67,21 +67,23 @@ const productsCount = Object.keys(products).length;
   console.log('waiting for promises to settle')
 
   try {
-    await Promise.allSettled([
-      customElements.whenDefined('sl-button'),
-      customElements.whenDefined('sl-dialog'),
-      customElements.whenDefined('sl-skeleton'),
-    ])
+    // await Promise.allSettled([
+    //   customElements.whenDefined('sl-button'),
+    //   customElements.whenDefined('sl-dialog'),
+    //   customElements.whenDefined('sl-skeleton'),
+    // ])
+
+    console.log('promises settled')
+
+    checkoutLayout?.classList.add('ready')
+
+    console.log('checkoutLayout classlist', checkoutLayout?.classList)
   } catch (error) {
-    console.log(ErrorEvent)
+    console.log(error)
   }
 
 
-  console.log('promises settled')
 
-  checkoutLayout?.classList.add('ready')
-
-  console.log('checkoutLayout classlist', checkoutLayout?.classList)
 </script>
 
 <BaseLayout>
