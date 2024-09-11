@@ -1,0 +1,50 @@
+---
+import { Image } from "astro:assets";
+
+const { src, alt } = Astro.props
+---
+
+<script>
+  import { html, LitElement } from 'lit';
+  import { property } from 'lit/decorators.js';
+
+  class CustomImage extends LitElement {
+    @property({type: Boolean}) loaded = false
+
+    constructor() {
+      super()
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback()
+
+        const image = this.querySelector('img')
+
+        if (image?.complete) {
+          
+        }
+        
+        image?.addEventListener('load', () => {
+          console.log('loaded')
+        })
+    }
+
+    render() {
+      return html`<slot></slot>`
+    }
+  }
+
+  customElements.define('custom-image', CustomImage)
+
+</script>
+
+<custom-image>
+  <sl-skeleton effect="pulse"></sl-skeleton>
+  <Image src={src()} alt={alt} loading="eager"/>
+</custom-image>
+
+<style>
+  img {
+    width: 0;
+  }
+</style>
