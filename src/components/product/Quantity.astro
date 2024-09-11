@@ -13,7 +13,7 @@ const { product } = Astro.props;
 
       if (id) {
         $cart.subscribe((cart) => {
-          this.textContent = `x${cart[id]}`;
+          if (id in cart) this.textContent = `x${cart[id]}`;
         });
       }
     }

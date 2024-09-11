@@ -42,17 +42,10 @@ const productsCount = Object.keys(products).length;
   const emptyCart = document.getElementById('empty-display');
   const checkoutLayout = document.getElementById('checkout-layout')
 
-  console.log(cartDetails)
-  console.log(emptyButton)
-  console.log(emptyCart)
-  console.log(checkoutLayout)
-
   if (emptyCart) {
     const count = parseInt(emptyCart.dataset.count ?? '0')
-    console.log('count check', count)
     if (count === 0) {
       emptyCart.removeAttribute('hidden')
-      console.log('removing hidden from empty cart')
     }
   }
 
@@ -64,25 +57,12 @@ const productsCount = Object.keys(products).length;
     }
   });
 
-  console.log('waiting for promises to settle')
+  await Promise.allSettled([
+    customElements.whenDefined('sl-button'),
+    customElements.whenDefined('sl-skeleton'),
+  ])
 
-  try {
-    const response = await Promise.allSettled([
-      customElements.whenDefined('sl-button'),
-      customElements.whenDefined('sl-skeleton'),
-    ])
-
-    console.log('promises settled', response)
-
-    checkoutLayout?.classList.add('ready')
-
-    console.log('checkoutLayout classlist', checkoutLayout?.classList)
-  } catch (error) {
-    console.log(error)
-  }
-
-
-
+  checkoutLayout?.classList.add('ready')
 </script>
 
 <BaseLayout>
@@ -125,7 +105,7 @@ const productsCount = Object.keys(products).length;
 
   #checkout-layout.ready {
     opacity: 1;
-    transition: 0.25s opacity;
+    transition: 0.4s opacity;
   }
 
   .checkout-container {
