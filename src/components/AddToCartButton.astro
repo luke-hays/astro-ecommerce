@@ -1,0 +1,50 @@
+<script>
+  import { SlButton } from "@shoelace-style/shoelace";
+  import type { PropertyValues } from 'lit';
+  import { property } from 'lit/decorators.js';
+
+  class AddToCartButton extends SlButton {
+    @property({type: Boolean}) pending = false
+
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      super.connectedCallback()
+
+      this.addEventListener('click', async () => {
+        if (this.pending) return
+
+        this.pending = true
+        console.log('clicked', this.pending)
+
+        try {
+          await new Promise((resolve) => setTimeout(resolve, 1000))
+        } catch (error) {
+          console.error(error)
+        } finally {
+          this.pending = false
+          console.log('clicked', this.pending)
+        }
+      })
+    }
+
+    // shouldUpdate(changedProperties: PropertyValues<this>) {
+    //   return changedProperties.get('pending') != null
+    // }
+
+    // We need to hook into the willUpdate part of the lifecycle
+    // Otherwise we get a pretty annoying error about updates occuring after updates
+    willUpdate(changedProperties: PropertyValues<this>) {
+      const pending = changedProperties.get('pending')
+      console.log(pending)
+      return true
+    }
+
+  }
+
+  customElements.define('add-to-cart', AddToCartButton)
+</script>
+
+<add-to-cart>Add to cart</add-to-cart>

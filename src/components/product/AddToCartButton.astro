@@ -3,7 +3,7 @@ const { productId, buttonText = "Add to cart" } = Astro.props;
 ---
 
 <script>
-  import type { SlDialog } from "@shoelace-style/shoelace";
+  import type { SlButton, SlDialog } from "@shoelace-style/shoelace";
   import { updateCart } from "../../stores/cart";
   import { $counts, getItemCount } from "../../stores/productCounts";
 
@@ -12,20 +12,23 @@ const { productId, buttonText = "Add to cart" } = Astro.props;
       super();
 
       const productId = this.dataset.id;
-      const button = this.querySelector("#add");
+      const button = this.querySelector("#add") as SlButton;
 
       if (!productId || !button) return;
 
+      button.loading = false
+      button.disabled = false
+
       button.addEventListener("click", async () => {
-        button.setAttribute("disabled", "true");
-        button.setAttribute("loading", "true");
+        button.disabled = true;
+        button.loading = true;
 
         try {
           await updateCart(productId, getItemCount(productId));
         } catch (error) {
         } finally {
-          button.removeAttribute("disabled");
-          button.removeAttribute("loading");
+          button.disabled = false;
+          button.loading = false;
 
           const dialogs = document.querySelectorAll(
             "update-item-dialog",

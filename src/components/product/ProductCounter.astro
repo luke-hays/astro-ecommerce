@@ -11,6 +11,7 @@ const { id, productQuantity } = Astro.props;
     getItemCount,
     updateCount,
   } from "../../stores/productCounts";
+import { MAX_PRODUCT_QUANTITY } from "../../utils/constants";
 
   class ProductCounter extends HTMLElement {
     constructor() {
@@ -26,28 +27,19 @@ const { id, productQuantity } = Astro.props;
 
       if (!addProduct || !removeProduct || !display) return;
 
-      addProduct.addEventListener("click", () => incrementCount(id));
-      removeProduct.addEventListener("click", () => decrementCount(id));
+      addProduct.addEventListener("click", () => {
+        incrementCount(id)
+      });
+      
+      removeProduct.addEventListener("click", () => {
+        decrementCount(id)
+      });
 
       // Set a listener on the current quantity to update the display when its changed by either imported function
       $counts.subscribe((counts) => {
         const count = counts[id];
-
         if (count == null) return;
-
         display.textContent = counts[id].toString();
-
-        if (counts[id] <= 1) {
-          removeProduct.setAttribute("disabled", "true");
-        } else if (counts[id] > 1 && removeProduct.hasAttribute("disabled")) {
-          removeProduct.removeAttribute("disabled");
-        }
-
-        if (counts[id] >= 10) {
-          addProduct.setAttribute("disabled", "true");
-        } else if (counts[id] < 10 && addProduct.hasAttribute("disabled")) {
-          addProduct.removeAttribute("disabled");
-        }
       });
 
       let initialCount = getItemCount(id);
