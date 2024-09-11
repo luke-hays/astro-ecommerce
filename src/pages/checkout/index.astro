@@ -59,7 +59,7 @@ const productsCount = Object.keys(products).length;
 
   await Promise.allSettled([
     customElements.whenDefined('sl-button'),
-    customElements.whenDefined('sl-dialog'),
+    customElements.whenDefined('sl-skeleton'),
   ])
 
   checkoutLayout?.classList.add('ready')
@@ -105,7 +105,7 @@ const productsCount = Object.keys(products).length;
 
   #checkout-layout.ready {
     opacity: 1;
-    transition: 0.25s opacity;
+    transition: 0.4s opacity;
   }
 
   .checkout-container {
