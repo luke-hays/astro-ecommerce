@@ -66,11 +66,16 @@ const productsCount = Object.keys(products).length;
 
   console.log('waiting for promises to settle')
 
-  await Promise.allSettled([
-    customElements.whenDefined('sl-button'),
-    customElements.whenDefined('sl-dialog'),
-    customElements.whenDefined('sl-skeleton'),
-  ])
+  try {
+    await Promise.allSettled([
+      customElements.whenDefined('sl-button'),
+      customElements.whenDefined('sl-dialog'),
+      customElements.whenDefined('sl-skeleton'),
+    ])
+  } catch (error) {
+    console.log(ErrorEvent)
+  }
+
 
   console.log('promises settled')
 
