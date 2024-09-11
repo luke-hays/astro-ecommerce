@@ -31,7 +31,7 @@ const { product } = Astro.props;
           removeButton.setAttribute("loading", "true");
 
           try {
-            deleteCartItem(id);
+            await deleteCartItem(id);            
             this.remove();
           } catch (error) {
             // TODO Render Error state
