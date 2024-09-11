@@ -11,6 +11,7 @@ const { id, productQuantity } = Astro.props;
     getItemCount,
     updateCount,
   } from "../../stores/productCounts";
+  import { setCurrentProduct } from "../../stores/product";
 import { MAX_PRODUCT_QUANTITY } from "../../utils/constants";
 
   class ProductCounter extends HTMLElement {
@@ -29,6 +30,7 @@ import { MAX_PRODUCT_QUANTITY } from "../../utils/constants";
 
       addProduct.addEventListener("click", () => {
         incrementCount(id)
+        setCurrentProduct(id, 1)
       });
       
       removeProduct.addEventListener("click", () => {
