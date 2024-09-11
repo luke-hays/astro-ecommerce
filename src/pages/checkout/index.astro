@@ -60,6 +60,7 @@ const productsCount = Object.keys(products).length;
   await Promise.allSettled([
     customElements.whenDefined('sl-button'),
     customElements.whenDefined('sl-dialog'),
+    customElements.whenDefined('sl-skeleton'),
   ])
 
   checkoutLayout?.classList.add('ready')
