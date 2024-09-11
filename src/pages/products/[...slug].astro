@@ -3,11 +3,8 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 
 import ProductPageLayout from "../../layouts/ProductPageLayout.astro";
-
-import ProductCounter from "../../components/product/ProductCounter.astro";
 import Breadcrumb from "../../components/shared/Breadcrumb.astro";
-import ProductImage from "../../components/product/ProductImage.astro";
-import AddToCartButton from "../../components/AddToCartButton.astro";
+import UpdateCart from "../../components/controls/UpdateCart.astro";
 
 import { buildCategoryBreadcrumbs } from "../../scripts/routes";
 import { getProduct } from "../../scripts/product";
@@ -63,10 +60,7 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
       <h2>{product.name}</h2>
       <p>{product.formattedPrice}</p>
       <p>{product.description}</p>
-      <div class="product-controls">
-        <ProductCounter id={product.id} />
-        <AddToCartButton productId={product.id} />
-      </div>
+      <UpdateCart id={product.id} />
     </section>
   </div>
 </ProductPageLayout>
@@ -118,11 +112,6 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
   .product-image.loaded {
     height: 30rem;
     width: 25rem;
-  }
-
-  .product-controls {
-    display: flex;
-    gap: 0.5rem;
   }
 
   section {

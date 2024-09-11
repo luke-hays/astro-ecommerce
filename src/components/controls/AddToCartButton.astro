@@ -3,8 +3,8 @@
   import { property } from 'lit/decorators.js';
   import { SlButton } from "@shoelace-style/shoelace";
 
-  import { getCurrentProduct } from '../stores/product'
-  import { updateCart } from '../stores/cart';
+  import { getCurrentProduct } from '../../stores/product'
+  import { updateCart } from '../../stores/cart';
 
   class AddToCartButton extends SlButton {
     @property({type: Boolean}) pending = false
@@ -32,8 +32,6 @@
       })
     }
 
-    // We need to hook into the willUpdate part of the lifecycle
-    // Otherwise we get a pretty annoying error about updates occuring after updates
     willUpdate(changedProperties: PropertyValues<this>) {
       const pending = changedProperties.get('pending')
 
