@@ -58,7 +58,7 @@ const { id } = Astro.props;
       if (this.count > 1 && decrementBtn) decrementBtn.disabled = false
 
       if (counter) counter.textContent = this.count.toString()
-      setCurrentProduct(this.id, this.count)
+      setCurrentProduct(this.productId, this.count)
     }
 
     render() {
