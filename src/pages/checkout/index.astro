@@ -69,7 +69,7 @@ const productsCount = Object.keys(products).length;
   try {
     const response = await Promise.allSettled([
       customElements.whenDefined('sl-button'),
-      // customElements.whenDefined('sl-dialog'),
+      customElements.whenDefined('sl-dialog'),
       // customElements.whenDefined('sl-skeleton'),
     ])
 
