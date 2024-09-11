@@ -5,11 +5,11 @@ const { src, alt } = Astro.props
 ---
 
 <script>
-  import { html, LitElement } from 'lit';
+  import { html, LitElement, type PropertyValues } from 'lit';
   import { property } from 'lit/decorators.js';
 
   class CustomImage extends LitElement {
-    @property({type: Boolean}) loaded = false
+    @property({type: Boolean}) ready = false
 
     constructor() {
       super()
@@ -21,12 +21,19 @@ const { src, alt } = Astro.props
         const image = this.querySelector('img')
 
         if (image?.complete) {
-          
+          this.ready = true
         }
         
         image?.addEventListener('load', () => {
-          console.log('loaded')
+          this.ready = true
         })
+    }
+
+    updated(changedProperties: PropertyValues<this>) {
+      const image = this.querySelector('img')
+      if (image && this.ready) {
+        image.classList.add('ready')
+      }
     }
 
     render() {
@@ -44,7 +51,10 @@ const { src, alt } = Astro.props
 </custom-image>
 
 <style>
+
+
   img {
     width: 0;
+    object-fit: contain;
   }
 </style>
