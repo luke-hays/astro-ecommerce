@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 
-const { src, alt } = Astro.props
+const { src, alt, height, width } = Astro.props
 ---
 
 <script>
@@ -15,22 +15,9 @@ const { src, alt } = Astro.props
 
   class CustomImage extends LitElement {
     @property({type: Boolean}) ready = false
-    @property({type: String}) height = '30rem'
-    @property({type: String}) width = '25rem'
 
     constructor() {
       super()
-
-      const image = this.querySelector('img')
-      const skeleton = this.querySelector('sl-skeleton')
-
-      if (image && skeleton) {
-        skeleton.style.height = this.height
-        skeleton.style.width = this.width
-
-        image.style.height = this.height
-        image.style.width = this.width
-      }
     }
 
     connectedCallback(): void {
@@ -73,8 +60,8 @@ const { src, alt } = Astro.props
 </script>
 
 <custom-image>
-  <sl-skeleton effect="sheen"></sl-skeleton>
-  <Image src={src()} alt={alt} loading="eager"/>
+  <sl-skeleton effect="sheen" style=`height: ${height}px; width: ${width}px;`></sl-skeleton>
+  <Image src={src()} alt={alt} loading="lazy" height={height} width={width}/>
 </custom-image>
 
 <style>
