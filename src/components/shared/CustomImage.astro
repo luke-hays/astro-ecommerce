@@ -5,21 +5,46 @@ const { src, alt } = Astro.props
 ---
 
 <script>
-  import { html, LitElement, type PropertyValues } from 'lit';
+  import { html, LitElement } from 'lit';
   import { property } from 'lit/decorators.js';
+
+  await Promise.allSettled([
+    customElements.whenDefined("sl-button"),
+    customElements.whenDefined("sl-skeleton")
+  ]);
 
   class CustomImage extends LitElement {
     @property({type: Boolean}) ready = false
+    @property({type: String}) height = '30rem'
+    @property({type: String}) width = '25rem'
 
     constructor() {
       super()
+
+      const image = this.querySelector('img')
+      const skeleton = this.querySelector('sl-skeleton')
+
+      if (image && skeleton) {
+        skeleton.style.height = this.height
+        skeleton.style.width = this.width
+
+        image.style.height = this.height
+        image.style.width = this.width
+      }
     }
 
     connectedCallback(): void {
         super.connectedCallback()
 
         const image = this.querySelector('img')
+        const skeleton = this.querySelector('sl-skeleton')
 
+        // Remove the skeleton to prevent issues with image interation
+        skeleton?.addEventListener('transitionend', () => {
+          skeleton.hidden = true
+        })
+
+        // Image may already be complete due to caching
         if (image?.complete) {
           this.ready = true
         }
@@ -29,10 +54,12 @@ const { src, alt } = Astro.props
         })
     }
 
-    updated(changedProperties: PropertyValues<this>) {
+    updated() {
       const image = this.querySelector('img')
-      if (image && this.ready) {
-        image.classList.add('ready')
+      const skeleton = this.querySelector('sl-skeleton')
+
+      if (image && skeleton && this.ready) {
+        skeleton.classList.add('finished')
       }
     }
 
@@ -46,15 +73,32 @@ const { src, alt } = Astro.props
 </script>
 
 <custom-image>
-  <sl-skeleton effect="pulse"></sl-skeleton>
+  <sl-skeleton effect="sheen"></sl-skeleton>
   <Image src={src()} alt={alt} loading="eager"/>
 </custom-image>
 
 <style>
-
+  custom-image {
+    position: relative;
+  }
 
   img {
-    width: 0;
-    object-fit: contain;
+    object-fit: cover;
+    position: absolute;
+  }
+
+  sl-skeleton {
+    position: absolute;
+    z-index: 1;
+    opacity: 1;
+  }
+
+  sl-skeleton.finished {
+    opacity: 0;
+    transition: 0.5s opacity;
+  }
+
+  sl-skeleton::part(indicator) {
+    border-radius: 0;
   }
 </style>
