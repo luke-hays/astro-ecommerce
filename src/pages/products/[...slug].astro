@@ -4,7 +4,7 @@ import { getCollection } from "astro:content";
 import ProductPageLayout from "../../layouts/ProductPageLayout.astro";
 import Breadcrumb from "../../components/shared/Breadcrumb.astro";
 import UpdateCart from "../../components/controls/UpdateCart.astro";
-import Img from "../../components/shared/CustomImage.astro";
+import CustomImage from "../../components/shared/CustomImage.astro";
 
 import { buildCategoryBreadcrumbs } from "../../scripts/routes";
 import { getProduct } from "../../scripts/product";
@@ -41,7 +41,7 @@ const breadcrumbs = buildCategoryBreadcrumbs(categories, product.category);
       <Breadcrumb routes={breadcrumbs} />
     </div>
     <div class="image">
-      <Img src={product.image} alt={product.name} height={480} width={400}/>
+      <CustomImage src={product.image} alt={product.name} height={480} width={400}/>
     </div>
     <section>
       <h2>{product.name}</h2>

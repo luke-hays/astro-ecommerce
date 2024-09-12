@@ -59,7 +59,7 @@ const { src, alt, height, width } = Astro.props
 
 </script>
 
-<custom-image>
+<custom-image style=`height: ${height}px; width: ${width}px;`>
   <sl-skeleton effect="sheen" style=`height: ${height}px; width: ${width}px;`></sl-skeleton>
   <Image src={src()} alt={alt} loading="lazy" height={height} width={width}/>
 </custom-image>
@@ -67,6 +67,7 @@ const { src, alt, height, width } = Astro.props
 <style>
   custom-image {
     position: relative;
+    display: inline-block;
   }
 
   img {

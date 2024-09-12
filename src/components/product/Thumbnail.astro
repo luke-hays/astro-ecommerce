@@ -1,11 +1,11 @@
 ---
-import { Image } from "astro:assets";
+import CustomImage from "../shared/CustomImage.astro";
 
 const { product } = Astro.props;
 ---
 
 <div class="product-image">
-  <Image src={product.image()} alt={product.name} />
+  <CustomImage src={product.image} alt={product.name} height={160} width={160} />
 </div>
 
 <style>
@@ -13,11 +13,5 @@ const { product } = Astro.props;
     border-radius: 4px;
     height: 10rem;
     overflow: hidden;
-  }
-
-  .product-image > img {
-    width: 100%;
-    height: inherit;
-    object-fit: cover;
   }
 </style>
