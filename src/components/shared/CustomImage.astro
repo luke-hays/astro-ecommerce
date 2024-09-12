@@ -1,0 +1,92 @@
+---
+import { Image } from "astro:assets";
+
+const { src, alt, height, width } = Astro.props
+---
+
+<script>
+  import { html, LitElement } from 'lit';
+  import { property } from 'lit/decorators.js';
+
+  await Promise.allSettled([
+    customElements.whenDefined("sl-button"),
+    customElements.whenDefined("sl-skeleton")
+  ]);
+
+  class CustomImage extends LitElement {
+    @property({type: Boolean}) ready = false
+
+    constructor() {
+      super()
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback()
+
+        const image = this.querySelector('img')
+        const skeleton = this.querySelector('sl-skeleton')
+
+        // Remove the skeleton to prevent issues with image interation
+        skeleton?.addEventListener('transitionend', () => {
+          skeleton.hidden = true
+        })
+
+        // Image may already be complete due to caching
+        if (image?.complete) {
+          this.ready = true
+        }
+        
+        image?.addEventListener('load', () => {
+          this.ready = true
+        })
+    }
+
+    updated() {
+      const image = this.querySelector('img')
+      const skeleton = this.querySelector('sl-skeleton')
+
+      if (image && skeleton && this.ready) {
+        skeleton.classList.add('finished')
+      }
+    }
+
+    render() {
+      return html`<slot></slot>`
+    }
+  }
+
+  customElements.define('custom-image', CustomImage)
+
+</script>
+
+<custom-image style=`height: ${height}px; width: ${width}px;`>
+  <sl-skeleton effect="sheen" style=`height: ${height}px; width: ${width}px;`></sl-skeleton>
+  <Image src={src()} alt={alt} loading="lazy" height={height} width={width}/>
+</custom-image>
+
+<style>
+  custom-image {
+    position: relative;
+    display: inline-block;
+  }
+
+  img {
+    object-fit: cover;
+    position: absolute;
+  }
+
+  sl-skeleton {
+    position: absolute;
+    z-index: 1;
+    opacity: 1;
+  }
+
+  sl-skeleton.finished {
+    opacity: 0;
+    transition: 0.5s opacity;
+  }
+
+  sl-skeleton::part(indicator) {
+    border-radius: 0;
+  }
+</style>

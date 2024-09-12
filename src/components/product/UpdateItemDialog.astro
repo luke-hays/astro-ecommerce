@@ -1,12 +1,13 @@
 ---
-import AddToCartButton from "./AddToCartButton.astro";
-import ProductCounter from "./ProductCounter.astro";
+import UpdateCart from "../controls/UpdateCart.astro";
 import Thumbnail from "./Thumbnail.astro";
 
 const { product } = Astro.props;
 ---
 
 <script>
+  // TODO Trigger this to close on update
+
   import { SlDialog } from "@shoelace-style/shoelace";
 
   class UpdateItemDialog extends SlDialog {
@@ -25,10 +26,7 @@ const { product } = Astro.props;
 >
   <div class="product-dialog">
     <Thumbnail product={product} />
-    <div class="update-cart">
-      <ProductCounter id={product.id} productQuantity={product.quantity} />
-      <AddToCartButton productId={product.id} buttonText="Update cart" />
-    </div>
+    <UpdateCart id={product.id}/>
   </div>
 </update-item-dialog>
 
@@ -42,10 +40,5 @@ const { product } = Astro.props;
     flex-direction: column;
     gap: 1rem;
     align-items: center;
-  }
-
-  .update-cart {
-    display: flex;
-    gap: 1rem;
   }
 </style>

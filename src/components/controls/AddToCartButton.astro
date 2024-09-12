@@ -1,0 +1,50 @@
+<script>
+  import type { PropertyValues } from 'lit';
+  import { property } from 'lit/decorators.js';
+  import { SlButton } from "@shoelace-style/shoelace";
+
+  import { getCurrentProduct } from '../../stores/product'
+  import { updateCart } from '../../stores/cart';
+
+  class AddToCartButton extends SlButton {
+    @property({type: Boolean}) pending = false
+
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      super.connectedCallback()
+
+      this.addEventListener('click', async () => {
+        const {id, count} = getCurrentProduct()
+
+        if (this.pending || id == null) return
+
+        try {
+          this.pending = true
+          await updateCart(id, count)
+        } catch (error) {
+          console.error(error)
+        } finally {
+          this.pending = false
+        }
+      })
+    }
+
+    willUpdate(changedProperties: PropertyValues<this>) {
+      const pending = changedProperties.get('pending')
+
+      if (pending == null) return false
+      
+      this.disabled = !pending
+      this.loading = !pending
+
+      return true
+    }
+  }
+
+  customElements.define('add-to-cart', AddToCartButton)
+</script>
+
+<add-to-cart>Add to cart</add-to-cart>

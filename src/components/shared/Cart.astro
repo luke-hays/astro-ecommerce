@@ -1,13 +1,15 @@
 <script>
-  import { $totalCartItems } from "../../stores/totalCartItems";
+  import { $cart } from "../../stores/cart";
+  import { sumValues } from '../../utils/tools'
 
   class TotalCartItems extends HTMLElement {
     constructor() {
       super();
 
-      $totalCartItems.subscribe((totalItems) => {
-        this.textContent = totalItems > 0 ? totalItems.toString() : "";
-      });
+      $cart.subscribe((cart) => {
+        const count = sumValues(cart)
+        this.textContent = count === 0 ? '' : count.toString()
+      })
     }
   }
 

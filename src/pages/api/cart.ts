@@ -27,6 +27,7 @@ export const GET: APIRoute = async ({ request, cookies }) => {
   return jsonBody(cart);
 };
 
+// TODO: Do not post update if product is not valid
 export const POST: APIRoute = async ({ cookies, request }) => {
   let sessionId = getCartValueFromApiRoute({ request, cookies });
 

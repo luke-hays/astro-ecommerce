@@ -1,0 +1,18 @@
+---
+import ProductCount from "./ProductCount.astro";
+import AddToCartButton from "./AddToCartButton.astro";
+
+const { id } = Astro.props;
+---
+
+<div class="product-controls">
+  <ProductCount id={id} />
+  <AddToCartButton />
+</div>
+
+<style>
+  .product-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+</style>
