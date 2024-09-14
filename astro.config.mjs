@@ -27,7 +27,8 @@ export default defineConfig({
     sourceMapsUploadOptions: {
       project: "astro-ecommerce",
       authToken: process.env.SENTRY_AUTH_TOKEN
-    }
+    },
+    environment: process.env.SENTRY_ENVIRONMENT
   }), robotsTxt()],
   output: "server",
   adapter: netlify()
