@@ -1,0 +1,86 @@
+---
+import { getCollection } from "astro:content";
+
+import { getImages } from "../../scripts/images";
+import { getAllProductsInCart } from "../../scripts/product";
+
+import EmptyCart from "./emptyCart.astro"
+import CartList from "./CartList.astro"
+import OrderTotal from "./orderTotal.astro"
+import EmptyCartButton from "../product/EmptyCartButton.astro";
+
+const productCollection = await getCollection("products");
+const images = getImages();
+
+let cart = {} as Cart;
+
+let sessionId = "";
+if (Astro.cookies.has("cart")) {
+  sessionId = Astro.cookies.get("cart")?.value ?? "";
+
+  if (sessionId) {
+    try {
+      const url = new URL(`/api/cart?session-id=${sessionId}`, Astro.url);
+      const response = await fetch(url);
+      cart = JSON.parse(await response.json()) as Cart;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+const products = getAllProductsInCart(productCollection, images, cart);
+const productsCount = Object.keys(products).length;
+---
+
+<script>
+  import { $cleared } from "../../stores/cart";
+
+  const cartDetails = document.getElementById("cart-details");
+  const emptyButton = document.getElementById("empty-cart");
+  const emptyCart = document.getElementById('empty-display');
+
+  if (emptyCart) {
+    const count = parseInt(emptyCart.dataset.count ?? '0')
+    if (count === 0) {
+      emptyCart.removeAttribute('hidden')
+    }
+  }
+
+  $cleared.subscribe((cleared) => {
+    if (cleared) {
+      cartDetails?.remove();
+      emptyButton?.remove()
+      emptyCart?.removeAttribute('hidden')
+    }
+  });
+</script>
+
+<div class="title">
+  <h1>Your cart</h1>
+  <EmptyCartButton sessionId={sessionId} />
+</div>
+<div id="empty-display" hidden data-count={productsCount}>
+  <EmptyCart />
+</div>
+{productsCount > 0 &&
+  <div id="cart-details">
+    <CartList products={products}/>
+    <OrderTotal />
+  </div>
+}
+
+
+<style>
+  #cart-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
+</style>

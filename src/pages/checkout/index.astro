@@ -1,37 +1,6 @@
 ---
-import { getCollection } from "astro:content";
-
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import ProductCard from "../../components/product/ProductCard.astro";
-
-import { getImages } from "../../scripts/images";
-import { getAllProductsInCart } from "../../scripts/product";
-import OrderTotal from "../../components/checkout/orderTotal.astro";
-import EmptyCartButton from "../../components/product/EmptyCartButton.astro";
-import EmptyCart from "../../components/checkout/emptyCart.astro";
-
-const productCollection = await getCollection("products");
-const images = getImages();
-
-let cart = {} as Cart;
-
-let sessionId = "";
-if (Astro.cookies.has("cart")) {
-  sessionId = Astro.cookies.get("cart")?.value ?? "";
-
-  if (sessionId) {
-    try {
-      const url = new URL(`/api/cart?session-id=${sessionId}`, Astro.url);
-      const response = await fetch(url);
-      cart = JSON.parse(await response.json()) as Cart;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-}
-
-const products = getAllProductsInCart(productCollection, images, cart);
-const productsCount = Object.keys(products).length;
+import CartDisplay from "../../components/checkout/CartDisplay.astro";
 ---
 
 <script>
@@ -68,25 +37,7 @@ const productsCount = Object.keys(products).length;
 <BaseLayout>
   <div id="checkout-layout">
     <div class="checkout-container">
-      <div class="title">
-        <h1>Your cart</h1>
-        {productsCount > 0 && <EmptyCartButton sessionId={sessionId} />}
-      </div>
-      <div id="empty-display" hidden data-count={productsCount}>
-        <EmptyCart />
-      </div>
-      {productsCount > 0 &&
-        <div id="cart-details">
-          <div id="cart-list">
-            {
-              products.map((product) => {
-                return <ProductCard product={product} />;
-              })
-            }
-          </div>
-          <OrderTotal />
-        </div>
-      }
+      <CartDisplay />
     </div>
   </div>
 </BaseLayout>
@@ -116,23 +67,5 @@ const productsCount = Object.keys(products).length;
     min-width: 20rem;
     width: 100%;
     max-width: 40rem;
-  }
-
-  .title {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-  }
-
-  #cart-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  #cart-details {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
   }
 </style>
