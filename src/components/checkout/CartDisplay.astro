@@ -9,8 +9,8 @@ import CartList from "./CartList.astro"
 import OrderTotal from "./orderTotal.astro"
 import EmptyCartButton from "../product/EmptyCartButton.astro";
 
-const productCollection = await getCollection("products");
-const images = getImages();
+// const productCollection = await getCollection("products");
+// const images = getImages();
 
 let cart = {} as Cart;
 
@@ -29,8 +29,8 @@ if (Astro.cookies.has("cart")) {
   }
 }
 
-const products = getAllProductsInCart(productCollection, images, cart);
-const productsCount = Object.keys(products).length;
+// const products = getAllProductsInCart(productCollection, images, cart);
+// const productsCount = Object.keys(products).length;
 ---
 
 <script>
