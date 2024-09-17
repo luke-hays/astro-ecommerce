@@ -26,9 +26,7 @@ itemCount = sumValues(cart)
   class TotalCartItems extends HTMLElement {
     constructor() {
       super();
-
       const itemCount = this.dataset.count ?? '0';
-
       this.textContent = itemCount
     }
   }
