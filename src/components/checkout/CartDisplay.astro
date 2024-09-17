@@ -12,48 +12,48 @@ import EmptyCartButton from "../product/EmptyCartButton.astro";
 // const productCollection = await getCollection("products");
 // const images = getImages();
 
-let cart = {} as Cart;
+// let cart = {} as Cart;
 
-let sessionId = "";
-if (Astro.cookies.has("cart")) {
-  sessionId = Astro.cookies.get("cart")?.value ?? "";
+// let sessionId = "";
+// if (Astro.cookies.has("cart")) {
+//   sessionId = Astro.cookies.get("cart")?.value ?? "";
 
-  if (sessionId) {
-    try {
-      const url = new URL(`/api/cart?session-id=${sessionId}`, Astro.url);
-      const response = await fetch(url);
-      cart = JSON.parse(await response.json()) as Cart;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-}
+//   if (sessionId) {
+//     try {
+//       const url = new URL(`/api/cart?session-id=${sessionId}`, Astro.url);
+//       const response = await fetch(url);
+//       cart = JSON.parse(await response.json()) as Cart;
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   }
+// }
 
 // const products = getAllProductsInCart(productCollection, images, cart);
 // const productsCount = Object.keys(products).length;
 ---
 
 <script>
-  import { $cleared } from "../../stores/cart";
+  // import { $cleared } from "../../stores/cart";
 
-  const cartDetails = document.getElementById("cart-details");
-  const emptyButton = document.getElementById("empty-cart");
-  const emptyCart = document.getElementById('empty-display');
+  // const cartDetails = document.getElementById("cart-details");
+  // const emptyButton = document.getElementById("empty-cart");
+  // const emptyCart = document.getElementById('empty-display');
 
-  if (emptyCart) {
-    const count = parseInt(emptyCart.dataset.count ?? '0')
-    if (count === 0) {
-      emptyCart.removeAttribute('hidden')
-    }
-  }
+  // if (emptyCart) {
+  //   const count = parseInt(emptyCart.dataset.count ?? '0')
+  //   if (count === 0) {
+  //     emptyCart.removeAttribute('hidden')
+  //   }
+  // }
 
-  $cleared.subscribe((cleared) => {
-    if (cleared) {
-      cartDetails?.remove();
-      emptyButton?.remove()
-      emptyCart?.removeAttribute('hidden')
-    }
-  });
+  // $cleared.subscribe((cleared) => {
+  //   if (cleared) {
+  //     cartDetails?.remove();
+  //     emptyButton?.remove()
+  //     emptyCart?.removeAttribute('hidden')
+  //   }
+  // });
 </script>
 
 <div class="title">

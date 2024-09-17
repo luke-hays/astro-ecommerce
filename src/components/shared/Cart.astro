@@ -1,15 +1,35 @@
-<script>
-  import { $cart } from "../../stores/cart";
-  import { sumValues } from '../../utils/tools'
+---
+import { sumValues } from "../../utils/tools";
 
+let itemCount = 0;
+let sessionId = "";
+let cart = {}
+
+if (Astro.cookies.has("cart")) {
+  sessionId = Astro.cookies.get("cart")?.value ?? "";
+
+  if (sessionId) {
+    try {
+      const url = new URL(`/api/cart?session-id=${sessionId}`, Astro.url);
+      const response = await fetch(url);
+      cart = JSON.parse(await response.json()) as Cart;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+itemCount = sumValues(cart)
+---
+
+<script>
   class TotalCartItems extends HTMLElement {
     constructor() {
       super();
 
-      $cart.subscribe((cart) => {
-        const count = sumValues(cart)
-        this.textContent = count === 0 ? '' : count.toString()
-      })
+      const itemCount = this.dataset.count ?? '0';
+
+      this.textContent = itemCount
     }
   }
 
@@ -17,7 +37,7 @@
 </script>
 
 <div class="cart">
-  <total-cart-items></total-cart-items>
+  <total-cart-items data-count={itemCount}></total-cart-items>
   <sl-icon-button name="bag" href="/checkout"></sl-icon-button>
 </div>
 

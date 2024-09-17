@@ -1,67 +1,68 @@
-import { task, onMount, atom } from "nanostores";
-import { PARAM_PRODUCT_ID } from "../utils/constants";
+// import { task, onMount, atom } from "nanostores";
+// import { PARAM_PRODUCT_ID } from "../utils/constants";
 
-export const $cart = atom<Cart>({});
-export const $cleared = atom(false);
+// export const $cart = atom<Cart>({});
+// export const $cleared = atom(false);
 
-onMount($cart, () => {
-  task(async () => {
-    const response = await fetch("/api/cart");
+// onMount($cart, () => {
+//   task(async () => {
+//     const response = await fetch("/api/cart");
 
-    const data = await response.json();
+//     const data = await response.json();
 
-    if (typeof data === "string") {
-      $cart.set(JSON.parse(data));
-    } else {
-      $cart.set(data);
-    }
-  });
-});
 
-export const getCart = () => {
-  return $cart.get();
-};
+//     if (typeof data === "string") {
+//       $cart.set(JSON.parse(data));
+//     } else {
+//       $cart.set(data);
+//     }
+//   });
+// });
 
-export const getCartItem = (id: string) => {
-  return $cart.get()[id];
-};
+// export const getCart = () => {
+//   return $cart.get();
+// };
 
-export const updateCart = async (id: string, count: number) => {
-  await task(async () => {
-    const response = await fetch("/api/cart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ product: id, quantity: count }),
-    });
+// export const getCartItem = (id: string) => {
+//   return $cart.get()[id];
+// };
 
-    const data = await response.json();
+// export const updateCart = async (id: string, count: number) => {
+//   await task(async () => {
+//     const response = await fetch("/api/cart", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ product: id, quantity: count }),
+//     });
 
-    $cart.set(data);
-  });
-};
+//     const data = await response.json();
 
-export const deleteCartItem = async (id: string) => {
-  await task(async () => {
-    const response = await fetch(`/api/cart?${PARAM_PRODUCT_ID}=${id}`, {
-      method: "DELETE",
-    });
+//     $cart.set(data);
+//   });
+// };
 
-    const data = await response.json();
+// export const deleteCartItem = async (id: string) => {
+//   await task(async () => {
+//     const response = await fetch(`/api/cart?${PARAM_PRODUCT_ID}=${id}`, {
+//       method: "DELETE",
+//     });
 
-    if (Object.keys(data).length === 0) {
-      $cleared.set(true)
-    }
+//     const data = await response.json();
 
-    $cart.set(data);
-  });
-};
+//     if (Object.keys(data).length === 0) {
+//       $cleared.set(true)
+//     }
 
-export const deleteCart = async () => {
-  await task(async () => {
-    await fetch("/api/empty-cart", { method: "DELETE" });
-    $cart.set({});
-    $cleared.set(true);
-  });
-};
+//     $cart.set(data);
+//   });
+// };
+
+// export const deleteCart = async () => {
+//   await task(async () => {
+//     await fetch("/api/empty-cart", { method: "DELETE" });
+//     $cart.set({});
+//     $cleared.set(true);
+//   });
+// };
