@@ -5,7 +5,12 @@ const { product } = Astro.props;
 ---
 
 <div class="product-image">
-  <CustomImage src={product.image} alt={product.name} height={160} width={160} />
+  <CustomImage
+    src={product.image}
+    alt={product.name}
+    height={160}
+    width={160}
+  />
 </div>
 
 <style>

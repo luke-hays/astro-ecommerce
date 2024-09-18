@@ -3,7 +3,7 @@ import { sumValues } from "../../utils/tools";
 
 let itemCount = 0;
 let sessionId = "";
-let cart = {}
+let cart = {};
 
 if (Astro.cookies.has("cart")) {
   sessionId = Astro.cookies.get("cart")?.value ?? "";
@@ -19,30 +19,30 @@ if (Astro.cookies.has("cart")) {
   }
 }
 
-console.log(cart)
+console.log(cart);
 
-itemCount = sumValues(cart)
+itemCount = sumValues(cart);
 ---
 
 <script>
-  import {$cart} from '../../stores/cart'
-  import { sumValues } from '../../utils/tools';
+  import { $cart } from "../../stores/cart";
+  import { sumValues } from "../../utils/tools";
 
-  let loaded = false
+  let loaded = false;
 
   class TotalCartItems extends HTMLElement {
     constructor() {
       super();
-      const itemCount = this.dataset.count ?? '0';
-      this.textContent = itemCount
+      const itemCount = this.dataset.count ?? "0";
+      this.textContent = itemCount;
 
       $cart.subscribe((cart) => {
         if (loaded) {
-          this.textContent = sumValues(cart).toString()
+          this.textContent = sumValues(cart).toString();
         } else {
-          loaded = true
+          loaded = true;
         }
-      })
+      });
     }
   }
 

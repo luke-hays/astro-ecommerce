@@ -4,9 +4,9 @@ import { getCollection } from "astro:content";
 import { getImages } from "../../scripts/images";
 import { getAllProductsInCart } from "../../scripts/product";
 
-import EmptyCart from "./emptyCart.astro"
-import CartList from "./CartList.astro"
-import OrderTotal from "./orderTotal.astro"
+import EmptyCart from "./emptyCart.astro";
+import CartList from "./CartList.astro";
+import OrderTotal from "./orderTotal.astro";
 import EmptyCartButton from "../product/EmptyCartButton.astro";
 
 const productCollection = await getCollection("products");
@@ -32,12 +32,12 @@ if (Astro.cookies.has("cart")) {
 const products = getAllProductsInCart(productCollection, images, cart);
 const productsCount = Object.keys(products).length;
 
-console.log(products)
+console.log(products);
 
-let total = 0
-products.forEach(product => {
-  total += (product.price * product.quantity)
-})
+let total = 0;
+products.forEach((product) => {
+  total += product.price * product.quantity;
+});
 ---
 
 <script>
@@ -45,20 +45,20 @@ products.forEach(product => {
 
   const cartDetails = document.getElementById("cart-details");
   const emptyButton = document.getElementById("empty-cart");
-  const emptyCart = document.getElementById('empty-display');
+  const emptyCart = document.getElementById("empty-display");
 
   if (emptyCart) {
-    const count = parseInt(emptyCart.dataset.count ?? '0')
+    const count = parseInt(emptyCart.dataset.count ?? "0");
     if (count === 0) {
-      emptyCart.removeAttribute('hidden')
+      emptyCart.removeAttribute("hidden");
     }
   }
 
   $cleared.subscribe((cleared) => {
     if (cleared) {
       cartDetails?.remove();
-      emptyButton?.remove()
-      emptyCart?.removeAttribute('hidden')
+      emptyButton?.remove();
+      emptyCart?.removeAttribute("hidden");
     }
   });
 </script>
@@ -70,13 +70,14 @@ products.forEach(product => {
 <div id="empty-display" hidden data-count={productsCount}>
   <EmptyCart />
 </div>
-{productsCount > 0 &&
-  <div id="cart-details">
-    <CartList products={products}/>
-    <OrderTotal total={total}/>
-  </div>
+{
+  productsCount > 0 && (
+    <div id="cart-details">
+      <CartList products={products} />
+      <OrderTotal total={total} />
+    </div>
+  )
 }
-
 
 <style>
   h1 {

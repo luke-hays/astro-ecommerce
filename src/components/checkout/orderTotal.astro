@@ -1,5 +1,5 @@
 ---
-const {total} = Astro.props
+const { total } = Astro.props;
 ---
 
 <script>
@@ -17,14 +17,14 @@ const {total} = Astro.props
       if (!totalElement) return;
 
       const orderTotal = parseFloat(this.dataset.total ?? "0");
-      totalElement.textContent = formatNumberToCurrency(orderTotal)
+      totalElement.textContent = formatNumberToCurrency(orderTotal);
 
-      let loaded = false
+      let loaded = false;
       $totalCost.subscribe((cost) => {
         if (loaded) {
           totalElement.textContent = formatNumberToCurrency(cost);
         } else {
-          loaded = true
+          loaded = true;
         }
       });
     }

@@ -13,23 +13,23 @@ const { product } = Astro.props;
       super();
 
       const id = this.dataset.id;
-      const skeletons = this.querySelectorAll('sl-skeleton')
-      const text = this.querySelector('#calculated-price-text')
-      const prices = this.querySelector('#prices')
+      const skeletons = this.querySelectorAll("sl-skeleton");
+      const text = this.querySelector("#calculated-price-text");
+      const prices = this.querySelector("#prices");
 
       if (id && text && skeletons) {
         $products.subscribe((products) => {
           if (!products || !(id in products)) {
-            console.log(this.dataset.cost, this.dataset.quantity)
-            const price = this.dataset.price ?? "0"
-            const quantity = this.dataset.quantity ?? "0"
+            console.log(this.dataset.cost, this.dataset.quantity);
+            const price = this.dataset.price ?? "0";
+            const quantity = this.dataset.quantity ?? "0";
             text.textContent = `${formatNumberToCurrency(parseFloat(price) * parseInt(quantity))}`;
-            
-            skeletons.forEach(skeleton => {
-              skeleton.classList.add('finished')
-            })
-            
-            return
+
+            skeletons.forEach((skeleton) => {
+              skeleton.classList.add("finished");
+            });
+
+            return;
           }
 
           const price = products[id];
@@ -38,38 +38,42 @@ const { product } = Astro.props;
 
           // debugger
 
-          skeletons.forEach(skeleton => {
-            skeleton.classList.add('finished')
-          })
+          skeletons.forEach((skeleton) => {
+            skeleton.classList.add("finished");
+          });
 
           // debugger
         });
       }
 
-      skeletons.forEach(skeleton => {
-        skeleton?.addEventListener('transitionend', () => {
+      skeletons.forEach((skeleton) => {
+        skeleton?.addEventListener("transitionend", () => {
           // debugger
-          skeleton.remove()
+          skeleton.remove();
           // debugger
-          if (!prices?.classList.contains('finished')) {
-            prices?.classList.add('finished')
+          if (!prices?.classList.contains("finished")) {
+            prices?.classList.add("finished");
           }
-        })
-      })
+        });
+      });
     }
   }
 
   customElements.define("price-display", PriceDisplay);
 </script>
 
-<price-display data-id={product.id} data-price={product.price} data-quantity={product.quantity}>
+<price-display
+  data-id={product.id}
+  data-price={product.price}
+  data-quantity={product.quantity}
+>
   <div>
     <sl-skeleton effect="sheen"></sl-skeleton>
     <sl-skeleton effect="sheen"></sl-skeleton>
     <div id="prices">
       <p id="total-label"><strong>Total</strong>:</p>
       <p id="calculated-price"><span id="calculated-price-text"></span></p>
-      <p><strong>Original</strong>: </p>
+      <p><strong>Original</strong>:</p>
       <p>{product.formattedPrice}</p>
     </div>
   </div>
@@ -93,10 +97,10 @@ const { product } = Astro.props;
 
   #prices {
     display: grid;
-    grid-template-areas: 
+    grid-template-areas:
       "total-label total-calculation"
       "original-label original-calcuation";
-      grid-template-columns: 4rem 1fr;
+    grid-template-columns: 4rem 1fr;
     opacity: 0;
   }
 
@@ -115,7 +119,7 @@ const { product } = Astro.props;
 
   p {
     margin: 0;
-    font-size: .9rem;
+    font-size: 0.9rem;
     height: 1rem;
   }
 

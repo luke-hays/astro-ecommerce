@@ -3,70 +3,76 @@ const { id } = Astro.props;
 ---
 
 <script>
-  import { html, LitElement } from 'lit';
-  import { property } from 'lit/decorators.js';
-  import type { SlButton } from '@shoelace-style/shoelace';
+  import { html, LitElement } from "lit";
+  import { property } from "lit/decorators.js";
+  import type { SlButton } from "@shoelace-style/shoelace";
 
-  import { MAX_PRODUCT_QUANTITY } from '../../utils/constants';
-  import { setCurrentProduct } from '../../stores/product';
+  import { MAX_PRODUCT_QUANTITY } from "../../utils/constants";
+  import { setCurrentProduct } from "../../stores/product";
 
   class ProductCounter extends LitElement {
-    @property({type: String}) 
-    productId = ''
+    @property({ type: String })
+    productId = "";
 
-    @property({type: Number}) 
-    count = 1
+    @property({ type: Number })
+    count = 1;
 
     constructor() {
-      super()
+      super();
     }
 
     connectedCallback() {
-      super.connectedCallback()
+      super.connectedCallback();
 
-      const id = this.dataset.id ?? ''
-      const counter = this.querySelector(`#${id}-count`)
+      const id = this.dataset.id ?? "";
+      const counter = this.querySelector(`#${id}-count`);
 
-      if (counter) counter.textContent = '1'
+      if (counter) counter.textContent = "1";
 
-      this.productId = id
-      this.count = 1
+      this.productId = id;
+      this.count = 1;
 
-      const incrementBtn = this.querySelector(`#increment-${this.productId}`)
-      const decrementBtn = this.querySelector(`#decrement-${this.productId}`)
+      const incrementBtn = this.querySelector(`#increment-${this.productId}`);
+      const decrementBtn = this.querySelector(`#decrement-${this.productId}`);
 
-      incrementBtn?.addEventListener('click', () => {
-        const incrementedCount = this.count + 1
-        this.count = incrementedCount
-      })
+      incrementBtn?.addEventListener("click", () => {
+        const incrementedCount = this.count + 1;
+        this.count = incrementedCount;
+      });
 
-      decrementBtn?.addEventListener('click', () => {
-        const decrementedCount = this.count - 1
-        this.count = decrementedCount
-      })
+      decrementBtn?.addEventListener("click", () => {
+        const decrementedCount = this.count - 1;
+        this.count = decrementedCount;
+      });
     }
 
     updated() {
-      const counter = this.querySelector(`#${this.productId}-count`)
-      const incrementBtn = this.querySelector(`#increment-${this.productId}`) as SlButton
-      const decrementBtn = this.querySelector(`#decrement-${this.productId}`) as SlButton
+      const counter = this.querySelector(`#${this.productId}-count`);
+      const incrementBtn = this.querySelector(
+        `#increment-${this.productId}`,
+      ) as SlButton;
+      const decrementBtn = this.querySelector(
+        `#decrement-${this.productId}`,
+      ) as SlButton;
 
-      if (this.count >= MAX_PRODUCT_QUANTITY && incrementBtn ) incrementBtn.disabled = true
-      if (this.count < MAX_PRODUCT_QUANTITY && incrementBtn) incrementBtn.disabled = false
+      if (this.count >= MAX_PRODUCT_QUANTITY && incrementBtn)
+        incrementBtn.disabled = true;
+      if (this.count < MAX_PRODUCT_QUANTITY && incrementBtn)
+        incrementBtn.disabled = false;
 
-      if (this.count <= 1 && decrementBtn) decrementBtn.disabled = true
-      if (this.count > 1 && decrementBtn) decrementBtn.disabled = false
+      if (this.count <= 1 && decrementBtn) decrementBtn.disabled = true;
+      if (this.count > 1 && decrementBtn) decrementBtn.disabled = false;
 
-      if (counter) counter.textContent = this.count.toString()
-      setCurrentProduct(this.productId, this.count)
+      if (counter) counter.textContent = this.count.toString();
+      setCurrentProduct(this.productId, this.count);
     }
 
     render() {
-      return html`<slot></slot>`
+      return html`<slot></slot>`;
     }
   }
 
-  customElements.define('product-count', ProductCounter)
+  customElements.define("product-count", ProductCounter);
 </script>
 
 <product-count data-id={id}>

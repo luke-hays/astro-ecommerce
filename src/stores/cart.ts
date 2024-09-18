@@ -37,7 +37,7 @@ export const deleteCartItem = async (id: string) => {
     const data = await response.json();
 
     if (Object.keys(data).length === 0) {
-      $cleared.set(true)
+      $cleared.set(true);
     }
 
     $cart.set(data);

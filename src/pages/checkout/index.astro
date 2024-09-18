@@ -8,30 +8,30 @@ import CartDisplay from "../../components/checkout/CartDisplay.astro";
 
   const cartDetails = document.getElementById("cart-details");
   const emptyButton = document.getElementById("empty-cart");
-  const emptyCart = document.getElementById('empty-display');
-  const checkoutLayout = document.getElementById('checkout-layout')
+  const emptyCart = document.getElementById("empty-display");
+  const checkoutLayout = document.getElementById("checkout-layout");
 
   if (emptyCart) {
-    const count = parseInt(emptyCart.dataset.count ?? '0')
+    const count = parseInt(emptyCart.dataset.count ?? "0");
     if (count === 0) {
-      emptyCart.removeAttribute('hidden')
+      emptyCart.removeAttribute("hidden");
     }
   }
 
   $cleared.subscribe((cleared) => {
     if (cleared) {
       cartDetails?.remove();
-      emptyButton?.remove()
-      emptyCart?.removeAttribute('hidden')
+      emptyButton?.remove();
+      emptyCart?.removeAttribute("hidden");
     }
   });
 
   await Promise.allSettled([
-    customElements.whenDefined('sl-button'),
-    customElements.whenDefined('sl-skeleton'),
-  ])
+    customElements.whenDefined("sl-button"),
+    customElements.whenDefined("sl-skeleton"),
+  ]);
 
-  checkoutLayout?.classList.add('ready')
+  checkoutLayout?.classList.add("ready");
 </script>
 
 <BaseLayout>
