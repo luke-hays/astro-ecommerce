@@ -19,15 +19,30 @@ if (Astro.cookies.has("cart")) {
   }
 }
 
+console.log(cart)
+
 itemCount = sumValues(cart)
 ---
 
 <script>
+  import {$cart} from '../../stores/cart'
+  import { sumValues } from '../../utils/tools';
+
+  let loaded = false
+
   class TotalCartItems extends HTMLElement {
     constructor() {
       super();
       const itemCount = this.dataset.count ?? '0';
       this.textContent = itemCount
+
+      $cart.subscribe((cart) => {
+        if (loaded) {
+          this.textContent = sumValues(cart).toString()
+        } else {
+          loaded = true
+        }
+      })
     }
   }
 
