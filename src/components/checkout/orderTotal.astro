@@ -1,3 +1,7 @@
+---
+const {total} = Astro.props
+---
+
 <script>
   import "@shoelace-style/shoelace/dist/components/button/button.js";
   import "@shoelace-style/shoelace/dist/components/divider/divider.js";
@@ -12,8 +16,16 @@
 
       if (!totalElement) return;
 
+      const orderTotal = parseFloat(this.dataset.total ?? "0");
+      totalElement.textContent = formatNumberToCurrency(orderTotal)
+
+      let loaded = false
       $totalCost.subscribe((cost) => {
-        totalElement.textContent = formatNumberToCurrency(cost);
+        if (loaded) {
+          totalElement.textContent = formatNumberToCurrency(cost);
+        } else {
+          loaded = true
+        }
       });
     }
   }
@@ -21,7 +33,7 @@
   customElements.define("order-total", OrderTotal);
 </script>
 
-<order-total>
+<order-total data-total={total}>
   <h2>Order total</h2>
   <sl-divider></sl-divider>
   <div class="total-label">
