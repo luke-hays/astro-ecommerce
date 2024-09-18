@@ -4,9 +4,9 @@ import { getCollection } from "astro:content";
 import { getImages } from "../../scripts/images";
 import { getAllProductsInCart } from "../../scripts/product";
 
-import EmptyCart from "./emptyCart.astro";
+import EmptyCart from "./EmptyCart.astro";
 import CartList from "./CartList.astro";
-import OrderTotal from "./orderTotal.astro";
+import OrderTotal from "./OrderTotal.astro";
 import EmptyCartButton from "../product/EmptyCartButton.astro";
 
 const productCollection = await getCollection("products");
