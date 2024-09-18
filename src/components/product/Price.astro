@@ -20,7 +20,6 @@ const { product } = Astro.props;
       if (id && text && skeletons) {
         $products.subscribe((products) => {
           if (!products || !(id in products)) {
-            console.log(this.dataset.cost, this.dataset.quantity);
             const price = this.dataset.price ?? "0";
             const quantity = this.dataset.quantity ?? "0";
             text.textContent = `${formatNumberToCurrency(parseFloat(price) * parseInt(quantity))}`;
