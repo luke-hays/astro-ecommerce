@@ -34,33 +34,33 @@ const productsCount = Object.keys(products).length;
 ---
 
 <script>
-  // import { $cleared } from "../../stores/cart";
+  import { $cleared } from "../../stores/cart";
 
-  // const cartDetails = document.getElementById("cart-details");
-  // const emptyButton = document.getElementById("empty-cart");
-  // const emptyCart = document.getElementById('empty-display');
+  const cartDetails = document.getElementById("cart-details");
+  const emptyButton = document.getElementById("empty-cart");
+  const emptyCart = document.getElementById('empty-display');
 
-  // if (emptyCart) {
-  //   const count = parseInt(emptyCart.dataset.count ?? '0')
-  //   if (count === 0) {
-  //     emptyCart.removeAttribute('hidden')
-  //   }
-  // }
+  if (emptyCart) {
+    const count = parseInt(emptyCart.dataset.count ?? '0')
+    if (count === 0) {
+      emptyCart.removeAttribute('hidden')
+    }
+  }
 
-  // $cleared.subscribe((cleared) => {
-  //   if (cleared) {
-  //     cartDetails?.remove();
-  //     emptyButton?.remove()
-  //     emptyCart?.removeAttribute('hidden')
-  //   }
-  // });
+  $cleared.subscribe((cleared) => {
+    if (cleared) {
+      cartDetails?.remove();
+      emptyButton?.remove()
+      emptyCart?.removeAttribute('hidden')
+    }
+  });
 </script>
 
 <div class="title">
   <h1>Your cart</h1>
-  <!-- <EmptyCartButton sessionId={sessionId} /> -->
+  <EmptyCartButton sessionId={sessionId} />
 </div>
-<!-- <div id="empty-display" hidden data-count={productsCount}>
+<div id="empty-display" hidden data-count={productsCount}>
   <EmptyCart />
 </div>
 {productsCount > 0 &&
@@ -69,7 +69,7 @@ const productsCount = Object.keys(products).length;
     <OrderTotal />
   </div>
 }
- -->
+
 
 <style>
   h1 {
