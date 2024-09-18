@@ -19,11 +19,22 @@ const { product } = Astro.props;
 
       if (id && text && skeletons) {
         $products.subscribe((products) => {
-          if (!products || !(id in products)) return;
+          if (!products || !(id in products)) {
+            console.log(this.dataset.cost, this.dataset.quantity)
+            const price = this.dataset.price ?? "0"
+            const quantity = this.dataset.quantity ?? "0"
+            text.textContent = `${formatNumberToCurrency(parseFloat(price) * parseInt(quantity))}`;
+            
+            skeletons.forEach(skeleton => {
+              skeleton.classList.add('finished')
+            })
+            
+            return
+          }
 
-          const cost = products[id];
+          const price = products[id];
           const quantity = getCartItem(id);
-          text.textContent = `${formatNumberToCurrency(cost * quantity)}`;
+          text.textContent = `${formatNumberToCurrency(price * quantity)}`;
 
           // debugger
 
@@ -51,7 +62,7 @@ const { product } = Astro.props;
   customElements.define("price-display", PriceDisplay);
 </script>
 
-<price-display data-id={product.id}>
+<price-display data-id={product.id} data-price={product.price} data-quantity={product.quantity}>
   <div>
     <sl-skeleton effect="sheen"></sl-skeleton>
     <sl-skeleton effect="sheen"></sl-skeleton>
@@ -59,7 +70,7 @@ const { product } = Astro.props;
       <p id="total-label"><strong>Total</strong>:</p>
       <p id="calculated-price"><span id="calculated-price-text"></span></p>
       <p><strong>Original</strong>: </p>
-      <p>{formatNumberToCurrency(product.price)}</p>
+      <p>{product.formattedPrice}</p>
     </div>
   </div>
 </price-display>

@@ -32,6 +32,8 @@ if (Astro.cookies.has("cart")) {
 const products = getAllProductsInCart(productCollection, images, cart);
 const productsCount = Object.keys(products).length;
 
+console.log(products)
+
 let total = 0
 products.forEach(product => {
   total += (product.price * product.quantity)

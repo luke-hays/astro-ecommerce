@@ -16,7 +16,7 @@ const {total} = Astro.props
 
       if (!totalElement) return;
 
-      const orderTotal = parseInt(this.dataset.total ?? "0");
+      const orderTotal = parseFloat(this.dataset.total ?? "0");
       totalElement.textContent = formatNumberToCurrency(orderTotal)
 
       let loaded = false
