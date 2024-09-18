@@ -4,21 +4,6 @@ import { PARAM_PRODUCT_ID } from "../utils/constants";
 export const $cart = atom<Cart>({});
 export const $cleared = atom(false);
 
-// onMount($cart, () => {
-//   task(async () => {
-//     const response = await fetch("/api/cart");
-
-//     const data = await response.json();
-
-
-//     if (typeof data === "string") {
-//       $cart.set(JSON.parse(data));
-//     } else {
-//       $cart.set(data);
-//     }
-//   });
-// });
-
 export const getCart = () => {
   return $cart.get();
 };
